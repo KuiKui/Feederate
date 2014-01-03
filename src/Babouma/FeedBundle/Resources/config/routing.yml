@@ -1,0 +1,3 @@
+BaboumaFeedBundle_Feed:
+    resource: "@BaboumaFeedBundle/Controller/FeedController.php"
+    type: rest

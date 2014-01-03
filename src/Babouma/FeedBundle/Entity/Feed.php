@@ -49,7 +49,6 @@ class Feed
      */
     private $targetUrl;
 
-
     /**
      * Get id
      *

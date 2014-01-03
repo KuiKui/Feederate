@@ -1,4 +1,3 @@
-babouma_feed:
-    resource: "@BaboumaFeedBundle/Controller/"
-    type: annotation
-
+BaboumaFeedBundle:
+    resource: "@BaboumaFeedBundle/Resources/config/routing.yml"
+    prefix: /v1/
