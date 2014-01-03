@@ -1,0 +1,14 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<form>
+    <input type="text" name="feed"/>
+    <input type="submit">
+</form>
+
+<ul>
+    {% for feed in feeds %}
+    <li>{{ feed.title }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

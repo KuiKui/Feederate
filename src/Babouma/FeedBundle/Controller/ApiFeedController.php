@@ -11,7 +11,7 @@ use FOS\RestBundle\Controller\FOSRestController;
  *
  * @package Babouma\FeedBundle\Controller
  */
-class FeedController extends FOSRestController implements ClassResourceInterface
+class ApiFeedController extends FOSRestController implements ClassResourceInterface
 {
     /**
      * Feed list

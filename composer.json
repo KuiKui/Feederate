@@ -22,6 +22,9 @@
         "friendsofsymfony/rest-bundle" : "1.0.*",
         "jms/serializer-bundle" : "0.12.*"
     },
+    "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "dev-master"
+    },
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
