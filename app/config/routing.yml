@@ -1,0 +1,4 @@
+babouma_feed:
+    resource: "@BaboumaFeedBundle/Controller/"
+    type: annotation
+
