@@ -1,7 +1,0 @@
-BaboumaFeedBundle_Api_Feed:
-    resource: "@BaboumaFeedBundle/Controller/ApiFeedController.php"
-    type: rest
-
-BaboumaFeedBundle_Front_Feed:
-    resource: "@BaboumaFeedBundle/Controller/FrontFeedController.php"
-    type: annotation

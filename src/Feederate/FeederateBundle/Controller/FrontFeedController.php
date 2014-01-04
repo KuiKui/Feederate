@@ -1,6 +1,6 @@
 <?php
 
-namespace Babouma\FeedBundle\Controller;
+namespace Feederate\FeederateBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ class FrontFeedController extends Controller
      */
     public function indexAction()
     {
-        $repository = $this->get('doctrine.orm.entity_manager')->getRepository('BaboumaFeedBundle:Feed');
+        $repository = $this->get('doctrine.orm.entity_manager')->getRepository('FeederateFeederateBundle:Feed');
         $entities   = $repository->findBy([], ['id' => 'DESC']);
 
         return array('feeds' => $entities);

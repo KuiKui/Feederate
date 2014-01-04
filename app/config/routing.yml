@@ -1,2 +1,2 @@
-BaboumaFeedBundle:
-    resource: "@BaboumaFeedBundle/Resources/config/routing.yml"
+FeederateFeederateBundle:
+    resource: "@FeederateFeederateBundle/Resources/config/routing.yml"
