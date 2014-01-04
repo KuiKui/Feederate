@@ -1,6 +1,6 @@
 <?php
 
-namespace Babouma\FeedBundle\DependencyInjection;
+namespace Feederate\FeederateBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

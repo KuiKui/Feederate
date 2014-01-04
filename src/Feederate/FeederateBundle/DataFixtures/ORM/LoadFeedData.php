@@ -1,11 +1,11 @@
 <?php
 
-namespace Babouma\FeedBundle\DataFixtures\ORM;
+namespace Feederate\FeederateBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Babouma\FeedBundle\Entity\Feed;
+use Feederate\FeederateBundle\Entity\Feed;
 
 class LoadUserData implements FixtureInterface
 {

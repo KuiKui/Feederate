@@ -1,6 +1,6 @@
 <?php
 
-namespace Babouma\FeedBundle\Entity;
+namespace Feederate\FeederateBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

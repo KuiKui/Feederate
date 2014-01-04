@@ -1,0 +1,7 @@
+FeederateFeederateBundle_Api_Feed:
+    resource: "@FeederateFeederateBundle/Controller/ApiFeedController.php"
+    type: rest
+
+FeederateFeederateBundle_Front_Feed:
+    resource: "@FeederateFeederateBundle/Controller/FrontFeedController.php"
+    type: annotation
