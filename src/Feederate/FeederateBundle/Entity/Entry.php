@@ -10,12 +10,12 @@ use Feederate\ORMBundle\Entity\BaseEntity;
 use Feederate\ORMBundle\Entity\TimestampableTrait;
 
 /**
- * Feed
+ * Entry
  *
- * @ORM\Table(name="feed")
+ * @ORM\Table(name="entry")
  * @ORM\Entity
  */
-class Feed
+class Entry
 {
     use TimestampableTrait;
 
@@ -38,13 +38,6 @@ class Feed
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=255)
-     */
-    private $url;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
@@ -59,9 +52,9 @@ class Feed
     /**
      * @var string
      *
-     * @ORM\Column(name="target_url", type="string", length=255)
+     * @ORM\Column(name="content", type="string", length=255)
      */
-    private $targetUrl;
+    private $content;
 
     /**
      * @var string
@@ -78,35 +71,38 @@ class Feed
     private $authorEmail;
 
     /**
-     * @var date
+     * @var string
      *
-     * @ORM\Column(name="generated_at", type="datetime", nullable=true)
+     * @ORM\Column(name="generated_at", type="datetime")
+     * @JMS\Serializer\Annotation\Type("DateTime<'Y-m-d H:i:s'>")
      */
     private $generatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="Feederate\FeederateBundle\Entity\Entry", mappedBy="feed", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"updatedAt" = "ASC"})
+     * @var \Feederate\FeederateBundle\Entity\Feed
+     *
+     * @ORM\ManyToOne(targetEntity="Feed", inversedBy="entries")
+     * @ORM\JoinColumn(name="feed_id", referencedColumnName="id")
+     * @Serializer\Exclude()
+     * @Assert\NotBlank()
      */
-    private $entries;
+    private $feed;
 
     /**
-     * @var userFeeds[]
+     * @var UserEntries[]
      *
-     * @ORM\OneToMany(targetEntity="UserFeed", mappedBy="feed", cascade={"persist", "remove"})
-     * @Assert\Valid()
+     * @ORM\OneToMany(targetEntity="UserEntry", mappedBy="entry")
+     * @Serializer\Exclude()
      */
-    private $userFeeds;
+    private $userEntries;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->entries   = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->userFeeds = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->userEntries = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
 
     /**
      * Get id
@@ -122,7 +118,7 @@ class Feed
      * Set generatedId
      *
      * @param integer $generatedId
-     * @return Feed
+     * @return Entry
      */
     public function setGeneratedId($generatedId)
     {
@@ -142,33 +138,10 @@ class Feed
     }
 
     /**
-     * Set url
-     *
-     * @param string $url
-     * @return Feed
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Get url
-     *
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
      * Set title
      *
      * @param string $title
-     * @return Feed
+     * @return Entry
      */
     public function setTitle($title)
     {
@@ -191,7 +164,7 @@ class Feed
      * Set description
      *
      * @param string $description
-     * @return Feed
+     * @return Entry
      */
     public function setDescription($description)
     {
@@ -211,33 +184,33 @@ class Feed
     }
 
     /**
-     * Set targetUrl
+     * Set content
      *
-     * @param string $targetUrl
-     * @return Feed
+     * @param string $content
+     * @return Entry
      */
-    public function setTargetUrl($targetUrl)
+    public function setContent($content)
     {
-        $this->targetUrl = $targetUrl;
+        $this->content = $content;
 
         return $this;
     }
 
     /**
-     * Get targetUrl
+     * Get content
      *
      * @return string
      */
-    public function getTargetUrl()
+    public function getContent()
     {
-        return $this->targetUrl;
+        return $this->content;
     }
 
     /**
      * Set authorName
      *
      * @param string $authorName
-     * @return Feed
+     * @return Entry
      */
     public function setAuthorName($authorName)
     {
@@ -260,7 +233,7 @@ class Feed
      * Set authorEmail
      *
      * @param string $authorEmail
-     * @return Feed
+     * @return Entry
      */
     public function setAuthorEmail($authorEmail)
     {
@@ -283,7 +256,7 @@ class Feed
      * Set generatedAt
      *
      * @param \DateTime $generatedAt
-     * @return Feed
+     * @return Entry
      */
     public function setGeneratedAt($generatedAt)
     {
@@ -303,68 +276,58 @@ class Feed
     }
 
     /**
-     * Add entries
+     * Set feed
      *
-     * @param \Feederate\FeederateBundle\Entity\Entry $entries
-     * @return Feed
+     * @param \Feederate\FeederateBundle\Entity\Feed $feed
+     * @return Entry
      */
-    public function addEntrie(\Feederate\FeederateBundle\Entity\Entry $entries)
+    public function setFeed(\Feederate\FeederateBundle\Entity\Feed $feed = null)
     {
-        $this->entries[] = $entries;
+        $this->feed = $feed;
 
         return $this;
     }
 
     /**
-     * Remove entries
+     * Get feed
      *
-     * @param \Feederate\FeederateBundle\Entity\Entry $entries
+     * @return \Feederate\FeederateBundle\Entity\Feed
      */
-    public function removeEntrie(\Feederate\FeederateBundle\Entity\Entry $entries)
+    public function getFeed()
     {
-        $this->entries->removeElement($entries);
+        return $this->feed;
     }
 
     /**
-     * Get entries
+     * Add userEntries
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @param \Feederate\FeederateBundle\Entity\UserEntry $userEntries
+     * @return Entry
      */
-    public function getEntries()
+    public function addUserEntrie(\Feederate\FeederateBundle\Entity\UserEntry $userEntries)
     {
-        return $this->entries;
-    }
-
-    /**
-     * Add userFeeds
-     *
-     * @param \Feederate\FeederateBundle\Entity\UserFeed $userFeeds
-     * @return Feed
-     */
-    public function addUserFeed(\Feederate\FeederateBundle\Entity\UserFeed $userFeeds)
-    {
-        $this->userFeeds[] = $userFeeds;
+        $this->userEntries[] = $userEntries;
 
         return $this;
     }
 
     /**
-     * Remove userFeeds
+     * Remove userEntries
      *
-     * @param \Feederate\FeederateBundle\Entity\UserFeed $userFeeds
+     * @param \Feederate\FeederateBundle\Entity\UserEntry $userEntries
      */
-    public function removeUserFeed(\Feederate\FeederateBundle\Entity\UserFeed $userFeeds)
+    public function removeUserEntrie(\Feederate\FeederateBundle\Entity\UserEntry $userEntries)
     {
-        $this->userFeeds->removeElement($userFeeds);
+        $this->userEntries->removeElement($userEntries);
     }
 
     /**
-     * Get userFeeds
+     * Get userEntries
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUserFeeds()
+    public function getUserEntries()
     {
-        return $this->userFeeds;
+        return $this->userEntries;
     }
 }

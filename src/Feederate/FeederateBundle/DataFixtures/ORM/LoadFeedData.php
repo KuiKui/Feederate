@@ -25,7 +25,6 @@ class LoadUserData implements FixtureInterface
             $feed = new Feed();
             $feed
                 ->setTitle($feedXml->attributes()->title)
-                ->setType($feedXml->attributes()->type)
                 ->setUrl($feedXml->attributes()->xmlUrl)
                 ->setTargetUrl($feedXml->attributes()->htmlUrl);
 

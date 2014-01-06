@@ -62,6 +62,11 @@ sensio_framework_extra:
     view:
         annotations: false
 
+stof_doctrine_extensions:
+    orm:
+        default:
+            timestampable: true
+
 fos_rest:
     param_fetcher_listener: true
     body_listener: true
