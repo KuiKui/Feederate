@@ -4,6 +4,7 @@ namespace Feederate\FeederateBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Entity\User as BaseUser;
 use JMS\Serializer\Annotation as Serializer;
 
 use Feederate\ORMBundle\Entity\BaseEntity;
@@ -16,9 +17,8 @@ use Feederate\ORMBundle\Entity\ActivableTrait;
  * @ORM\Table(name="user")
  * @ORM\Entity
  */
-class User
+class User extends BaseUser
 {
-    use ActivableTrait;
     use TimestampableTrait;
 
     /**
@@ -28,28 +28,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255)
-     */
-    private $email;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
-     */
-    private $password;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="role", type="string", length=255)
-     */
-    private $role;
+    protected $id;
 
     /**
      * @var string
@@ -74,6 +53,17 @@ class User
      */
     private $userEntries;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->userFeeds   = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->userEntries = new \Doctrine\Common\Collections\ArrayCollection();
+
+        parent::__construct();
+    }
+
 
     /**
      * Get id
@@ -83,75 +73,6 @@ class User
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return User
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set role
-     *
-     * @param string $role
-     * @return User
-     */
-    public function setRole($role)
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    /**
-     * Get role
-     *
-     * @return string
-     */
-    public function getRole()
-    {
-        return $this->role;
     }
 
     /**
@@ -175,15 +96,6 @@ class User
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->userFeeds = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->userEntries = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
