@@ -27,7 +27,7 @@ class FeedController extends FOSRestController implements ClassResourceInterface
     public function cgetAction()
     {
         $repository = $this->get('doctrine.orm.entity_manager')->getRepository('FeederateFeederateBundle:Feed');
-        $entities   = $repository->findBy([], ['id' => 'DESC']);
+        $entities   = $repository->findBy([], ['title' => 'ASC']);
 
         return $this->view($entities, 200);
     }
