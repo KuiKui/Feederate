@@ -29,6 +29,7 @@
 
   <body>
 
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     <div class="navbar" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -43,11 +44,12 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Settings</a></li>
             <li class="divider"></li>
-            <li><a href="#about">Logout</a></li>
+            <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
+    {% endif %}
 
     <div class="container">
         {% block body %}{% endblock %}

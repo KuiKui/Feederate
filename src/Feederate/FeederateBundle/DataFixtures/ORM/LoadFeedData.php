@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Feederate\FeederateBundle\Entity\Feed;
 
-class LoadUserData implements FixtureInterface
+class LoadFeedData implements FixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -31,6 +31,5 @@ class LoadUserData implements FixtureInterface
             $manager->persist($feed);
             $manager->flush();
         }
-
     }
 }

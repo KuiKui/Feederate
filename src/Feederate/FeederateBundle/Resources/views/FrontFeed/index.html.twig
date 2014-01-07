@@ -1,14 +1,24 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-<form>
-    <input type="text" name="feed"/>
-    <input type="submit">
-</form>
+<div class="row">
+    <div class="col-md-3">
+        <form>
+            <input type="text" name="feed"/>
+            <input type="submit">
+        </form>
 
-<ul>
-    {% for feed in feeds %}
-    <li>{{ feed.title }}</li>
-    {% endfor %}
-</ul>
+        <ul>
+            {% for feed in feeds %}
+            <li>{{ feed.title }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-3">
+        Entries
+    </div>
+    <div class="col-md-6">
+        Contents
+    </div>
+
 {% endblock %}
