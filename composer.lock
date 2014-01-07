@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0e8be27aa405030adb758c0c00d9c68b",
+    "hash": "6aad802011b1d405c004da08f2af9715",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2370,6 +2370,49 @@
             "time": "2014-01-02 17:00:39"
         },
         {
+            "name": "zendframework/zend-servicemanager",
+            "version": "dev-develop",
+            "target-dir": "Zend/ServiceManager",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendServiceManager.git",
+                "reference": "614b5f8bb015adb66925340d2aee931529d8e92d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/614b5f8bb015adb66925340d2aee931529d8e92d",
+                "reference": "614b5f8bb015adb66925340d2aee931529d8e92d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "zendframework/zend-di": "Zend\\Di component"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\ServiceManager\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "keywords": [
+                "servicemanager",
+                "zf2"
+            ],
+            "time": "2014-01-04 13:01:09"
+        },
+        {
             "name": "zendframework/zend-stdlib",
             "version": "dev-develop",
             "target-dir": "Zend/Stdlib",
@@ -2647,6 +2690,7 @@
     "stability-flags": {
         "zendframework/zend-feed": 20,
         "zendframework/zend-http": 20,
+        "zendframework/zend-servicemanager": 20,
         "doctrine/doctrine-fixtures-bundle": 20
     },
     "platform": {
