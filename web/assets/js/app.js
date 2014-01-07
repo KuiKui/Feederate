@@ -3,7 +3,7 @@ var app = angular.module('feederate', ['ngResource']);
 app.factory('Constants', [
     function() {
         return {
-            RESOURCE_URL: "http://localhost:8888/app_dev.php/api"
+            RESOURCE_URL: "/app_dev.php/api"
         }
     }
 ]);
