@@ -1,19 +1,20 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-<div class="row">
-    <div class="col-md-3">
-        <form>
-            <input type="text" name="feed"/>
-            <input type="submit">
-        </form>
-
-        <ul>
-            {% for feed in feeds %}
-            <li>{{ feed.title }}</li>
-            {% endfor %}
-        </ul>
-    </div>
+<div ng-app="feederate" ng-controller="BoardCtrl">
+    <ul class="feeds-nav nav">
+        {% verbatim %}
+        <li>
+            <input ng-enter="addFeed()" ng-model="newFeedUrl" type="text" id="addFeed" placeholder="Adding a new feed here..">
+        </li>
+        <li ng-repeat="feed in feeds">
+            <a href="#">
+                {{ feed.title }}
+                <span class="bullet bullet-unread pull-right">5</span>
+            </a>
+        </li>
+        {% endverbatim %}
+    </ul>
     <div class="col-md-3">
         Entries
     </div>

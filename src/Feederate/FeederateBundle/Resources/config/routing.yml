@@ -18,7 +18,8 @@ fos_user_change_password:
     prefix: /profile
 
 FeederateFeederateBundle_Api_Feed:
-    resource: "@FeederateFeederateBundle/Controller/ApiFeedController.php"
+    resource: "@FeederateFeederateBundle/Controller/FeedController.php"
+    prefix: api
     type: rest
 
 FeederateFeederateBundle_Front_Feed:

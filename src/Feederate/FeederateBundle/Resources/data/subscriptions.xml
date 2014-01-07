@@ -6,50 +6,18 @@
     <ownerEmail>denis.roussel@gmail.com</ownerEmail>
   </head>
   <body>
-<outline text="Tom Preston-Werner" title="Tom Preston-Werner" type="rss" xmlUrl="http://feeds.feedburner.com/tom-preston-werner" htmlUrl="http://tom.preston-werner.com/"/>
-<outline text="Zach Holman" title="Zach Holman" type="rss" xmlUrl="http://feeds.feedburner.com/holman" htmlUrl="http://zachholman.com/"/>
-<outline text="Signal vs. Noise" title="Signal vs. Noise" type="rss" xmlUrl="http://feeds.feedburner.com/37signals/beMH" htmlUrl="http://37signals.com/svn/posts"/>
-<outline text="Fog Creek Blog" title="Fog Creek Blog" type="rss" xmlUrl="http://blog.fogcreek.com/feed/" htmlUrl="http://blog.fogcreek.com"/>
-<outline text="Le Rayon UX | UX, Startups et Cie" title="Le Rayon UX | UX, Startups et Cie" type="rss" xmlUrl="http://feeds.feedburner.com/FredericDeVillamilcom" htmlUrl="http://t37.net"/>
-<outline text="mageekblog" title="mageekblog" type="rss" xmlUrl="http://blog.mageekbox.net/?feed/atom" htmlUrl="http://blog.mageekbox.net/?"/>
-<outline text="M6Web - Tech Blog" title="M6Web - Tech Blog" type="rss" xmlUrl="http://tech.m6web.fr/rss" htmlUrl="http://tech.m6web.fr"/>
-<outline text="Startups, life, learning and happiness" title="Startups, life, learning and happiness" type="rss" xmlUrl="http://feeds.feedburner.com/joelis" htmlUrl="http://joel.is/"/>
-<outline text="Tu mourras moins bête" title="Tu mourras moins bête" type="rss" xmlUrl="http://tumourrasmoinsbete.blogspot.com/feeds/posts/default" htmlUrl="http://tumourrasmoinsbete.blogspot.com/"/>
-<outline text="cloudhead.io" title="cloudhead.io" type="rss" xmlUrl="http://feeds.feedburner.com/cloudheadio" htmlUrl="http://www.google.com/reader/view/feed%2Fhttp%3A%2F%2Ffeeds.feedburner.com%2Fcloudheadio"/>
-<outline text="nvie.com" title="nvie.com" type="rss" xmlUrl="http://feeds.feedburner.com/nvie" htmlUrl="http://nvie.com/"/>
-<outline text="Recursive" title="Recursive" type="rss" xmlUrl="http://feeds.feedburner.com/quildreen/en" htmlUrl="http://killdream.github.com/"/>
-<outline text="Timothy Fitz" title="Timothy Fitz" type="rss" xmlUrl="http://timothyfitz.com/feed/" htmlUrl="http://TimothyFitz.com"/>
-<outline text="Carnets RH 2.0" title="Carnets RH 2.0" type="rss" xmlUrl="http://feeds.feedburner.com/CarnetsRH" htmlUrl="http://resshum.posterous.com"/>
-<outline text="Travailleurs Du Web" title="Travailleurs Du Web" type="rss" xmlUrl="http://feeds.feedburner.com/TravailleursDuWeb" htmlUrl="http://www.travailleursduweb.com"/>
-<outline text="Le Touilleur Express" title="Le Touilleur Express" type="rss" xmlUrl="http://www.touilleur-express.fr/feed/" htmlUrl="http://www.touilleur-express.fr"/>
-<outline text="Coder Corner" title="Coder Corner" type="rss" xmlUrl="http://www.codercorner.com/blog/?feed=rss2" htmlUrl="http://www.codercorner.com/blog"/>
-<outline text="Code inComplete" title="Code inComplete" type="rss" xmlUrl="http://feeds.feedburner.com/codeincomplete" htmlUrl="http://www.google.com/reader/view/feed%2Fhttp%3A%2F%2Ffeeds.feedburner.com%2Fcodeincomplete"/>
-<outline text="Atinux" title="Atinux" type="rss" xmlUrl="http://www.atinux.fr/feed/" htmlUrl="http://www.atinux.fr"/>
-<outline text="u2 Bleank's blog" title="u2 Bleank's blog" type="rss" xmlUrl="http://u2bleank.tumblr.com/rss" htmlUrl="http://u2bleank.tumblr.com/"/>
-<outline text="MANGE TA MAIN!" title="MANGE TA MAIN!" type="rss" xmlUrl="http://www.mangetamain.fr/feed" htmlUrl="http://www.mangetamain.fr"/>
-<outline text=":: onpk :: blog PHP, MySQL, développement web &amp; connexe(s)" title=":: onpk :: blog PHP, MySQL, développement web &amp; connexe(s)" type="rss" xmlUrl="http://www.onpk.net/rss.xml" htmlUrl="http://www.onpk.net/index.php/"/>
-<outline text="igorw" title="igorw" type="rss" xmlUrl="https://igor.io/index.atom" htmlUrl="https://igor.io/"/>
-<outline text="Carnet de route" title="Carnet de route" type="rss" xmlUrl="http://neokraft.net/feed/atom" htmlUrl="http://neokraft.net/"/>
-<outline text="Le Blog d'Ippon Technologies" title="Le Blog d'Ippon Technologies" type="rss" xmlUrl="http://feeds.feedburner.com/LeBlogDesExpertsJ2ee" htmlUrl="http://blog.ippon.fr"/>
-<outline text="De geek à directeur techniqueDe geek à directeur technique" title="De geek à directeur techniqueDe geek à directeur technique" type="rss" xmlUrl="http://www.geek-directeur-technique.com/feed" htmlUrl="http://www.geek-directeur-technique.com"/>
-<outline text="L'informatique Conviviale" title="L'informatique Conviviale" type="rss" xmlUrl="http://ppezziardi.wordpress.com/feed/" htmlUrl="http://ppezziardi.wordpress.com"/>
-<outline text="Editotaku" title="Editotaku" type="rss" xmlUrl="http://www.raton-laveur.net/feed/rss2" htmlUrl="http://www.raton-laveur.net/"/>
-<outline text="Patrice Cassard" title="Patrice Cassard" type="rss" xmlUrl="http://www.patricecassard.com/feed/" htmlUrl="http://www.patricecassard.com"/>
 <outline text="#gitfr" title="#gitfr" type="rss" xmlUrl="http://feeds.feedburner.com/gitfr" htmlUrl="http://www.gitfr.net/blog"/>
 <outline text="De Lyon à Vancouver" title="De Lyon à Vancouver" type="rss" xmlUrl="http://lyonvancouver.tumblr.com/rss" htmlUrl="http://lyonvancouver.tumblr.com/"/>
 <outline text="Collectables" title="Collectables" type="rss" xmlUrl="http://blog-de-anastasia.blogspot.com/feeds/posts/default" htmlUrl="http://blog-de-anastasia.blogspot.com/"/>
 <outline text="Denis Roussel" title="Denis Roussel" type="rss" xmlUrl="http://feeds.feedburner.com/denisroussel" htmlUrl="http://denisroussel.fr/"/>
 <outline text="z'Oliv" title="z'Oliv" type="rss" xmlUrl="http://feeds.feedburner.com/GlaglaDotOrg" htmlUrl="http://oliviermansour.com"/>
 <outline text="./maxime.sh" title="./maxime.sh" type="rss" xmlUrl="http://feedpress.me/maxime" htmlUrl="http://maxime.sh"/>
-<outline text="Geoffray.be - Le Blog de Geoffray Warnants" title="Geoffray.be - Le Blog de Geoffray Warnants" type="rss" xmlUrl="http://geoffray.be/blog/rss.xml" htmlUrl="http://www.geoffray.be/blog"/>
-<outline text="Agence de Communication Web à Lyon et  Bourgoin-Jallieu - Dezup" title="Agence de Communication Web à Lyon et  Bourgoin-Jallieu - Dezup" type="rss" xmlUrl="http://notes.dezup.com/feed/" htmlUrl="http://dezup.com"/>
 <outline text="technique @PMSIpilot" title="technique @PMSIpilot" type="rss" xmlUrl="http://www.pmsipilot.org/feed/" htmlUrl="http://www.pmsipilot.org"/>
 <outline text="La mine d'idées" title="La mine d'idées" type="rss" xmlUrl="http://blog.biemans.fr/feed/" htmlUrl="http://blog.biemans.fr"/>
 <outline text="Utilise.ca — derniers articles" title="Utilise.ca — derniers articles" type="rss" xmlUrl="http://utilise.ca/atom.xml" htmlUrl="http://utilise.ca"/>
 <outline text="Blog de Samuel V. (Stormi)" title="Blog de Samuel V. (Stormi)" type="rss" xmlUrl="http://stormi.lautre.net/blog/feed/" htmlUrl="http://stormi.lautre.net/blog"/>
 <outline text="William DURAND" title="William DURAND" type="rss" xmlUrl="http://feeds.feedburner.com/williamdurand" htmlUrl="http://www.williamdurand.fr"/>
 <outline text="Test on SteroID" title="Test on SteroID" type="rss" xmlUrl="http://testonsteroid.tumblr.com/rss" htmlUrl="http://testonsteroid.tumblr.com/"/>
-<outline text="Olivier Balais - Freelance symfony2 à Lyon" title="Olivier Balais - Freelance symfony2 à Lyon" type="rss" xmlUrl="http://blog.overnetcity.com/feed/" htmlUrl="http://blog.overnetcity.com"/>
 <outline text="devlint.blog" title="devlint.blog" type="rss" xmlUrl="http://devlint.fr/blog/feed" htmlUrl="http://devlint.fr/blog"/>
 <outline text="Pourieux.com: The blog" title="Pourieux.com: The blog" type="rss" xmlUrl="http://pourieux.blogspot.com/feeds/posts/default" htmlUrl="http://pourieux.blogspot.com/"/>
 <outline text="Noo Future" title="Noo Future" type="rss" xmlUrl="http://noofuture.tumblr.com/rss" htmlUrl="http://noofuture.tumblr.com/"/>

@@ -14,8 +14,11 @@
     <link href="{{ asset('assets/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="starter-template.css" rel="stylesheet">
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.js"></script>
+    <script src="{{asset('assets/js/app.js') }}"></script>
 
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -41,7 +44,7 @@
           </button>
         </div>
         <div class="collapse navbar-collapse pull-right">
-          <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav feederate-nav">
             <li class="active"><a href="#">Settings</a></li>
             <li class="divider"></li>
             <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
