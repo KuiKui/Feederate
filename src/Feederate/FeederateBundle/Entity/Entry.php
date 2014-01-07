@@ -29,9 +29,9 @@ class Entry
     private $id;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="generated_id", type="integer", nullable=true)
+     * @ORM\Column(name="generated_id", type="string", nullable=true)
      */
     private $generatedId;
 
@@ -73,7 +73,7 @@ class Entry
     /**
      * @var string
      *
-     * @ORM\Column(name="generated_at", type="datetime")
+     * @ORM\Column(name="generated_at", type="datetime", nullable=true)
      * @JMS\Serializer\Annotation\Type("DateTime<'Y-m-d H:i:s'>")
      */
     private $generatedAt;

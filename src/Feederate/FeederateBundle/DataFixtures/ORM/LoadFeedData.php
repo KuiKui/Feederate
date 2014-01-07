@@ -2,13 +2,23 @@
 
 namespace Feederate\FeederateBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Feederate\FeederateBundle\Entity\Feed;
+use Feederate\FeederateBundle\Entity\UserFeed;
 
-class LoadFeedData implements FixtureInterface
+class LoadFeedData extends AbstractFixture implements OrderedFixtureInterface
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 2;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -29,6 +39,14 @@ class LoadFeedData implements FixtureInterface
                 ->setTargetUrl($feedXml->attributes()->htmlUrl);
 
             $manager->persist($feed);
+
+            $userFeed = new UserFeed();
+            $userFeed
+                ->setFeed($feed)
+                ->setUser($manager->getRepository('FeederateFeederateBundle:User')->findOneBy([]));
+
+            $manager->persist($userFeed);
+
             $manager->flush();
         }
     }
