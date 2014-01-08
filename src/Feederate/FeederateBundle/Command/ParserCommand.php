@@ -51,7 +51,7 @@ class ParserCommand extends ContainerAwareCommand
                     $manager->flush();
                 }
             } catch (\Exception $e) {
-                var_dump($feed->getTitle());
+                var_dump($feed->getTitle(), $e->getMessage());
             }
         }
     }

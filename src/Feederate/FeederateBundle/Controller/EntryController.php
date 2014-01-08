@@ -50,4 +50,30 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
 
         return $this->view($entity, 200);
     }
+
+    /**
+     * Entry list by feed
+     *
+     * @return \FOS\RestBundle\View\View
+     *
+     * @Rest\Route(
+     *     pattern="/feeds/{feedId}/entries",
+     *     requirements={"feedId"="\d+"}
+     * )
+     */
+    public function getFeedEntriesAction($feedId)
+    {
+        $feed = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:Feed')
+            ->find($feedId);
+
+        if (!$feed) {
+            return $this->view(sprintf('Feed with id %s not found', $feedId), 400);
+        }
+
+        $repository = $this->get('doctrine.orm.entity_manager')->getRepository('FeederateFeederateBundle:Entry');
+        $entities   = $repository->findBy(['feed' => $feed], ['generatedAt' => 'DESC']);
+
+        return $this->view($entities, 200);
+    }
 }
