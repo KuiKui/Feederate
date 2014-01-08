@@ -19,6 +19,7 @@
         {% verbatim %}
         <li ng-repeat="entry in entries" ng-class="{active:isActiveEntry(entry)}">
             <a ng-click="loadEntry(entry)">
+                <h5>{{ activeFeed.title }}</h5>
                 <h4>{{ entry.title }}</h4>
                 <p ng-bind-html="entry.description"></p>
             </a>
@@ -26,12 +27,12 @@
         {% endverbatim %}
     </ul>
     <div class="entry">
-        <div class="container">
-            {% verbatim %}
+        {% verbatim %}
+        <div class="container" ng-show="activeEntry">
             <h2>{{ entry.title }}</h2>
             <div ng-bind-html="entry.content"></div>
-            {% endverbatim %}
         </div>
+        {% endverbatim %}
     </div>
 
 {% endblock %}

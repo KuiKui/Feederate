@@ -129,6 +129,7 @@ a:hover {
 }
 
 .entries-nav > li p {
+    font-size: 12px;
     color: #80889d;
 }
 
