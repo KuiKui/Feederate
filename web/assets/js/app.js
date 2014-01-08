@@ -1,4 +1,4 @@
-var app = angular.module('feederate', ['ngResource']);
+var app = angular.module('feederate', ['ngResource', 'ngSanitize']);
 
 app.factory('Constants', [
     function() {
@@ -10,7 +10,8 @@ app.factory('Constants', [
 
 app.factory('Rest', ['Constants', '$resource', function(C, $resource) {
     return {
-        Feeds: $resource(C.RESOURCE_URL + '/feeds')
+        Feeds: $resource(C.RESOURCE_URL + '/feeds'),
+        Entries: $resource(C.RESOURCE_URL + '/feeds/:feedId/entries', {feedId:'@id'})
     }
 }]);
 
@@ -45,7 +46,17 @@ app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest)
         Rest.Feeds.query(function (feeds) {
             $scope.feeds = feeds;
         });
-    }
+    };
+
+    $scope.loadEntries = function (feedId) {
+        Rest.Entries.query({feedId: feedId}, function (entries) {
+            $scope.entries = entries;
+        });
+    };
+
+    $scope.loadEntry = function (entry) {
+        $scope.entry = entry;
+    };
 
     $scope.loadFeeds();
 }]);

@@ -60,6 +60,22 @@ body,
     border: 0;
 }
 
+.entries-nav {
+    border-right: 1px solid #e5e5e5;
+    float: left;
+    width: 25%;
+}
+
+.entries-nav > li {
+    display: block;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-top: 1px solid #fcfcfc;
+    border-bottom: 1px solid #e5e5e5;
+    position: relative;
+}
+
 .bullet {
     display: inline;
     padding: .2em .6em .3em;
