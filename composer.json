@@ -22,7 +22,10 @@
         "friendsofsymfony/rest-bundle" : "1.0.*",
         "jms/serializer-bundle" : "0.12.*",
         "stof/doctrine-extensions-bundle" : "~1.1",
-        "friendsofsymfony/user-bundle": "~1.3"
+        "friendsofsymfony/user-bundle": "~1.3",
+        "zendframework/zend-feed": "2.3.*@dev",
+        "zendframework/zend-http": "2.3.*@dev",
+        "zendframework/zend-servicemanager": "2.3.*@dev"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "dev-master"
@@ -46,7 +49,7 @@
     "config": {
         "bin-dir": "bin"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
