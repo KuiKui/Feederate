@@ -110,6 +110,10 @@ a:hover {
     overflow-x: hidden;
 }
 
+.entries-nav .read {
+    opacity: 0.5;
+}
+
 .entries-nav > li {
     display: block;
     padding: 0;

@@ -31,9 +31,9 @@ class UserEntry
     /**
      * @var boolean
      *
-     * @ORM\Column(name="read", type="boolean")
+     * @ORM\Column(name="is_read", type="boolean")
      */
-    protected $read = false;
+    protected $isRead = false;
 
     /**
      * @var \Feederate\FeederateBundle\Entity\Entry
@@ -135,26 +135,26 @@ class UserEntry
     }
 
     /**
-     * Set read
+     * Set isRead
      *
-     * @param boolean $read
+     * @param boolean $isRead
      * @return UserEntry
      */
-    public function setRead($read)
+    public function setIsRead($isRead)
     {
-        $this->read = $read;
+        $this->isRead = $isRead;
 
         return $this;
     }
 
     /**
-     * Get read
+     * Get isRead
      *
      * @return boolean
      */
-    public function getRead()
+    public function getIsRead()
     {
-        return $this->read;
+        return $this->isRead;
     }
 
     /**

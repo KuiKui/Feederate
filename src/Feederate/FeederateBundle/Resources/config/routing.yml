@@ -27,6 +27,11 @@ FeederateFeederateBundle_Entry:
     prefix: api
     type: rest
 
+FeederateFeederateBundle_Summary:
+    resource: "@FeederateFeederateBundle/Controller/SummaryController.php"
+    prefix: api
+    type: rest
+
 FeederateFeederateBundle_Front_Feed:
     resource: "@FeederateFeederateBundle/Controller/FrontFeedController.php"
     type: annotation
