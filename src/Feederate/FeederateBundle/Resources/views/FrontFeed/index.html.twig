@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-<div ng-app="feederate" ng-controller="BoardCtrl">
+<div id="feederate" ng-app="feederate" ng-controller="BoardCtrl">
     <ul class="feeds-nav nav">
         {% verbatim %}
         <li>
@@ -25,11 +25,13 @@
         </li>
         {% endverbatim %}
     </ul>
-    <div class="col-md-6">
-        {% verbatim %}
-        <h2>{{ entry.title }}</h2>
-        <div ng-bind-html="entry.content"></div>
-        {% endverbatim %}
+    <div class="entry">
+        <div class="container">
+            {% verbatim %}
+            <h2>{{ entry.title }}</h2>
+            <div ng-bind-html="entry.content"></div>
+            {% endverbatim %}
+        </div>
     </div>
 
 {% endblock %}
