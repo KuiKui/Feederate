@@ -50,7 +50,7 @@ class Summary
     /**
      * @var boolean
      */
-    protected $read = false;
+    protected $isRead = false;
 
     /**
      * @param int $id
@@ -190,26 +190,26 @@ class Summary
     }
 
     /**
-     * Set read
+     * Set isRead
      *
-     * @param boolean $read
+     * @param boolean $isRead
      * @return UserEntry
      */
-    public function setRead($read)
+    public function setIsRead($isRead)
     {
-        $this->read = $read;
+        $this->isRead = $isRead;
 
         return $this;
     }
 
     /**
-     * Get read
+     * Get isRead
      *
      * @return boolean
      */
-    public function getRead()
+    public function getIsRead()
     {
-        return $this->read;
+        return $this->isRead;
     }
 
     /**
@@ -230,7 +230,7 @@ class Summary
             ->setGeneratedAt($entry->getGeneratedAt());
 
         if ($userEntry) {
-            $this->setRead($userEntry->getRead());
+            $this->setIsRead($userEntry->getIsRead());
         }
 
         return $this;

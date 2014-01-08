@@ -18,7 +18,7 @@
     <ul class="entries-nav nav">
         {% verbatim %}
         <li ng-repeat="summary in summaries">
-            <a ng-click="loadEntry(summary)" ng-class="{read: summary.read}">
+            <a ng-click="loadEntry(summary); markAsRead(summary);" ng-class="{read: summary.is_read}">
                 <h3>{{ summary.title }}</h3>
                 <p ng-bind-html="summary.description|characters:100"></p>
             </a>
