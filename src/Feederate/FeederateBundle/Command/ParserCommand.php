@@ -45,6 +45,7 @@ class ParserCommand extends ContainerAwareCommand
                         ->setGeneratedAt($entryReader->getDateCreated())
                         ->setTitle($entryReader->getTitle())
                         ->setDescription($entryReader->getDescription())
+                        ->setTargetUrl($entryReader->getLink())
                         ->setContent($entryReader->getContent());
 
                     $manager->persist($entry);

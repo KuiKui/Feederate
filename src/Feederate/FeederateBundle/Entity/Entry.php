@@ -59,6 +59,13 @@ class Entry
     /**
      * @var string
      *
+     * @ORM\Column(name="target_url", type="string", length=255)
+     */
+    private $targetUrl;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="author_name", type="string", length=255, nullable=true)
      */
     private $authorName;
@@ -204,6 +211,29 @@ class Entry
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Set targetUrl
+     *
+     * @param string $targetUrl
+     * @return Feed
+     */
+    public function setTargetUrl($targetUrl)
+    {
+        $this->targetUrl = $targetUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get targetUrl
+     *
+     * @return string
+     */
+    public function getTargetUrl()
+    {
+        return $this->targetUrl;
     }
 
     /**
