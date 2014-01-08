@@ -8,7 +8,7 @@
             <input ng-enter="addFeed()" ng-model="newFeedUrl" type="text" id="addFeed" placeholder="Adding a new feed here..">
         </li>
         <li ng-repeat="feed in feeds">
-            <a href="#" ng-click="loadEntries(feed.id)">
+            <a href="#" ng-click="loadSummaries(feed.id);loadEntries(feed.id);">
                 {{ feed.title }}
                 <span class="bullet bullet-unread pull-right">5</span>
             </a>
@@ -17,10 +17,10 @@
     </ul>
     <ul class="entries-nav nav">
         {% verbatim %}
-        <li ng-repeat="entry in entries">
-            <a ng-click="loadEntry(entry)">
-                <h3>{{ entry.title }}</h3>
-                <p ng-bind-html="entry.description"></p>
+        <li ng-repeat="summary in summaries">
+            <a ng-click="loadEntry(summary)">
+                <h3>{{ summary.title }}</h3>
+                <p ng-bind-html="summary.description|characters:100"></p>
             </a>
         </li>
         {% endverbatim %}

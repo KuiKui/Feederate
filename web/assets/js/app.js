@@ -1,4 +1,4 @@
-var app = angular.module('feederate', ['ngResource', 'ngSanitize']);
+var app = angular.module('feederate', ['ngResource', 'ngSanitize', 'truncate']);
 
 app.factory('Constants', [
     function() {
@@ -11,7 +11,8 @@ app.factory('Constants', [
 app.factory('Rest', ['Constants', '$resource', function(C, $resource) {
     return {
         Feeds: $resource(C.RESOURCE_URL + '/feeds'),
-        Entries: $resource(C.RESOURCE_URL + '/feeds/:feedId/entries', {feedId:'@id'})
+        Entries: $resource(C.RESOURCE_URL + '/feeds/:feedId/entries', {feedId:'@id'}),
+        Summaries: $resource(C.RESOURCE_URL + '/feeds/:feedId/summaries', {feedId:'@id'})
     }
 }]);
 
@@ -30,6 +31,8 @@ app.directive('ngEnter', function() {
 });
 
 app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest) {
+    $scope.entries = [];
+
     $scope.addFeed = function () {
         Rest.Feeds.save({
             title: $scope.newFeedUrl,
@@ -50,12 +53,20 @@ app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest)
 
     $scope.loadEntries = function (feedId) {
         Rest.Entries.query({feedId: feedId}, function (entries) {
-            $scope.entries = entries;
+            for (var index in entries) {
+                $scope.entries[entries[index].id] = entries[index];
+            }
         });
     };
 
-    $scope.loadEntry = function (entry) {
-        $scope.entry = entry;
+    $scope.loadSummaries = function (feedId) {
+        Rest.Summaries.query({feedId: feedId}, function (summaries) {
+            $scope.summaries = summaries;
+        });
+    };
+
+    $scope.loadEntry = function (summaries) {
+        $scope.entry = $scope.entries[summaries.id];
     };
 
     $scope.loadFeeds();
