@@ -86,6 +86,10 @@ body {
     overflow-y: scroll;
 }
 
+.entries-nav .read {
+    opacity: 0.5;
+}
+
 .entries-nav > li {
     display: block;
     padding: 0;
