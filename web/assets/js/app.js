@@ -96,12 +96,13 @@ app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest)
         return angular.equals(feed, $scope.activeFeed);
     };
 
-
     $scope.loadSummaries = function (feed) {
         Rest.Summaries.query({feedId: feed.id}, function (summaries) {
             $scope.summaries     = summaries;
             $scope.activeFeed    = feed;
             $scope.activeSummary = null;
+
+            $scope.loadEntries(feed);
         });
     };
 

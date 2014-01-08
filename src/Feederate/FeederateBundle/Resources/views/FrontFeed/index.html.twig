@@ -8,11 +8,10 @@
             <input ng-enter="addFeed()" ng-model="newFeedUrl" type="text" id="addFeed" placeholder="Adding a new feed here..">
         </li>
         <li ng-repeat="feed in feeds" ng-class="{active:isActiveFeed(feed)}">
-            <a href="#" ng-click="loadSummaries(feed);loadEntries(feed);">
+            <a href="#" ng-click="loadSummaries(feed)">
                 {{ feed.title }}
                 <span class="bullet bullet-unread pull-right">5</span>
             </a>
-        </li>
         {% endverbatim %}
     </ul>
     <ul class="entries-nav nav">
