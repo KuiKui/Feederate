@@ -30,6 +30,9 @@ app.directive('ngEnter', function() {
 });
 
 app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest) {
+    var activeFeed  = null;
+    var activeEntry = null;
+
     $scope.addFeed = function () {
         Rest.Feeds.save({
             title: $scope.newFeedUrl,
@@ -48,14 +51,24 @@ app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest)
         });
     };
 
-    $scope.loadEntries = function (feedId) {
-        Rest.Entries.query({feedId: feedId}, function (entries) {
+    $scope.isActiveFeed = function (feed) {
+        return angular.equals(feed, activeFeed);
+    };
+
+    $scope.loadEntries = function (feed) {
+        Rest.Entries.query({feedId: feed.id}, function (entries) {
             $scope.entries = entries;
+            activeFeed = feed;
         });
+    };
+
+    $scope.isActiveEntry = function (entry) {
+        return angular.equals(entry, activeEntry);
     };
 
     $scope.loadEntry = function (entry) {
         $scope.entry = entry;
+        activeEntry  = entry;
     };
 
     $scope.loadFeeds();
