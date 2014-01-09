@@ -6,20 +6,21 @@ body {
     font-family: 'Raleway';
 }
 
-#feederate {
-    position: fixed;
-    top: 50px;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    overflow: auto;
-}
-
 a,
 a:hover {
     color: inherit;
     text-decoration: none;
 }
+
+h4 {
+    font-size: 16px;
+}
+
+.nav > li > a:hover {
+    background-color: transparent;
+}
+
+/*! top navbar */
 
 .navbar {
     margin-left: 0;
@@ -44,36 +45,81 @@ a:hover {
     font-weight: bold;
 }
 
-.navbar .navbar-brand {
-    color: #fff;
-    font-size: 24px;
-    text-shadow: none;
+.navbar .container {
+    width: 100%;
 }
 
-.nav > li > a:hover {
-    background-color: transparent;
-}
-
-.feederate-nav > li > a {
+.navbar-nav > li > a {
     color: #fff;
 }
 
-.feederate-nav > li > a:hover {
+.navbar-nav > li > a:hover {
     background: none;
     color: #D4EEFD;
 }
 
-.feeds-nav {
+
+/*! column container */
+
+#feederate {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+}
+
+/*! feeds column | first column */
+
+#feeds {
     border-right: 1px solid #e5e5e5;
+    position: relative;
     float: left;
     width: 25%;
     height: 100%;
     max-height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
-.feeds-nav > li {
+#feeds .feeds-toolbar {
+    background-color: #FFF;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 37px;
+    line-height: 37px;
+    padding: 0;
+    border-bottom: 1px solid #CCC;
+}
+
+#feeds .feeds-toolbar input.subscribtion {
+    position: relative;
+    display: block;
+    padding: 0 15px;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+#feeds .feeds-content {
+    background-color: #FFF;
+    display: block;
+    position: absolute;
+    height: auto;
+    bottom: 37px;
+    top: 37px;
+    left: 0;
+    right: 0;
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-transition: top .2s ease;
+    transition: top .2s ease;
+    -webkit-overflow-scrolling: touch;
+}
+
+#feeds .feeds-content .nav > li {
     display: block;
     padding: 0;
     margin: 0;
@@ -82,25 +128,33 @@ a:hover {
     position: relative;
 }
 
-.feeds-nav > li > a {
+#feeds .feeds-content .nav > li > a {
+    font-size: 14px;
     padding-right: 7px;
     border-right: 8px solid transparent;
 }
 
-.feeds-nav > li.active > a {
+#feeds .feeds-content .nav > li.active > a {
     background-color: #f5f6fa;
     border-right: 8px solid #49bc8f;
 }
 
-.feeds-nav > li > input#addFeed {
-    position: relative;
-    display: block;
-    padding: 10px 15px;
+#feeds .feeds-footer {
+    background-color: #f5f6fa;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    border: 0;
+    height: 37px;
+    line-height: 37px;
+    padding: 0 15px;
+    border-top: 1px solid #e5e5e5;
 }
 
-.entries-nav {
+
+/*!#summaries column | second column */
+
+#summaries {
     border-right: 1px solid #e5e5e5;
     float: left;
     width: 25%;
@@ -110,11 +164,24 @@ a:hover {
     overflow-x: hidden;
 }
 
-.entries-nav .read {
-    opacity: 0.5;
+#summaries .summaries-content {
+    background-color: #fff;
+    display: block;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-transition: top .2s ease;
+    transition: top .2s ease;
+    -webkit-overflow-scrolling: touch;
 }
 
-.entries-nav > li {
+#summaries .summaries-content .nav .read a > * {
+    opacity: 0.6;
+}
+
+#summaries .summaries-content .nav > li {
     display: block;
     padding: 0;
     margin: 0;
@@ -124,22 +191,24 @@ a:hover {
     position: relative;
 }
 
-.entries-nav > li > a {
+#summaries .summaries-content .nav > li > a {
     padding-right: 7px;
     border-right: 8px solid transparent;
 }
 
-.entries-nav > li.active > a {
+#summaries .summaries-content .nav > li.active > a {
     background-color: #f5f6fa;
     border-right: 8px solid #49bc8f;
 }
 
-.entries-nav > li p {
+#summaries .summaries-content .nav > li p {
     font-size: 12px;
     color: #80889d;
 }
 
-.entry {
+/*! entry column | third column */
+
+#entry {
     position: relative;
     float: left;
     width: 50%;
@@ -147,7 +216,7 @@ a:hover {
     max-height: 100%;
 }
 
-.entry .entry-toolbar {
+#entry .entry-toolbar {
     background-color: #FFF;
     position: absolute;
     top: 0;
@@ -159,7 +228,7 @@ a:hover {
     border-bottom: 1px solid #CCC;
 }
 
-.entry .entry-content {
+#entry .entry-content {
     background-color: #FFF;
     display: block;
     position: absolute;
@@ -176,7 +245,7 @@ a:hover {
     -webkit-overflow-scrolling: touch;
 }
 
-.entry .container {
+#entry .container {
     width: 100%;
 }
 
