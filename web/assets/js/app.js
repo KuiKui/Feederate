@@ -124,8 +124,10 @@ app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest)
     };
 
     $scope.markAsRead = function (summary) {
-        Rest.readSummary.save({id: summary.id}, {is_read: true});
-        summary.is_read = true;
+        if (!summary.is_read) {
+            Rest.readSummary.save({id: summary.id}, {is_read: true});
+            summary.is_read = true;
+        }
     };
 
     $scope.loadFeeds();
