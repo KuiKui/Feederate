@@ -35,6 +35,13 @@ class UserEntry
      */
     protected $isRead = false;
 
+      /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_starred", type="boolean")
+     */
+    protected $isStarred = false;
+
     /**
      * @var \Feederate\FeederateBundle\Entity\Entry
      *
@@ -63,29 +70,6 @@ class UserEntry
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set unreadCount
-     *
-     * @param integer $unreadCount
-     * @return UserHasFeed
-     */
-    public function setUnreadCount($unreadCount)
-    {
-        $this->unreadCount = $unreadCount;
-
-        return $this;
-    }
-
-    /**
-     * Get unreadCount
-     *
-     * @return integer
-     */
-    public function getUnreadCount()
-    {
-        return $this->unreadCount;
     }
 
     /**
@@ -155,6 +139,29 @@ class UserEntry
     public function getIsRead()
     {
         return $this->isRead;
+    }
+
+    /**
+     * Set isStarred
+     *
+     * @param boolean $isStarred
+     * @return UserEntry
+     */
+    public function setIsStarred($isStarred)
+    {
+        $this->isStarred = $isStarred;
+
+        return $this;
+    }
+
+    /**
+     * Get isStarred
+     *
+     * @return boolean
+     */
+    public function getIsStarred()
+    {
+        return $this->isStarred;
     }
 
     /**

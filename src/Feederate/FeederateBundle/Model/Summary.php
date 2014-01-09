@@ -50,7 +50,12 @@ class Summary
     /**
      * @var boolean
      */
-    protected $isRead = false;
+    private $isRead = false;
+
+    /**
+     * @var boolean
+     */
+    private $isStarred = false;
 
     /**
      * @param int $id
@@ -213,6 +218,29 @@ class Summary
     }
 
     /**
+     * Set isStarred
+     *
+     * @param boolean $isStarred
+     * @return UserEntry
+     */
+    public function setIsStarred($isStarred)
+    {
+        $this->isStarred = $isStarred;
+
+        return $this;
+    }
+
+    /**
+     * Get isStarred
+     *
+     * @return boolean
+     */
+    public function getIsStarred()
+    {
+        return $this->isStarred;
+    }
+
+    /**
      * Load entity
      *
      * @param Entry     $entry
@@ -232,6 +260,7 @@ class Summary
 
         if ($userEntry) {
             $this->setIsRead($userEntry->getIsRead());
+            $this->setIsStarred($userEntry->getIsStarred());
         }
 
         return $this;

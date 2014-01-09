@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * UserEntry FormType
  */
-class UserEntryType extends AbstractType
+class UserEntryStarredType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -17,7 +17,7 @@ class UserEntryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('is_read', 'checkbox');
+        $builder->add('is_starred', 'checkbox');
     }
 
     /**
@@ -36,6 +36,6 @@ class UserEntryType extends AbstractType
      */
     public function getName()
     {
-        return 'user_entry';
+        return 'user_entry_starred';
     }
 }

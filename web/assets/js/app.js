@@ -51,7 +51,8 @@ app.factory('Rest', ['Constants', '$resource', function(C, $resource) {
         Feeds: $resource(C.RESOURCE_URL + '/feeds'),
         Entries: $resource(C.RESOURCE_URL + '/feeds/:feedId/entries', {feedId:'@id'}),
         Summaries: $resource(C.RESOURCE_URL + '/feeds/:feedId/summaries', {feedId:'@id'}),
-        readSummary: $resource(C.RESOURCE_URL + '/summaries/:id/read', {id:'@id'})
+        readSummary: $resource(C.RESOURCE_URL + '/summaries/:id/read', {id:'@id'}),
+        starSummary: $resource(C.RESOURCE_URL + '/summaries/:id/star', {id:'@id'})
     }
 }]);
 
@@ -129,6 +130,11 @@ app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest)
             summary.is_read = true;
             $scope.activeFeed.unread_count--;
         }
+    };
+
+    $scope.markAsStarred = function (summary) {
+        Rest.starSummary.save({id: summary.id}, {is_starred: !summary.is_starred});
+        summary.is_starred = !summary.is_starred;
     };
 
     $scope.loadFeeds();

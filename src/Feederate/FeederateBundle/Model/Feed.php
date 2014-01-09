@@ -303,7 +303,7 @@ class Feed
      *
      * @return $this
      */
-    public function load(FeedEntity $feed, UserFeed $userFeed = null)
+    public function load(FeedEntity $feed, UserFeed $userFeed)
     {
         $this
             ->setId($feed->getId())
@@ -313,11 +313,8 @@ class Feed
             ->setTargetUrl($feed->getTargetUrl())
             ->setAuthorName($feed->getAuthorName())
             ->setAuthorEmail($feed->getAuthorEmail())
-            ->setGeneratedAt($feed->getGeneratedAt());
-
-        if ($userFeed) {
-            $this->setUnreadCount($userFeed->getUnreadCount());
-        }
+            ->setGeneratedAt($feed->getGeneratedAt())
+            ->setUnreadCount($userFeed->getUnreadCount());
 
         return $this;
     }

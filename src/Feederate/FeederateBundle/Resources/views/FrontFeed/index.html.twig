@@ -25,6 +25,7 @@
             <ul class="nav">
                 <li ng-repeat="summary in summaries" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
                     <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary);">
+                        <span ng-show="summary.is_starred" class="label label-primary">starred</span>
                         <h4>{{ summary.title }}</h4>
                         <p ng-bind-html="summary.description|characters:100"></p>
                     </a>
@@ -36,6 +37,9 @@
         <div class="entry-toolbar">
             <a target="_blank" href="{{ activeFeed.target_url }}">{{ activeFeed.title }}</a>
             (<a target="_blank" href="{{ entry.target_url }}">View original inline</a>)
+            <span class="pull-right">
+                <a class="glyphicon" ng-click="markAsStarred(activeSummary)" ng-class="{'glyphicon-star-empty': !activeSummary.is_starred, 'glyphicon-star': activeSummary.is_starred}"></a>
+            </span>
         </div>
         <div class="entry-content">
             <div class="container">
