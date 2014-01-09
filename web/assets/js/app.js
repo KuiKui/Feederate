@@ -51,7 +51,8 @@ app.factory('Rest', ['Constants', '$resource', function(C, $resource) {
         Feeds: $resource(C.RESOURCE_URL + '/feeds'),
         Entries: $resource(C.RESOURCE_URL + '/feeds/:feedId/entries', {feedId:'@id'}),
         Summaries: $resource(C.RESOURCE_URL + '/feeds/:feedId/summaries', {feedId:'@id'}),
-        readSummary: $resource(C.RESOURCE_URL + '/summaries/:id/read', {id:'@id'})
+        readSummary: $resource(C.RESOURCE_URL + '/summaries/:id/read', {id:'@id'}),
+        parseFeed: $resource(C.RESOURCE_URL + '/feeds/:feedId/parse', {feedId:'@id'})
     }
 }]);
 
@@ -79,11 +80,13 @@ app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest)
             title: $scope.newFeedUrl,
             url: $scope.newFeedUrl,
             targetUrl: $scope.newFeedUrl
+        }, function (feed) {
+            Rest.parseFeed.get({feedId: feed.id}, function () {
+                $scope.newFeedUrl = '';
+                $scope.loadFeeds();
+                $scope.activeFeed = feed;
+            });
         });
-
-        $scope.newFeedUrl = '';
-
-        $scope.loadFeeds();
     };
 
     $scope.loadFeeds = function () {

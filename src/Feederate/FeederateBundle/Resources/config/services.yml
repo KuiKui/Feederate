@@ -1,7 +1,8 @@
 parameters:
-#    babouma_feed.example.class: Feederate\FeederateBundle\Example
+    feederate.parser.command.class: Feederate\FeederateBundle\Command\ParserCommand
 
 services:
-#    babouma_feed.example:
-#        class: %babouma_feed.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    feederate.parser.command:
+        class: %feederate.parser.command.class%
+        calls:
+            - [ setContainer, ['@service_container']]

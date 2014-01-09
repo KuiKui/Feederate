@@ -3,12 +3,15 @@
 namespace Feederate\FeederateBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
 use Feederate\FeederateBundle\Entity\Feed;
+use Feederate\FeederateBundle\Entity\UserFeed;
 use Feederate\FeederateBundle\Model\Feed as FeedModel;
 use Feederate\FeederateBundle\Form\FeedType;
 
@@ -70,6 +73,14 @@ class FeedController extends FOSRestController implements ClassResourceInterface
 
         if ($form->isValid()) {
             $manager->persist($entity);
+
+            $userFeed = new UserFeed();
+            $userFeed
+                ->setFeed($entity)
+                ->setUser($this->getUser());
+
+            $manager->persist($userFeed);
+
             $manager->flush();
 
             return $this->view($this->getFeedResources($entity), 201, array(
@@ -79,12 +90,41 @@ class FeedController extends FOSRestController implements ClassResourceInterface
 
         return $this->view($form, 422);
     }
+    /**
+     * Entry list by feed
+     *
+     * @return \FOS\RestBundle\View\View
+     *
+     * @Rest\Route(
+     *     pattern="/feeds/{feedId}/parse",
+     *     requirements={"feedId"="\d+"}
+     * )
+     */
+    public function getParseAction($feedId)
+    {
+        $feed = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:Feed')
+            ->findByUser($this->getUser(), ['id' => $feedId]);
+
+        if (!$feed) {
+            return $this->view(sprintf('Feed with id %s not found', $feedId), 400);
+        }
+
+        $parser = $this->get('feederate.parser.command');
+        $input  = new ArrayInput(array('--feed' => $feed->getId()));
+        $output = new NullOutput();
+
+        $parser->run($input, $output);
+
+        return $this->view("OK", 200);
+    }
 
     /**
      * Get Feed resource
-     * 
+     *
      * @param mixed $feeds Feeds or one feed
-     * 
+     *
      * @return mixed
      */
     protected function getFeedResources($feeds) {
