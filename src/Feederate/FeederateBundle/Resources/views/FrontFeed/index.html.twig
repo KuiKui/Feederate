@@ -12,7 +12,7 @@
                 <li ng-repeat="feed in feeds" ng-class="{active:isActiveFeed(feed)}">
                     <a href="#summaries" ng-click="loadSummaries(feed)">
                         {{ feed.title }}
-                        <span class="bullet bullet-unread pull-right">5</span>
+                        <span class="bullet bullet-unread pull-right" ng-show="feed.unread_count">{{ feed.unread_count }}</span>
                     </a>
                 </li>
             </ul>

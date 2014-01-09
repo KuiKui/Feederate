@@ -103,11 +103,17 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
         $form->submit($request);
 
         if ($form->isValid()) {
-            $manager->persist($userEntry);
-            $manager->flush();
-
             $summary = new Summary();
             $summary->load($entry, $userEntry);
+
+            $userFeed = $manager
+                ->getRepository('FeederateFeederateBundle:UserFeed')
+                ->findOneBy(['feed' => $entry->getFeed(), 'user' => $this->getUser()]);
+            $userFeed->decrUnreadCount();
+
+            $manager->persist($userEntry);
+            $manager->persist($userFeed);
+            $manager->flush();
 
             return $this->view($summary, 201);
         }

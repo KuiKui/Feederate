@@ -9,6 +9,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
 use Feederate\FeederateBundle\Entity\Feed;
+use Feederate\FeederateBundle\Model\Feed as FeedModel;
 use Feederate\FeederateBundle\Form\FeedType;
 
 /**
@@ -30,7 +31,7 @@ class FeedController extends FOSRestController implements ClassResourceInterface
             ->getRepository('FeederateFeederateBundle:Feed')
             ->findByUser($this->getUser(), [], ['title' => 'ASC']);
 
-        return $this->view($entities, 200);
+        return $this->view($this->getFeedResources($entities), 200);
     }
 
     /**
@@ -51,7 +52,7 @@ class FeedController extends FOSRestController implements ClassResourceInterface
             return $this->view(sprintf('Feed with id %s not found', $id), 404);
         }
 
-        return $this->view($entity, 200);
+        return $this->view($this->getFeedResources($entity), 200);
     }
 
     /**
@@ -71,11 +72,38 @@ class FeedController extends FOSRestController implements ClassResourceInterface
             $manager->persist($entity);
             $manager->flush();
 
-            return $this->view($entity, 201, array(
+            return $this->view($this->getFeedResources($entity), 201, array(
                 'Location' => $this->generateUrl('get_feed', ['id' => $entity->getId()], true),
             ));
         }
 
         return $this->view($form, 422);
+    }
+
+    /**
+     * Get Feed resource
+     * 
+     * @param mixed $feeds Feeds or one feed
+     * 
+     * @return mixed
+     */
+    protected function getFeedResources($feeds) {
+        if (is_array($feeds)) {
+            $resources = [];
+            foreach ($feeds as $feed) {
+                $resources[] = $this->getFeedResources($feed);
+            }
+
+            return $resources;
+        } else {
+            $userFeed = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('FeederateFeederateBundle:UserFeed')
+                ->findOneBy(['feed' => $feeds, 'user' => $this->getUser()]);
+
+            $resource = new FeedModel();
+            $resource->load($feeds, $userFeed);
+
+            return $resource;
+        }
     }
 }

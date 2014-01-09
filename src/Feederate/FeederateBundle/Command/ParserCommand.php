@@ -29,7 +29,9 @@ class ParserCommand extends ContainerAwareCommand
 
         foreach ($feeds as $feed) {
             try {
-                $reader = Reader::import($feed->getUrl());
+                $newEntriesCount = 0;
+                $reader          = Reader::import($feed->getUrl());
+
                 foreach ($reader as $entryReader) {
                     $entry = $manager->getRepository('FeederateFeederateBundle:Entry')
                         ->findOneBy(['generatedId' => $entryReader->getId(), 'feed' => $feed]);
@@ -39,6 +41,7 @@ class ParserCommand extends ContainerAwareCommand
                         $entry
                             ->setGeneratedId($entryReader->getId())
                             ->setFeed($feed);
+                        $newEntriesCount++;
                     }
 
                     $entry
@@ -49,6 +52,15 @@ class ParserCommand extends ContainerAwareCommand
                         ->setContent($entryReader->getContent());
 
                     $manager->persist($entry);
+                    $manager->flush();
+                }
+
+                $userFeeds = $manager->getRepository('FeederateFeederateBundle:UserFeed')
+                        ->findBy(['feed' => $feed]);
+
+                foreach ($userFeeds as $userFeed) {
+                    $userFeed->incrUnreadCount($newEntriesCount);
+                    $manager->persist($userFeed);
                     $manager->flush();
                 }
             } catch (\Exception $e) {

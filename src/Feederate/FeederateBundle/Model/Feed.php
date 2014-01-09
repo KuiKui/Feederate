@@ -4,15 +4,15 @@ namespace Feederate\FeederateBundle\Model;
 
 use JMS\Serializer\Annotation as Serializer;
 
-use Feederate\FeederateBundle\Entity\Entry;
-use Feederate\FeederateBundle\Entity\UserEntry;
+use Feederate\FeederateBundle\Entity\Feed as FeedEntity;
+use Feederate\FeederateBundle\Entity\UserFeed;
 
 /**
- * Class Summary
+ * Class Feef
  *
  * @author Florent Dubost <florent.dubost@gmail.com>
  */
-class Summary
+class Feed
 {
     /**
      * @var integer
@@ -20,10 +20,14 @@ class Summary
     private $id;
 
     /**
-     * @var string
-     *
+     * @var integer
      */
     private $generatedId;
+
+    /**
+     * @var string
+     */
+    private $url;
 
     /**
      * @var string
@@ -38,19 +42,29 @@ class Summary
     /**
      * @var string
      */
+    private $targetUrl;
+
+    /**
+     * @var string
+     */
     private $authorName;
 
     /**
      * @var string
-     *
+     */
+    private $authorEmail;
+
+    /**
+     * @var date
+     * 
      * @JMS\Serializer\Annotation\Type("DateTime<'Y-m-d H:i:s'>")
      */
     private $generatedAt;
 
     /**
-     * @var boolean
+     * @var integer
      */
-    protected $isRead = false;
+    private $unreadCount = 0;
 
     /**
      * @param int $id
@@ -78,7 +92,7 @@ class Summary
      * Set generatedId
      *
      * @param integer $generatedId
-     * @return Entry
+     * @return Feed
      */
     public function setGeneratedId($generatedId)
     {
@@ -98,10 +112,33 @@ class Summary
     }
 
     /**
+     * Set url
+     *
+     * @param string $url
+     * @return Feed
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
      * Set title
      *
      * @param string $title
-     * @return Entry
+     * @return Feed
      */
     public function setTitle($title)
     {
@@ -124,7 +161,7 @@ class Summary
      * Set description
      *
      * @param string $description
-     * @return Entry
+     * @return Feed
      */
     public function setDescription($description)
     {
@@ -144,10 +181,33 @@ class Summary
     }
 
     /**
+     * Set targetUrl
+     *
+     * @param string $targetUrl
+     * @return Feed
+     */
+    public function setTargetUrl($targetUrl)
+    {
+        $this->targetUrl = $targetUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get targetUrl
+     *
+     * @return string
+     */
+    public function getTargetUrl()
+    {
+        return $this->targetUrl;
+    }
+
+    /**
      * Set authorName
      *
      * @param string $authorName
-     * @return Entry
+     * @return Feed
      */
     public function setAuthorName($authorName)
     {
@@ -167,10 +227,33 @@ class Summary
     }
 
     /**
+     * Set authorEmail
+     *
+     * @param string $authorEmail
+     * @return Feed
+     */
+    public function setAuthorEmail($authorEmail)
+    {
+        $this->authorEmail = $authorEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get authorEmail
+     *
+     * @return string
+     */
+    public function getAuthorEmail()
+    {
+        return $this->authorEmail;
+    }
+
+    /**
      * Set generatedAt
      *
      * @param \DateTime $generatedAt
-     * @return Entry
+     * @return Feed
      */
     public function setGeneratedAt($generatedAt)
     {
@@ -190,48 +273,50 @@ class Summary
     }
 
     /**
-     * Set isRead
+     * Set unreadCount
      *
-     * @param boolean $isRead
-     * @return UserEntry
+     * @param integer $unreadCount
+     * @return UserHasFeed
      */
-    public function setIsRead($isRead)
+    public function setUnreadCount($unreadCount)
     {
-        $this->isRead = $isRead;
+        $this->unreadCount = $unreadCount;
 
         return $this;
     }
 
     /**
-     * Get isRead
+     * Get unreadCount
      *
-     * @return boolean
+     * @return integer
      */
-    public function getIsRead()
+    public function getUnreadCount()
     {
-        return $this->isRead;
+        return $this->unreadCount;
     }
 
     /**
      * Load entity
      *
-     * @param Entry     $entry
-     * @param UserEntry $userEntry
+     * @param FeedEntity $feed
+     * @param UserFeed   $userFeed
      *
      * @return $this
      */
-    public function load(Entry $entry, UserEntry $userEntry = null)
+    public function load(FeedEntity $feed, UserFeed $userFeed = null)
     {
         $this
-            ->setId($entry->getId())
-            ->setGeneratedId($entry->getGeneratedId())
-            ->setTitle($entry->getTitle())
-            ->setDescription($entry->getDescription())
-            ->setAuthorName($entry->getAuthorName())
-            ->setGeneratedAt($entry->getGeneratedAt());
+            ->setId($feed->getId())
+            ->setGeneratedId($feed->getGeneratedId())
+            ->setTitle($feed->getTitle())
+            ->setDescription($feed->getDescription())
+            ->setTargetUrl($feed->getTargetUrl())
+            ->setAuthorName($feed->getAuthorName())
+            ->setAuthorEmail($feed->getAuthorEmail())
+            ->setGeneratedAt($feed->getGeneratedAt());
 
-        if ($userEntry) {
-            $this->setIsRead($userEntry->getIsRead());
+        if ($userFeed) {
+            $this->setUnreadCount($userFeed->getUnreadCount());
         }
 
         return $this;

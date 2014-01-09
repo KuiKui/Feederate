@@ -89,6 +89,32 @@ class UserFeed
     }
 
     /**
+     * Increment unreadCount
+     * 
+     * @param integer $count
+     *
+     * @return integer
+     */
+    public function incrUnreadCount($count = 1) {
+        $this->unreadCount += $count;
+        
+        return $this;
+    }
+
+    /**
+     * Decrement unreadCount
+     * 
+     * @param integer $count
+     *
+     * @return integer
+     */
+    public function decrUnreadCount($count = 1) {
+        $this->unreadCount -= $count;
+        
+        return $this;
+    }
+
+    /**
      * Set feed
      *
      * @param \Feederate\FeederateBundle\Entity\Feed $feed

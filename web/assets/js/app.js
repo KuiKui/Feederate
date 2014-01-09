@@ -127,6 +127,7 @@ app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest)
         if (!summary.is_read) {
             Rest.readSummary.save({id: summary.id}, {is_read: true});
             summary.is_read = true;
+            $scope.activeFeed.unread_count--;
         }
     };
 
