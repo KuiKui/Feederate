@@ -1,37 +1,49 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
+{% verbatim %}
 <div id="feederate" ng-app="feederate" ng-controller="BoardCtrl">
-    <ul class="feeds-nav nav">
-        {% verbatim %}
-        <li>
-            <input ng-enter="addFeed()" ng-model="newFeedUrl" type="text" id="addFeed" placeholder="Adding a new feed here..">
-        </li>
-        <li ng-repeat="feed in feeds">
-            <a href="#" ng-click="loadSummaries(feed.id);loadEntries(feed.id);">
-                {{ feed.title }}
-                <span class="bullet bullet-unread pull-right">5</span>
-            </a>
-        </li>
-        {% endverbatim %}
-    </ul>
-    <ul class="entries-nav nav">
-        {% verbatim %}
-        <li ng-repeat="summary in summaries">
-            <a ng-click="loadEntry(summary); markAsRead(summary);" ng-class="{read: summary.is_read}">
-                <h3>{{ summary.title }}</h3>
-                <p ng-bind-html="summary.description|characters:100"></p>
-            </a>
-        </li>
-        {% endverbatim %}
-    </ul>
-    <div class="entry">
-        <div class="container">
-            {% verbatim %}
-            <h2>{{ entry.title }}</h2>
-            <div ng-bind-html="entry.content"></div>
-            {% endverbatim %}
+    <div id="feeds">
+        <div class="feeds-toolbar">
+            <input ng-enter="addFeed()" ng-model="newFeedUrl" type="text" class="subscribtion" placeholder="Adding a new feed here..">
+        </div>
+        <div class="feeds-content">
+            <ul class="nav">
+                <li ng-repeat="feed in feeds" ng-class="{active:isActiveFeed(feed)}">
+                    <a href="#summaries" ng-click="loadSummaries(feed)">
+                        {{ feed.title }}
+                        <span class="bullet bullet-unread pull-right">5</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="feeds-footer">
+        </div>
+    </div>
+    <div id="summaries">
+        <div class="summaries-content">
+            <ul class="nav">
+                <li ng-repeat="summary in summaries" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
+                    <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary);">
+                        <h4>{{ summary.title }}</h4>
+                        <p ng-bind-html="summary.description|characters:100"></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="entry" ng-show="activeSummary">
+        <div class="entry-toolbar">
+            <a target="_blank" href="{{ activeFeed.target_url }}">{{ activeFeed.title }}</a>
+            (<a target="_blank" href="{{ entry.target_url }}">View original inline</a>)
+        </div>
+        <div class="entry-content">
+            <div class="container">
+                <h2>{{ entry.title }}</h2>
+                <div ng-bind-html="entry.content"></div>
+            </div>
         </div>
     </div>
 
+{% endverbatim %}
 {% endblock %}

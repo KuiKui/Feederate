@@ -70,7 +70,9 @@ app.directive('ngEnter', function() {
 });
 
 app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest) {
-    $scope.entries = [];
+    $scope.activeFeed    = null;
+    $scope.activeSummary = null;
+    $scope.entries       = [];
 
     $scope.addFeed = function () {
         Rest.Feeds.save({
@@ -90,22 +92,35 @@ app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest)
         });
     };
 
-    $scope.loadEntries = function (feedId) {
-        Rest.Entries.query({feedId: feedId}, function (entries) {
+    $scope.isActiveFeed = function (feed) {
+        return angular.equals(feed, $scope.activeFeed);
+    };
+
+    $scope.loadSummaries = function (feed) {
+        Rest.Summaries.query({feedId: feed.id}, function (summaries) {
+            $scope.summaries     = summaries;
+            $scope.activeFeed    = feed;
+            $scope.activeSummary = null;
+
+            $scope.loadEntries(feed);
+        });
+    };
+
+    $scope.isActiveSummary = function (summary) {
+        return angular.equals(summary, $scope.activeSummary);
+    };
+
+    $scope.loadEntries = function (feed) {
+        Rest.Entries.query({feedId: feed.id}, function (entries) {
             for (var index in entries) {
                 $scope.entries[entries[index].id] = entries[index];
             }
         });
     };
 
-    $scope.loadSummaries = function (feedId) {
-        Rest.Summaries.query({feedId: feedId}, function (summaries) {
-            $scope.summaries = summaries;
-        });
-    };
-
-    $scope.loadEntry = function (summaries) {
-        $scope.entry = $scope.entries[summaries.id];
+    $scope.loadEntry = function (summary) {
+        $scope.entry         = $scope.entries[summary.id];
+        $scope.activeSummary = summary;
     };
 
     $scope.markAsRead = function (summary) {
