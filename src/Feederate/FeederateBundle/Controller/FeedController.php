@@ -18,7 +18,6 @@ use Feederate\FeederateBundle\Form\FeedType;
  */
 class FeedController extends FOSRestController implements ClassResourceInterface
 {
-
     /**
      * Feed list
      *
@@ -26,8 +25,10 @@ class FeedController extends FOSRestController implements ClassResourceInterface
      */
     public function cgetAction()
     {
-        $repository = $this->get('doctrine.orm.entity_manager')->getRepository('FeederateFeederateBundle:Feed');
-        $entities   = $repository->findBy([], ['title' => 'ASC']);
+        $entities = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:Feed')
+            ->findByUser($this->getUser(), [], ['title' => 'ASC']);
 
         return $this->view($entities, 200);
     }
@@ -41,8 +42,10 @@ class FeedController extends FOSRestController implements ClassResourceInterface
      */
     public function getAction($id)
     {
-        $repository = $this->get('doctrine.orm.entity_manager')->getRepository('FeederateFeederateBundle:Feed');
-        $entity     = $repository->find($id);
+        $entity = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:Feed')
+            ->findByUser($this->getUser(), ['id' => $id]);
 
         if (!$entity) {
             return $this->view(sprintf('Feed with id %s not found', $id), 404);

@@ -26,8 +26,10 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
      */
     public function cgetAction()
     {
-        $repository = $this->get('doctrine.orm.entity_manager')->getRepository('FeederateFeederateBundle:Entry');
-        $entities   = $repository->findBy([], ['generatedAt' => 'DESC']);
+        $entities = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:Entry')
+            ->findByUser($this->getUser(), [], ['generatedAt' => 'DESC']);
 
         return $this->view($entities, 200);
     }
@@ -41,8 +43,10 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
      */
     public function getAction($id)
     {
-        $repository = $this->get('doctrine.orm.entity_manager')->getRepository('FeederateFeederateBundle:Entry');
-        $entity     = $repository->find($id);
+        $entity = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:Entry')
+            ->findByUser($this->getUser(), ['id' => $id]);
 
         if (!$entity) {
             return $this->view(sprintf('Entry with id %s not found', $id), 404);
@@ -63,16 +67,19 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
      */
     public function getFeedEntriesAction($feedId)
     {
-        $feed = $this->get('doctrine.orm.entity_manager')
+        $feed = $this
+            ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Feed')
-            ->find($feedId);
+            ->findByUser($this->getUser(), ['id' => $feedId]);
 
         if (!$feed) {
             return $this->view(sprintf('Feed with id %s not found', $feedId), 400);
         }
 
-        $repository = $this->get('doctrine.orm.entity_manager')->getRepository('FeederateFeederateBundle:Entry');
-        $entities   = $repository->findBy(['feed' => $feed], ['generatedAt' => 'DESC']);
+        $entities = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:Entry')
+            ->findByUser($this->getUser(), ['feed' => $feed], ['generatedAt' => 'DESC']);
 
         return $this->view($entities, 200);
     }

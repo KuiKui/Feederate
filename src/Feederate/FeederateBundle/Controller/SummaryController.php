@@ -34,22 +34,27 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
      */
     public function getFeedSummariesAction($feedId)
     {
-        $feed = $this->get('doctrine.orm.entity_manager')
+        $feed = $this
+            ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Feed')
-            ->find($feedId);
+            ->findByUser($this->getUser(), ['id' => $feedId]);
 
         if (!$feed) {
             return $this->view(sprintf('Feed with id %s not found', $feedId), 400);
         }
 
-        $entryRepository = $this->get('doctrine.orm.entity_manager')->getRepository('FeederateFeederateBundle:Entry');
-        $entries         = $entryRepository->findBy(['feed' => $feed], ['generatedAt' => 'DESC']);
-        $user            = $this->get('security.context')->getToken()->getUser();
+        $entries = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:Entry')
+            ->findByUser($this->getUser(), ['feed' => $feed], ['generatedAt' => 'DESC']);
 
         $summaries = [];
+
         foreach ($entries as $entry) {
-            $userEntryRepository = $this->get('doctrine.orm.entity_manager')->getRepository('FeederateFeederateBundle:UserEntry');
-            $userEntry         = $userEntryRepository->findOneBy(['entry' => $entry, 'user' => $user]);
+            $userEntry = $this
+                ->get('doctrine.orm.entity_manager')
+                ->getRepository('FeederateFeederateBundle:UserEntry')
+                ->findOneBy(['entry' => $entry, 'user' => $this->getUser()]);
 
             $summary = new Summary();
             $summary->load($entry, $userEntry);
@@ -73,18 +78,18 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
     public function postSummariesReadAction($id, Request $request)
     {
         $manager = $this->get('doctrine.orm.entity_manager');
-        $entry   = $manager
+
+        $entry = $manager
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->find($id);
+            ->findByUser($this->getUser(), ['id' => $id]);
 
         if (!$entry) {
             return $this->view(sprintf('Summary with id %s not found', $id), 404);
         }
 
-        $user      = $this->get('security.context')->getToken()->getUser();
         $userEntry = $manager
             ->getRepository('FeederateFeederateBundle:UserEntry')
-            ->findOneBy(['entry' => $entry, 'user' => $user]);
+            ->findOneBy(['entry' => $entry, 'user' => $this->getUser()]);
 
         if (!$userEntry) {
             $userEntry = new UserEntry();
