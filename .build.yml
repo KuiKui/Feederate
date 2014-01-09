@@ -3,3 +3,4 @@ build:
   - php app/console doctrine:database:create
   - php app/console doctrine:schema:create
   - yes | php app/console doctrine:fixtures:load --no-interaction
+  - app/console parser
