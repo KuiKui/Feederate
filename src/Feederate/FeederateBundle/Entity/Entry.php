@@ -13,7 +13,7 @@ use Feederate\ORMBundle\Entity\TimestampableTrait;
  * Entry
  *
  * @ORM\Table(name="entry")
- * @ORM\Entity(repositoryClass="Feederate\FeederateBundle\Repository\EntryRepository")
+ * @ORM\Entity
  */
 class Entry
 {

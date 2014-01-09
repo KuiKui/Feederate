@@ -37,7 +37,7 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
         $feed = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Feed')
-            ->findByUser($this->getUser(), ['id' => $feedId]);
+            ->find($feedId);
 
         if (!$feed) {
             return $this->view(sprintf('Feed with id %s not found', $feedId), 400);
@@ -46,7 +46,7 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
         $entries = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->findByUser($this->getUser(), ['feed' => $feed], ['generatedAt' => 'DESC']);
+            ->findBy(['feed' => $feed], ['generatedAt' => 'DESC']);
 
         $summaries = [];
 
@@ -81,7 +81,7 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
 
         $entry = $manager
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->findByUser($this->getUser(), ['id' => $id]);
+            ->find($id);
 
         if (!$entry) {
             return $this->view(sprintf('Summary with id %s not found', $id), 404);
@@ -95,7 +95,7 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
             $userEntry = new UserEntry();
             $userEntry
                 ->setEntry($entry)
-                ->setUser($user);
+                ->setUser($this->getUser());
         }
 
         $form = $this->container->get('form.factory')->createNamed('', new UserEntryType(), $userEntry);

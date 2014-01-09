@@ -29,7 +29,7 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
         $entities = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->findByUser($this->getUser(), [], ['generatedAt' => 'DESC']);
+            ->findBy([], ['generatedAt' => 'DESC']);
 
         return $this->view($entities, 200);
     }
@@ -46,7 +46,7 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
         $entity = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->findByUser($this->getUser(), ['id' => $id]);
+            ->find($id);
 
         if (!$entity) {
             return $this->view(sprintf('Entry with id %s not found', $id), 404);
@@ -70,7 +70,7 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
         $feed = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Feed')
-            ->findByUser($this->getUser(), ['id' => $feedId]);
+            ->find($feedId);
 
         if (!$feed) {
             return $this->view(sprintf('Feed with id %s not found', $feedId), 400);
@@ -79,7 +79,7 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
         $entities = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->findByUser($this->getUser(), ['feed' => $feed], ['generatedAt' => 'DESC']);
+            ->findBy(['feed' => $feed], ['generatedAt' => 'DESC']);
 
         return $this->view($entities, 200);
     }
