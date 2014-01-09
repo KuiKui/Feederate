@@ -74,7 +74,7 @@ fos_rest:
         include_format: false
     format_listener:
         rules:
-            - { priorities: ['json'], fallback_format: json, path: '/api' }
+            - { priorities: ['json'], fallback_format: json, path: '/(api|actions)' }
             - { priorities: ['html'], fallback_format: html }
     view:
         view_response_listener: true
