@@ -72,73 +72,75 @@ app.directive('ngEnter', function() {
 });
 
 app.controller('BoardCtrl', ['$scope', 'Rest', function BoardCtrl ($scope, Rest) {
-    $scope.activeFeed    = null;
-    $scope.activeSummary = null;
-    $scope.entries       = [];
+    angular.element(document).ready(function () {
+        $scope.activeFeed    = null;
+        $scope.activeSummary = null;
+        $scope.entries       = [];
 
-    $scope.addFeed = function () {
-        Rest.Feeds.save({
-            title: $scope.newFeedUrl,
-            url: $scope.newFeedUrl,
-            targetUrl: $scope.newFeedUrl
-        }, function (feed) {
-            Rest.parseFeed.get({feedId: feed.id}, function () {
-                $scope.newFeedUrl = '';
-                $scope.loadFeeds();
-                $scope.activeFeed = feed;
+        $scope.addFeed = function () {
+            Rest.Feeds.save({
+                title: $scope.newFeedUrl,
+                url: $scope.newFeedUrl,
+                targetUrl: $scope.newFeedUrl
+            }, function (feed) {
+                Rest.parseFeed.get({feedId: feed.id}, function () {
+                    $scope.newFeedUrl = '';
+                    $scope.loadFeeds();
+                    $scope.activeFeed = feed;
+                });
             });
-        });
-    };
+        };
 
-    $scope.loadFeeds = function () {
-        Rest.Feeds.query(function (feeds) {
-            $scope.feeds = feeds;
-        });
-    };
+        $scope.loadFeeds = function () {
+            Rest.Feeds.query(function (feeds) {
+                $scope.feeds = feeds;
+            });
+        };
 
-    $scope.isActiveFeed = function (feed) {
-        return angular.equals(feed, $scope.activeFeed);
-    };
+        $scope.isActiveFeed = function (feed) {
+            return angular.equals(feed, $scope.activeFeed);
+        };
 
-    $scope.loadSummaries = function (feed) {
-        Rest.Summaries.query({feedId: feed.id}, function (summaries) {
-            $scope.summaries     = summaries;
-            $scope.activeFeed    = feed;
-            $scope.activeSummary = null;
+        $scope.loadSummaries = function (feed) {
+            Rest.Summaries.query({feedId: feed.id}, function (summaries) {
+                $scope.summaries     = summaries;
+                $scope.activeFeed    = feed;
+                $scope.activeSummary = null;
 
-            $scope.loadEntries(feed);
-        });
-    };
+                $scope.loadEntries(feed);
+            });
+        };
 
-    $scope.isActiveSummary = function (summary) {
-        return angular.equals(summary, $scope.activeSummary);
-    };
+        $scope.isActiveSummary = function (summary) {
+            return angular.equals(summary, $scope.activeSummary);
+        };
 
-    $scope.loadEntries = function (feed) {
-        Rest.Entries.query({feedId: feed.id}, function (entries) {
-            for (var index in entries) {
-                $scope.entries[entries[index].id] = entries[index];
+        $scope.loadEntries = function (feed) {
+            Rest.Entries.query({feedId: feed.id}, function (entries) {
+                for (var index in entries) {
+                    $scope.entries[entries[index].id] = entries[index];
+                }
+            });
+        };
+
+        $scope.loadEntry = function (summary) {
+            $scope.entry         = $scope.entries[summary.id];
+            $scope.activeSummary = summary;
+        };
+
+        $scope.markAsRead = function (summary) {
+            if (!summary.is_read) {
+                Rest.readSummary.save({id: summary.id}, {is_read: true});
+                summary.is_read = true;
+                $scope.activeFeed.unread_count--;
             }
-        });
-    };
+        };
 
-    $scope.loadEntry = function (summary) {
-        $scope.entry         = $scope.entries[summary.id];
-        $scope.activeSummary = summary;
-    };
+        $scope.markAsStarred = function (summary) {
+            Rest.starSummary.save({id: summary.id}, {is_starred: !summary.is_starred});
+            summary.is_starred = !summary.is_starred;
+        };
 
-    $scope.markAsRead = function (summary) {
-        if (!summary.is_read) {
-            Rest.readSummary.save({id: summary.id}, {is_read: true});
-            summary.is_read = true;
-            $scope.activeFeed.unread_count--;
-        }
-    };
-
-    $scope.markAsStarred = function (summary) {
-        Rest.starSummary.save({id: summary.id}, {is_starred: !summary.is_starred});
-        summary.is_starred = !summary.is_starred;
-    };
-
-    $scope.loadFeeds();
+        $scope.loadFeeds();
+    });
 }]);
