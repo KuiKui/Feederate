@@ -35,3 +35,11 @@ FeederateFeederateBundle_Summary:
 FeederateFeederateBundle_Front:
     resource: "@FeederateFeederateBundle/Controller/FrontController.php"
     type: annotation
+
+FeederateFeederateBundle_Settings:
+    resource: "@FeederateFeederateBundle/Controller/SettingsController.php"
+    type: annotation
+
+FeederateFeederateBundle_Admin:
+    resource: "@FeederateFeederateBundle/Controller/AdminController.php"
+    type: annotation

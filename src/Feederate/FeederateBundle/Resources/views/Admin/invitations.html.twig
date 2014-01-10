@@ -1,0 +1,24 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div id="feederate">
+    <h1>Invitation List</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Code</th>
+                <th>Sent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invitation in invitations %}
+            <tr>
+                <td>{{ invitation.email }}</td>
+                <td>{{ invitation.code }}</td>
+                <td>{{ invitation.sent ? 'oui' : 'non' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -33,7 +33,7 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=255)
+     * @ORM\Column(name="status", type="string", length=255, nullable=true)
      */
     private $status;
 
@@ -54,6 +54,13 @@ class User extends BaseUser
     private $userEntries;
 
     /**
+     * @ORM\OneToOne(targetEntity="Feederate\FeederateBundle\Entity\Invitation", inversedBy="user")
+     * @ORM\JoinColumn(referencedColumnName="code")
+     * @Assert\NotNull(message="Your invitation is wrong")
+     */
+    protected $invitation;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -63,7 +70,6 @@ class User extends BaseUser
 
         parent::__construct();
     }
-
 
     /**
      * Get id
@@ -162,5 +168,25 @@ class User extends BaseUser
     public function getUserEntries()
     {
         return $this->userEntries;
+    }
+
+    /**
+     * Set invitation
+     *
+     * @param Invitation $invitation
+     */
+    public function setInvitation(Invitation $invitation)
+    {
+        $this->invitation = $invitation;
+    }
+
+    /**
+     * Get invitation
+     *
+     * @return Invitation
+     */
+    public function getInvitation()
+    {
+        return $this->invitation;
     }
 }
