@@ -49,4 +49,11 @@ Les paramètres par défaut de la configuration du projet sont correctement pré
 $ php app/console doctrine:database:create
 $ php app/console doctrine:schema:create
 $ php app/console doctrine:fixtures:load
+$ php app/console parser
+```
+
+#### Publication des assets
+
+```shell
+$ php app/console assets:install --symlink web
 ```
