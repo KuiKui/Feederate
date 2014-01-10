@@ -21,16 +21,22 @@ FeederateFeederateBundle_Feed:
     resource: "@FeederateFeederateBundle/Controller/FeedController.php"
     prefix: api
     type: rest
+    options:
+        expose: true
 
 FeederateFeederateBundle_Entry:
     resource: "@FeederateFeederateBundle/Controller/EntryController.php"
     prefix: api
     type: rest
+    options:
+        expose: true
 
 FeederateFeederateBundle_Summary:
     resource: "@FeederateFeederateBundle/Controller/SummaryController.php"
     prefix: api
     type: rest
+    options:
+        expose: true
 
 FeederateFeederateBundle_Front_Feed:
     resource: "@FeederateFeederateBundle/Controller/FrontFeedController.php"
