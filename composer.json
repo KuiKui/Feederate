@@ -11,6 +11,7 @@
         "symfony/symfony": "2.3.*",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
+        "doctrine/doctrine-fixtures-bundle": "dev-master",
         "twig/extensions": "1.0.*",
         "symfony/assetic-bundle": "2.3.*",
         "symfony/swiftmailer-bundle": "2.3.*",
@@ -27,9 +28,6 @@
         "zendframework/zend-feed": "2.3.*@dev",
         "zendframework/zend-http": "2.3.*@dev",
         "zendframework/zend-servicemanager": "2.3.*@dev"
-    },
-    "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

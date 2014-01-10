@@ -56,95 +56,97 @@
     });
 
     app.controller('BoardCtrl', function BoardCtrl ($scope, Restangular) {
-        $scope.activeFeed    = null;
-        $scope.activeSummary = null;
-        $scope.entries       = [];
+        angular.element(document).ready(function () {
+            $scope.activeFeed    = null;
+            $scope.activeSummary = null;
+            $scope.entries       = [];
 
-        $scope.addFeed = function () {
-            Restangular
-                .all(getRoute('get_feeds'))
-                .post({
-                    title: $scope.newFeedUrl,
-                    url: $scope.newFeedUrl,
-                    targetUrl: $scope.newFeedUrl
-                })
-                .then(function (feed) {
-                    feed
-                        .customGET('parse')
-                        .then(function() {
-                            $scope.newFeedUrl = '';
-                            $scope.loadFeeds();
-                            $scope.activeFeed = feed;
-                        });
-                });
-        };
-
-        $scope.loadFeeds = function () {
-            Restangular
-                .all(getRoute('get_feeds'))
-                .getList()
-                .then(function(feeds) {
-                    $scope.feeds = feeds;
-                })
-        };
-
-        $scope.isActiveFeed = function (feed) {
-            return angular.equals(feed, $scope.activeFeed);
-        };
-
-        $scope.loadSummaries = function (feed) {
-            Restangular
-                .one(getRoute('get_feeds'), feed.id)
-                .getList('summaries')
-                .then(function(summaries) {
-                    $scope.summaries     = summaries;
-                    $scope.activeFeed    = feed;
-                    $scope.activeSummary = null;
-
-                    $scope.loadEntries(feed);
-                })
-        };
-
-        $scope.isActiveSummary = function (summary) {
-            return angular.equals(summary, $scope.activeSummary);
-        };
-
-        $scope.loadEntries = function (feed) {
-            Restangular
-                .one(getRoute('get_feeds'), feed.id)
-                .getList('entries')
-                .then(function(entries) {
-                    angular.forEach(entries, function(entry) {
-                        $scope.entries[entry.id] = entry;
-                    });
-                });
-        };
-
-        $scope.loadEntry = function (summary) {
-            $scope.entry         = $scope.entries[summary.id];
-            $scope.activeSummary = summary;
-        };
-
-        $scope.markAsRead = function (summary) {
-            if (!summary.is_read) {
+            $scope.addFeed = function () {
                 Restangular
-                    .oneUrl(getRoute('post_summary_summaries_read', {id: summary.id}))
-                    .customPOST({is_read: true});
+                    .all(getRoute('get_feeds'))
+                    .post({
+                        title: $scope.newFeedUrl,
+                        url: $scope.newFeedUrl,
+                        targetUrl: $scope.newFeedUrl
+                    })
+                    .then(function (feed) {
+                        feed
+                            .customGET('parse')
+                            .then(function() {
+                                $scope.newFeedUrl = '';
+                                $scope.loadFeeds();
+                                $scope.activeFeed = feed;
+                            });
+                    });
+            };
 
-                summary.is_read = true;
-                $scope.activeFeed.unread_count--;
-            }
-        };
+            $scope.loadFeeds = function () {
+                Restangular
+                    .all(getRoute('get_feeds'))
+                    .getList()
+                    .then(function(feeds) {
+                        $scope.feeds = feeds;
+                    })
+            };
 
-        $scope.markAsStarred = function (summary) {
-            Restangular
-                .oneUrl(getRoute('post_summary_summaries_star', {id: summary.id}))
-                .customPOST({is_starred: !summary.is_starred});
+            $scope.isActiveFeed = function (feed) {
+                return angular.equals(feed, $scope.activeFeed);
+            };
 
-            summary.is_starred = !summary.is_starred;
-        };
+            $scope.loadSummaries = function (feed) {
+                Restangular
+                    .one(getRoute('get_feeds'), feed.id)
+                    .getList('summaries')
+                    .then(function(summaries) {
+                        $scope.summaries     = summaries;
+                        $scope.activeFeed    = feed;
+                        $scope.activeSummary = null;
 
-        $scope.loadFeeds();
+                        $scope.loadEntries(feed);
+                    })
+            };
+
+            $scope.isActiveSummary = function (summary) {
+                return angular.equals(summary, $scope.activeSummary);
+            };
+
+            $scope.loadEntries = function (feed) {
+                Restangular
+                    .one(getRoute('get_feeds'), feed.id)
+                    .getList('entries')
+                    .then(function(entries) {
+                        angular.forEach(entries, function(entry) {
+                            $scope.entries[entry.id] = entry;
+                        });
+                    });
+            };
+
+            $scope.loadEntry = function (summary) {
+                $scope.entry         = $scope.entries[summary.id];
+                $scope.activeSummary = summary;
+            };
+
+            $scope.markAsRead = function (summary) {
+                if (!summary.is_read) {
+                    Restangular
+                        .oneUrl(getRoute('post_summary_summaries_read', {id: summary.id}))
+                        .customPOST({is_read: true});
+
+                    summary.is_read = true;
+                    $scope.activeFeed.unread_count--;
+                }
+            };
+
+            $scope.markAsStarred = function (summary) {
+                Restangular
+                    .oneUrl(getRoute('post_summary_summaries_star', {id: summary.id}))
+                    .customPOST({is_starred: !summary.is_starred});
+
+                summary.is_starred = !summary.is_starred;
+            };
+
+            $scope.loadFeeds();
+        });
     });
 
     var getRoute = function(routeName, routeParams) {
@@ -155,3 +157,4 @@
         return Routing.generate(routeName, routeParams, false).slice(1);
     }
 })();
+
