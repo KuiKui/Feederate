@@ -52,6 +52,12 @@ $ php app/console doctrine:fixtures:load
 $ php app/console parser
 ```
 
+#### Publication des assets
+
+ ```shell
+ $ php app/console assets:install --symlink web
+ ```
+
 #### Génération des fichiers uniques d'assets **PROD only**
 
 ```shell

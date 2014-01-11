@@ -12,8 +12,9 @@
 
     <!-- Bootstrap core CSS -->
     {% stylesheets
-      '@FeederateFeederateBundle/Resources/public/bootstrap/css/bootstrap.css'
-      '@FeederateFeederateBundle/Resources/public/css/app.css'
+      'bundles/feederatefeederate/bootstrap/css/bootstrap.css'
+      'bundles/feederatefeederate/css/app.css'
+      filter='cssrewrite'
     %}
       <link rel="stylesheet" type='text/css' href="{{ asset_url }}" />
     {% endstylesheets %}
