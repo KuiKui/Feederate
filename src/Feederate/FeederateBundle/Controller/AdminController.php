@@ -28,42 +28,59 @@ class AdminController extends Controller
     /**
      * Invitation action
      *
-     * @Route("/admin/invitations/request")
+     * @Route("/admin/invitations")
      * @Template()
      */
-    public function invitationRequestAction(Request $request)
+    public function invitationsAction(Request $request)
     {
         $manager = $this->get('doctrine.orm.entity_manager');
-        $entity  = new Invitation();
-        $form    = $this->container->get('form.factory')->createNamed('', new InvitationType(), $entity);
+
+        $invitations = $manager
+            ->getRepository('FeederateFeederateBundle:Invitation')
+            ->findAll();
+
+        $invitation = new Invitation();
+        $form       = $this->container->get('form.factory')->createNamed('', new InvitationType(), $invitation);
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
 
             if ($form->isValid()) {
-                $manager->persist($entity);
+                $manager->persist($invitation);
                 $manager->flush();
 
-
+                return $this->redirect($this->generateUrl('feederate_feederate_admin_invitations'));
             }
         }
 
-
-        return array('form' => $form->createView());
+        return [
+            'invitations' => $invitations,
+            'form'        => $form->createView(),
+        ];
     }
 
     /**
      * Invitation action
      *
-     * @Route("/admin/invitations")
+     * @Route("/admin/invitations/{email}/sent")
      * @Template()
      */
-    public function invitationsAction()
+    public function invitationsSentAction(Request $request, $email)
     {
-        $invitations = $this->get('doctrine.orm.entity_manager')
-            ->getRepository('FeederateFeederateBundle:Invitation')
-            ->findAll();
+        $manager = $this->get('doctrine.orm.entity_manager');
 
-        return array('invitations' => $invitations);
+        $invitation = $manager
+            ->getRepository('FeederateFeederateBundle:Invitation')
+            ->findOneBy(['email' => $email]);
+
+        if (!$invitation) {
+            throw new \Exception(sprintf("Invitation with id %d does not exists.", $id));
+        }
+
+        $invitation->send();
+        $manager->persist($invitation);
+        $manager->flush();
+
+        return $this->redirect($this->generateUrl('feederate_feederate_admin_invitations'));
     }
 }

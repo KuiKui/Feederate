@@ -47,10 +47,16 @@
             <span class="icon-bar"></span>
           </button>
         </div>
+        {% if app.request.attributes.get('_route') != 'feederate_feederate_front_index' %}
+        <div class="collapse navbar-collapse pull-left">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ path('feederate_feederate_front_index') }}">Feederate</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+        {% endif %}
         <div class="collapse navbar-collapse pull-right">
           <ul class="nav navbar-nav">
             <li><a href="{{ path('feederate_feederate_settings_index') }}">Settings</a></li>
-
             {% if is_granted("ROLE_SUPER_ADMIN") %}
             <li><a href="{{ path('feederate_feederate_admin_index') }}">Admin</a></li>
             {% endif %}

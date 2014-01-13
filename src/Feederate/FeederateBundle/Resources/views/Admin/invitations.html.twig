@@ -3,6 +3,7 @@
 {% block body %}
 <div id="feederate">
     <h1>Invitation List</h1>
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -16,9 +17,19 @@
             <tr>
                 <td>{{ invitation.email }}</td>
                 <td>{{ invitation.code }}</td>
-                <td>{{ invitation.sent ? 'oui' : 'non' }}</td>
+                {% if invitation.isSent %}
+                <td>Sent :)</td>
+                {% else %}
+                <td><a class="btn btn-info btn-sm" href="{{ path('feederate_feederate_admin_invitationssent', {email: invitation.email}) }}">Sent ?</a></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <h2>Create an invitation</h2>
+    <form role="form" method="POST">
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
 {% endblock %}
