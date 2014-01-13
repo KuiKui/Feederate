@@ -29,11 +29,10 @@
         '@FeederateFeederateBundle/Resources/public/bootstrap/js/bootstrap.min.js'
         '@FeederateFeederateBundle/Resources/public/js/app.js'
         '@FOSJsRoutingBundle/Resources/public/js/router.js'
+        'js/fos_js_routes.js'
     %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
-    <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
