@@ -58,8 +58,10 @@
     app.controller('BoardCtrl', function BoardCtrl ($scope, Restangular) {
         angular.element(document).ready(function () {
             $scope.starred       = null;
+            $scope.unread        = null;
             $scope.activeFeed    = null;
             $scope.activeSummary = null;
+            $scope.feeds         = {};
             $scope.entries       = [];
 
             $scope.addFeed = function () {
@@ -86,8 +88,12 @@
                     .all(getRoute('get_feeds'))
                     .getList()
                     .then(function(feeds) {
-                        $scope.starred = feeds[0];
-                        $scope.feeds = feeds.slice(1);
+                        $scope.unread = feeds[0];
+                        $scope.starred = feeds[1];
+
+                        angular.forEach(feeds.slice(2), function(feed) {
+                            $scope.feeds[feed.id] = feed;
+                        });
                     })
             };
 
@@ -108,16 +114,16 @@
                     })
             };
 
-            $scope.loadStarred = function () {
+            $scope.loadSpecialSummaries = function (type) {
                 Restangular
                     .all(getRoute('get_summaries'))
-                    .getList({type: 'starred'})
+                    .getList({type: type})
                     .then(function(summaries) {
                         $scope.summaries     = summaries;
-                        $scope.activeFeed    = $scope.starred;
+                        $scope.activeFeed    = $scope[type];
                         $scope.activeSummary = null;
 
-                        $scope.loadEntries($scope.starred);
+                        $scope.loadEntries($scope[type]);
                     });
             };
 
@@ -132,6 +138,10 @@
                     entries = Restangular
                         .all(getRoute('get_entries'))
                         .getList({type: 'starred'});
+                } else if (angular.equals(feed, $scope.unread)) {
+                    entries = Restangular
+                        .all(getRoute('get_entries'))
+                        .getList({type: 'unread'});
                 } else {
                     entries = Restangular
                         .one(getRoute('get_feeds'), feed.id)
@@ -157,7 +167,8 @@
                         .customPOST({is_read: true});
 
                     summary.is_read = true;
-                    $scope.activeFeed.unread_count--;
+                    $scope.feeds[summary.feed_id].unread_count--;
+                    $scope.unread.unread_count--;
                 }
             };
 
