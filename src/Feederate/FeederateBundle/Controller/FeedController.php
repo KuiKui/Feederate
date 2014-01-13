@@ -29,12 +29,25 @@ class FeedController extends FOSRestController implements ClassResourceInterface
      */
     public function cgetAction()
     {
-        $entities = $this
+        $feeds = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Feed')
             ->findByUser($this->getUser(), [], ['title' => 'ASC']);
 
-        return $this->view($this->getFeedResources($entities), 200);
+        $starredEntries = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:UserEntry')
+            ->findBy(['user' => $this->getUser(), 'isStarred' => true]);
+
+        $feeds = $this->getFeedResources($feeds);
+
+        $starred = new FeedModel();
+        $starred->setTitle('Starred')
+            ->setUnreadCount(count($starredEntries));
+
+        array_unshift($feeds, $starred);
+
+        return $this->view($feeds, 200);
     }
 
     /**
@@ -90,6 +103,7 @@ class FeedController extends FOSRestController implements ClassResourceInterface
 
         return $this->view($form, 422);
     }
+    
     /**
      * Entry list by feed
      *

@@ -67,6 +67,39 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
     }
 
     /**
+     * Summary list by feed
+     * 
+     * @param ParamFetcher $paramFetcher Param Fetcher
+     *
+     * @return \FOS\RestBundle\View\View
+     * 
+     * @Rest\QueryParam(name="type", requirements="(starred|unread)", nullable=false, default="starred", strict=true, description="Summaries type")
+     */
+    public function cgetAction(ParamFetcher $paramFetcher)
+    {
+        $entries = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:Entry')
+            ->findByUserAndType($this->getUser(), $paramFetcher->get('type'), [], ['generatedAt' => 'DESC']);
+
+        $summaries = [];
+
+        foreach ($entries as $entry) {
+            $userEntry = $this
+                ->get('doctrine.orm.entity_manager')
+                ->getRepository('FeederateFeederateBundle:UserEntry')
+                ->findOneBy(['entry' => $entry, 'user' => $this->getUser()]);
+
+            $summary = new Summary();
+            $summary->load($entry, $userEntry);
+
+            $summaries[] = $summary;
+        }
+
+        return $this->view($summaries, 200);
+    }
+
+    /**
      * Mark summary as read
      *
      * @return \FOS\RestBundle\View\View
