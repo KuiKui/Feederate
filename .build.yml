@@ -3,4 +3,6 @@ build:
   - php app/console doctrine:database:create
   - php app/console doctrine:schema:create
   - yes | php app/console doctrine:fixtures:load --no-interaction
-  - app/console parser
+  - php app/console assets:install --symlink web
+  - php app/console cache:clear --env=prod
+  - php app/console assetic:dump --env=prod

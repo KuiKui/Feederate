@@ -27,7 +27,8 @@
         "friendsofsymfony/jsrouting-bundle": "~1.5",
         "zendframework/zend-feed": "2.3.*@dev",
         "zendframework/zend-http": "2.3.*@dev",
-        "zendframework/zend-servicemanager": "2.3.*@dev"
+        "zendframework/zend-servicemanager": "2.3.*@dev",
+        "leafo/lessphp": "~0.4"
     },
     "scripts": {
         "post-install-cmd": [
