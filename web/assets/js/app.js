@@ -57,6 +57,7 @@
 
     app.controller('BoardCtrl', function BoardCtrl ($scope, Restangular) {
         angular.element(document).ready(function () {
+            $scope.starred       = null;
             $scope.activeFeed    = null;
             $scope.activeSummary = null;
             $scope.entries       = [];
@@ -85,7 +86,8 @@
                     .all(getRoute('get_feeds'))
                     .getList()
                     .then(function(feeds) {
-                        $scope.feeds = feeds;
+                        $scope.starred = feeds[0];
+                        $scope.feeds = feeds.slice(1);
                     })
             };
 
@@ -106,19 +108,41 @@
                     })
             };
 
+            $scope.loadStarred = function () {
+                Restangular
+                    .all(getRoute('get_summaries'))
+                    .getList({type: 'starred'})
+                    .then(function(summaries) {
+                        $scope.summaries     = summaries;
+                        $scope.activeFeed    = $scope.starred;
+                        $scope.activeSummary = null;
+
+                        $scope.loadEntries($scope.starred);
+                    });
+            };
+
             $scope.isActiveSummary = function (summary) {
                 return angular.equals(summary, $scope.activeSummary);
             };
 
             $scope.loadEntries = function (feed) {
-                Restangular
-                    .one(getRoute('get_feeds'), feed.id)
-                    .getList('entries')
-                    .then(function(entries) {
-                        angular.forEach(entries, function(entry) {
-                            $scope.entries[entry.id] = entry;
-                        });
+                var entries;
+
+                if (angular.equals(feed, $scope.starred)) {
+                    entries = Restangular
+                        .all(getRoute('get_entries'))
+                        .getList({type: 'starred'});
+                } else {
+                    entries = Restangular
+                        .one(getRoute('get_feeds'), feed.id)
+                        .getList('entries');
+                }
+
+                entries.then(function(entries) {
+                    angular.forEach(entries, function(entry) {
+                        $scope.entries[entry.id] = entry;
                     });
+                });
             };
 
             $scope.loadEntry = function (summary) {
@@ -143,6 +167,12 @@
                     .customPOST({is_starred: !summary.is_starred});
 
                 summary.is_starred = !summary.is_starred;
+
+                if (summary.is_starred) {
+                    $scope.starred.unread_count++;
+                } else {
+                    $scope.starred.unread_count--;
+                }
             };
 
             $scope.loadFeeds();
