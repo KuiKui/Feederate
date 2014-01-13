@@ -58,7 +58,16 @@ $ php app/console parser
  $ php app/console assets:install --symlink web
  ```
 
-#### Génération des fichiers uniques d'assets **PROD only**
+#### Génération des fichiers uniques d'assets **DEV**
+
+```shell
+$ php app/console cache:clear
+$ php app/console assetic:dump
+```
+
+Lors la modification des assets, il est préférable d'utiliser l'option `--watch` de la commande `dump`.
+
+#### Génération des fichiers uniques d'assets **PROD**
 
 ```shell
 $ php app/console cache:clear --env=prod
