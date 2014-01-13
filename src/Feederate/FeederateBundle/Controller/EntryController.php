@@ -21,17 +21,21 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
 
     /**
      * Entry list
+     * 
+     * @param ParamFetcher $paramFetcher Param Fetcher
      *
      * @return \FOS\RestBundle\View\View
+     * 
+     * @Rest\QueryParam(name="type", requirements="(starred|unread)", nullable=false, default="starred", strict=true, description="Summaries type")
      */
-    public function cgetAction()
+    public function cgetAction(ParamFetcher $paramFetcher)
     {
-        $entities = $this
+        $entries = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->findBy([], ['generatedAt' => 'DESC']);
+            ->findByUserAndType($this->getUser(), $paramFetcher->get('type'), [], ['generatedAt' => 'DESC']);
 
-        return $this->view($entities, 200);
+        return $this->view($entries, 200);
     }
 
     /**
