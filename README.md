@@ -56,7 +56,6 @@ $ php app/console parser
 
  ```shell
  $ php app/console assets:install --symlink web
- $ php app/console fos:js-routing:dump
  ```
 
 #### Génération des fichiers uniques d'assets **DEV**
