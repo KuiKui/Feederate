@@ -26,6 +26,8 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
+    form:
+        resources: ['FeederateFeederateBundle:Form:fields.html.twig']
 
 # Assetic Configuration
 assetic:
@@ -90,3 +92,9 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Feederate\FeederateBundle\Entity\User
+    from_email:
+        address:        team@feederate.com
+        sender_name:    Feederate team
+    registration:
+        form:
+            type: feederate_user_registration
