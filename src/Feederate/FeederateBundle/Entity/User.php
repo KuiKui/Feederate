@@ -189,4 +189,26 @@ class User extends BaseUser
     {
         return $this->invitation;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEmail($email)
+    {
+        $this->email    = $email;
+        $this->username = $email;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEmailCanonical($emailCanonical)
+    {
+        $this->emailCanonical    = $emailCanonical;
+        $this->usernameCanonical = $emailCanonical;
+
+        return $this;
+    }
 }

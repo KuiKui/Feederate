@@ -13,6 +13,8 @@ class RegistrationFormType extends BaseRegistrationFormType
         parent::buildForm($builder, $options);
 
         $builder->add('invitation', 'feederate_invitation_type');
+
+        $builder->remove('username');
     }
 
     public function getName()

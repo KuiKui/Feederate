@@ -20,3 +20,7 @@ services:
     feederate.invitation.form.data_transformer:
         class: Feederate\FeederateBundle\Form\DataTransformer\InvitationToCodeTransformer
         arguments: [@doctrine.orm.entity_manager]
+
+    feederate.user_provider.email:
+        class: Feederate\FeederateBundle\Security\EmailProvider
+        arguments: [@fos_user.user_manager]
