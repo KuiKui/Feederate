@@ -25,17 +25,22 @@ class EntryRepository extends EntityRepository
     public function findByUserAndType(User $user, $type, array $criteria = [], array $orderBy = null)
     {
         $queryBuilder = $this->createQueryBuilder('Entry')
-            ->join('Entry.userEntries', 'UserEntry')
-            ->where('UserEntry.user = :user')
             ->setParameter('user', $user);
 
         switch ($type) {
             case 'starred':
-                $queryBuilder->andWhere('UserEntry.isStarred = true');
+                $queryBuilder
+                    ->join('Entry.userEntries', 'UserEntry')
+                    ->where('UserEntry.user = :user')
+                    ->andWhere('UserEntry.isStarred = true');
                 break;
             case 'unread':
-                // Next step
-                // $queryBuilder->andWhere('UserEntry.isRead = false');
+                $queryBuilder
+                    ->leftJoin('Entry.userEntries', 'UserEntry')
+                    ->join('Entry.feed', 'Feed')
+                    ->join('Feed.userFeeds', 'UserFeed')
+                    ->where('UserFeed.user = :user')
+                    ->andWhere('UserEntry.isRead = false OR UserEntry.isRead IS NULL');
                 break;
             default:
                 throw \Exception('Unknown type');

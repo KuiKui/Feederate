@@ -41,6 +41,15 @@
 
     var app = angular.module('feederate', ['ngSanitize', 'truncate', 'restangular']);
 
+    app.filter('toArray', function() {
+        return function(obj) {
+            if (!(obj instanceof Object)) return obj;
+            return _.map(obj, function(val, key) {
+                return Object.defineProperty(val, '$key', {__proto__: null, value: key});
+            });
+        }
+    });
+
     app.directive('ngEnter', function() {
         return function(scope, element, attrs) {
             element.bind("keydown keypress", function(event) {
@@ -58,8 +67,10 @@
     app.controller('BoardCtrl', function BoardCtrl ($scope, Restangular) {
         angular.element(document).ready(function () {
             $scope.starred       = null;
+            $scope.unread        = null;
             $scope.activeFeed    = null;
             $scope.activeSummary = null;
+            $scope.feeds         = {};
             $scope.entries       = [];
 
             $scope.addFeed = function () {
@@ -75,19 +86,26 @@
                             .customGET('parse')
                             .then(function() {
                                 $scope.newFeedUrl = '';
-                                $scope.loadFeeds();
-                                $scope.activeFeed = feed;
+                                $scope.loadFeeds(function() {
+                                    $scope.loadSummaries($scope.feeds[feed.id]);
+                                });
                             });
                     });
             };
 
-            $scope.loadFeeds = function () {
+            $scope.loadFeeds = function (callback) {
                 Restangular
                     .all(getRoute('get_feeds'))
                     .getList()
                     .then(function(feeds) {
-                        $scope.starred = feeds[0];
-                        $scope.feeds = feeds.slice(1);
+                        $scope.unread  = feeds[0];
+                        $scope.starred = feeds[1];
+
+                        angular.forEach(feeds.slice(2), function(feed) {
+                            $scope.feeds[feed.id] = feed;
+                        });
+
+                        callback();
                     })
             };
 
@@ -96,29 +114,25 @@
             };
 
             $scope.loadSummaries = function (feed) {
-                Restangular
-                    .one(getRoute('get_feeds'), feed.id)
-                    .getList('summaries')
-                    .then(function(summaries) {
-                        $scope.summaries     = summaries;
-                        $scope.activeFeed    = feed;
-                        $scope.activeSummary = null;
+                var summaries, type;
 
-                        $scope.loadEntries(feed);
-                    })
-            };
+                if (type = getFeedType(feed)) {
+                    summaries = Restangular
+                        .all(getRoute('get_summaries'))
+                        .getList({type: type});
+                } else {
+                    summaries = Restangular
+                        .one(getRoute('get_feeds'), feed.id)
+                        .getList('summaries');
+                }
 
-            $scope.loadStarred = function () {
-                Restangular
-                    .all(getRoute('get_summaries'))
-                    .getList({type: 'starred'})
-                    .then(function(summaries) {
-                        $scope.summaries     = summaries;
-                        $scope.activeFeed    = $scope.starred;
-                        $scope.activeSummary = null;
+                summaries.then(function(summaries) {
+                    $scope.summaries     = summaries;
+                    $scope.activeFeed    = feed;
+                    $scope.activeSummary = null;
 
-                        $scope.loadEntries($scope.starred);
-                    });
+                    $scope.loadEntries(feed);
+                }); 
             };
 
             $scope.isActiveSummary = function (summary) {
@@ -126,12 +140,12 @@
             };
 
             $scope.loadEntries = function (feed) {
-                var entries;
+                var entries, type;
 
-                if (angular.equals(feed, $scope.starred)) {
+                if (type = getFeedType(feed)) {
                     entries = Restangular
                         .all(getRoute('get_entries'))
-                        .getList({type: 'starred'});
+                        .getList({type: type});
                 } else {
                     entries = Restangular
                         .one(getRoute('get_feeds'), feed.id)
@@ -157,7 +171,8 @@
                         .customPOST({is_read: true});
 
                     summary.is_read = true;
-                    $scope.activeFeed.unread_count--;
+                    $scope.feeds[summary.feed_id].unread_count--;
+                    $scope.unread.unread_count--;
                 }
             };
 
@@ -175,16 +190,34 @@
                 }
             };
 
-            $scope.loadFeeds();
+            var getFeedType = function(feed) {
+                if (angular.equals(feed, $scope.starred)) {
+                    return 'starred';
+                } else if (angular.equals(feed, $scope.unread)) {
+                    return 'unread';
+                } else {
+                    return '';
+                }
+            }
+
+            var getRoute = function(routeName, routeParams) {
+                if (routeParams === 'undefined') {
+                    var routeParams = {};
+                }
+
+                return Routing.generate(routeName, routeParams, false).slice(1);
+            }
+
+            $scope.sortMe = function() {
+                return function(object) {
+                    return object.title;
+                }
+            }
+
+            $scope.loadFeeds(function() {
+                $scope.loadSummaries($scope.unread);
+            });
         });
     });
-
-    var getRoute = function(routeName, routeParams) {
-        if (routeParams === 'undefined') {
-            var routeParams = {};
-        }
-
-        return Routing.generate(routeName, routeParams, false).slice(1);
-    }
 })();
 
