@@ -41,6 +41,15 @@
 
     var app = angular.module('feederate', ['ngSanitize', 'truncate', 'restangular']);
 
+    app.filter('toArray', function() {
+        return function(obj) {
+            if (!(obj instanceof Object)) return obj;
+            return _.map(obj, function(val, key) {
+                return Object.defineProperty(val, '$key', {__proto__: null, value: key});
+            });
+        }
+    });
+
     app.directive('ngEnter', function() {
         return function(scope, element, attrs) {
             element.bind("keydown keypress", function(event) {
@@ -78,8 +87,7 @@
                             .then(function() {
                                 $scope.newFeedUrl = '';
                                 $scope.loadFeeds(function() {
-                                    $scope.activeFeed = feed;
-                                    $scope.loadSummaries(feed);
+                                    $scope.loadSummaries($scope.feeds[feed.id]);
                                 });
                             });
                     });
@@ -90,7 +98,7 @@
                     .all(getRoute('get_feeds'))
                     .getList()
                     .then(function(feeds) {
-                        $scope.unread = feeds[0];
+                        $scope.unread  = feeds[0];
                         $scope.starred = feeds[1];
 
                         angular.forEach(feeds.slice(2), function(feed) {
@@ -200,8 +208,13 @@
                 return Routing.generate(routeName, routeParams, false).slice(1);
             }
 
+            $scope.sortMe = function() {
+                return function(object) {
+                    return object.title;
+                }
+            }
+
             $scope.loadFeeds(function() {
-                $scope.activeFeed = $scope.unread;
                 $scope.loadSummaries($scope.unread);
             });
         });
