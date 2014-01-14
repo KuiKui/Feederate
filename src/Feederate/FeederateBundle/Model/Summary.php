@@ -20,6 +20,11 @@ class Summary
     private $id;
 
     /**
+     * @var integer
+     */
+    private $feedId;
+
+    /**
      * @var string
      *
      */
@@ -77,6 +82,28 @@ class Summary
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param int $feedId
+     *
+     * @return $this
+     */
+    public function setFeedId($feedId)
+    {
+        $this->feedId = $feedId;
+
+        return $this;
+    }
+
+    /**
+     * Get feedId
+     *
+     * @return integer
+     */
+    public function getFeedId()
+    {
+        return $this->feedId;
     }
 
     /**
@@ -256,7 +283,8 @@ class Summary
             ->setTitle($entry->getTitle())
             ->setDescription($entry->getDescription())
             ->setAuthorName($entry->getAuthorName())
-            ->setGeneratedAt($entry->getGeneratedAt());
+            ->setGeneratedAt($entry->getGeneratedAt())
+            ->setFeedId($entry->getFeed()->getId());
 
         if ($userEntry) {
             $this->setIsRead($userEntry->getIsRead());

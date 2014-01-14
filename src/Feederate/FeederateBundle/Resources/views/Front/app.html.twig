@@ -9,13 +9,19 @@
         </div>
         <div class="feeds-content">
             <ul class="nav">
+                <li ng-class="{active:isActiveFeed(unread)}">
+                    <a href="#summaries" ng-click="loadSummaries(unread)">
+                        Unread
+                        <span class="bullet bullet-unread pull-right" ng-show="unread.unread_count">{{ unread.unread_count }}</span>
+                    </a>
+                </li>
                 <li ng-class="{active:isActiveFeed(starred)}">
-                    <a href="#summaries" ng-click="loadStarred()">
+                    <a href="#summaries" ng-click="loadSummaries(starred)">
                         Starred
                         <span class="bullet bullet-unread pull-right" ng-show="starred.unread_count">{{ starred.unread_count }}</span>
                     </a>
                 </li>
-                <li ng-repeat="feed in feeds" ng-class="{active:isActiveFeed(feed)}">
+                <li ng-repeat="feed in feeds | toArray | orderBy:'title'" ng-class="{active:isActiveFeed(feed)}">
                     <a href="#summaries" ng-click="loadSummaries(feed)">
                         {{ feed.title }}
                         <span class="bullet bullet-unread pull-right" ng-show="feed.unread_count">{{ feed.unread_count }}</span>
