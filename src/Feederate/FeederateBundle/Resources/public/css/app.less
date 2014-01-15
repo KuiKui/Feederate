@@ -1,5 +1,5 @@
 @lightBackground: #f3f3ec;
-@highlightBackground: #ecf3ec;
+@highlightBackground: #f9f3ec;
 @darkBackground: #900;
 
 @normalFontSize: 16px;
@@ -8,6 +8,18 @@
 @smallLineHeight: 18px;
 
 @readOpacity: 0.6;
+
+@separatorColor: #848484;
+
+.horizontalThickness () {
+    border: 0;
+    border-top: 1px solid #fcfcfc;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.rightSeparator () {
+    border-right: 1px solid #e5e5e5 - #111;
+}
 
 html,
 body {
@@ -28,7 +40,6 @@ body {
         text-decoration: none;
     }
 }
-
 
 h4 {
     font-size: 16px;
@@ -91,12 +102,12 @@ h4 {
 /*! feeds column | first column */
 
 #feeds {
-    border-right: 1px solid #e5e5e5;
-    position: relative;
     float: left;
-    width: 20%;
     height: 100%;
     max-height: 100%;
+    position: relative;
+    width: 20%;
+    .rightSeparator;
 
     .feeds-toolbar {
         position: absolute;
@@ -151,11 +162,10 @@ h4 {
             }
 
             > li {
+                .horizontalThickness;
                 display: block;
-                padding: 0;
                 margin: 0;
-                border: 0;
-                border-bottom: 1px solid #e5e5e5;
+                padding: 0;
                 position: relative;
             }
 
@@ -188,13 +198,13 @@ h4 {
 /*!#summaries column | second column */
 
 #summaries {
-    border-right: 1px solid #e5e5e5;
     float: left;
-    width: 25%;
     height: 100%;
     max-height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+    width: 25%;
+    .rightSeparator;
 
     .summaries-content {
         display: block;
@@ -213,12 +223,10 @@ h4 {
 
         .nav > li {
             display: block;
-            padding: 0;
             margin: 0;
-            border: 0;
-            border-top: 1px solid #fcfcfc;
-            border-bottom: 1px solid #e5e5e5;
+            padding: 0;
             position: relative;
+            .horizontalThickness;
 
             > a {
                 padding-right: 7px;
@@ -276,8 +284,7 @@ h4 {
         -webkit-overflow-scrolling: touch;
 
         .container {
-            padding-left: 30px;
-            padding-right: 30px;
+            padding: 10px 30px 20px;
             width: 100%;
 
             a {
