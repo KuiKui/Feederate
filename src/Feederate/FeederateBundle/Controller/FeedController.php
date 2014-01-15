@@ -34,18 +34,29 @@ class FeedController extends FOSRestController implements ClassResourceInterface
             ->getRepository('FeederateFeederateBundle:Feed')
             ->findByUser($this->getUser(), [], ['title' => 'ASC']);
 
+        $feeds = $this->getFeedResources($feeds);
+
+        $unreadCount = 0;
+        foreach ($feeds as $feed) {
+            $unreadCount += $feed->getUnreadCount();
+        }
+
         $starredEntries = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:UserEntry')
             ->findBy(['user' => $this->getUser(), 'isStarred' => true]);
-
-        $feeds = $this->getFeedResources($feeds);
 
         $starred = new FeedModel();
         $starred->setTitle('Starred')
             ->setUnreadCount(count($starredEntries));
 
         array_unshift($feeds, $starred);
+
+        $unread = new FeedModel();
+        $unread->setTitle('Unread')
+            ->setUnreadCount($unreadCount);
+
+        array_unshift($feeds, $unread);
 
         return $this->view($feeds, 200);
     }

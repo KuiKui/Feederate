@@ -6,3 +6,21 @@ services:
         class: %feederate.parser.command.class%
         calls:
             - [ setContainer, ['@service_container']]
+
+    feederate.registration.form.type:
+        class: Feederate\FeederateBundle\Form\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags: [{ name: "form.type", alias: "feederate_user_registration" }]
+
+    feederate.invitation.form.type:
+        class: Feederate\FeederateBundle\Form\InvitationFormType
+        arguments: [@feederate.invitation.form.data_transformer]
+        tags: [{ name: "form.type", alias: "feederate_invitation_type" }]
+
+    feederate.invitation.form.data_transformer:
+        class: Feederate\FeederateBundle\Form\DataTransformer\InvitationToCodeTransformer
+        arguments: [@doctrine.orm.entity_manager]
+
+    feederate.user_provider.email:
+        class: Feederate\FeederateBundle\Security\EmailProvider
+        arguments: [@fos_user.user_manager]

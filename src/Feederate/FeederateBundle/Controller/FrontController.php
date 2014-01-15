@@ -19,7 +19,7 @@ class FrontController extends Controller
     {
         $securityContext = $this->get('security.context');
 
-        if ($securityContext->isGranted('ROLE_ADMIN')) {
+        if ($securityContext->isGranted('ROLE_USER')) {
             return $this->appAction();
         } else if ($securityContext->isGranted('IS_AUTHENTICATED_ANONYMOUSLY')) {
             return $this->homeAction();
