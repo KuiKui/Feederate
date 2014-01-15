@@ -9,13 +9,13 @@
         </div>
         <div class="feeds-content">
             <ul class="nav">
-                <li ng-class="{active:isActiveFeed(unread)}">
+                <li ng-class="{active:isActiveFeed(unread)}" id="unread_feed">
                     <a href="#summaries" ng-click="loadSummaries(unread)">
                         Unread
                         <span class="bullet bullet-unread pull-right" ng-show="unread.unread_count">{{ unread.unread_count }}</span>
                     </a>
                 </li>
-                <li ng-class="{active:isActiveFeed(starred)}">
+                <li ng-class="{active:isActiveFeed(starred)}" id="starred_feed">
                     <a href="#summaries" ng-click="loadSummaries(starred)">
                         Starred
                         <span class="bullet bullet-unread pull-right" ng-show="starred.unread_count">{{ starred.unread_count }}</span>
