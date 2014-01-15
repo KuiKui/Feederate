@@ -21,7 +21,7 @@
                         <span class="bullet bullet-unread pull-right" ng-show="starred.unread_count">{{ starred.unread_count }}</span>
                     </a>
                 </li>
-                <li ng-repeat="feed in feeds | toArray | orderBy:'title'" ng-class="{active:isActiveFeed(feed)}">
+                <li ng-repeat="feed in feeds | objectToArray | orderBy:'title'" ng-class="{active:isActiveFeed(feed)}">
                     <a href="#summaries" ng-click="loadSummaries(feed)">
                         {{ feed.title }}
                         <span class="bullet bullet-unread pull-right" ng-show="feed.unread_count">{{ feed.unread_count }}</span>
@@ -38,6 +38,7 @@
                 <li ng-repeat="summary in summaries" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
                     <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary);">
                         <span ng-show="summary.is_starred" class="label label-primary">starred</span>
+                        <div>{{ feeds[summary.feed_id].title }} | {{ summary.generated_at | stringToDate |date:'medium' }}</div>
                         <h4>{{ summary.title }}</h4>
                         <p ng-bind-html="summary.description|characters:100"></p>
                     </a>
@@ -47,7 +48,7 @@
     </div>
     <div id="entry" ng-show="activeSummary">
         <div class="entry-toolbar">
-            <a target="_blank" href="{{ activeFeed.target_url }}">{{ activeFeed.title }}</a>
+            <a target="_blank" href="{{ feeds[activeSummary.feed_id].target_url }}">{{ feeds[activeSummary.feed_id].title }}</a>
             (<a target="_blank" href="{{ entry.target_url }}">View original inline</a>)
             <span class="pull-right">
                 <a class="glyphicon" ng-click="markAsStarred(activeSummary)" ng-class="{'glyphicon-star-empty': !activeSummary.is_starred, 'glyphicon-star': activeSummary.is_starred}"></a>
