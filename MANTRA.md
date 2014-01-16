@@ -1,1 +1,2 @@
-Same product, differents features
+* Same product, differents features.
+* Propose first, choose later.
