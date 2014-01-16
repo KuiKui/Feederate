@@ -12,6 +12,8 @@ use Feederate\FeederateBundle\Entity\Entry;
 
 class FeedParser
 {
+    const NUMBER_ENTRIES_TO_BE_PARSED = 20;
+
     const LOG_INFO    = 'question';
     const LOG_SUCCESS = 'info';
     const LOG_ERROR   = 'error';
@@ -120,7 +122,9 @@ class FeedParser
          * Update/create entry informations
          * Update user entry unread informations
          */
-        foreach ($this->reader as $rss) {
+        while ($this->reader->key() < self::NUMBER_ENTRIES_TO_BE_PARSED && $this->reader->key() < $this->reader->count()) {
+            $rss = $this->reader->current();
+
             $entry = $this->manager
                 ->getRepository('FeederateFeederateBundle:Entry')
                 ->findOneBy(['generatedId' => $rss->getId(), 'feed' => $this->feed]);
@@ -135,7 +139,10 @@ class FeedParser
             }
 
             $this->updateEntry($entry, $rss);
+
+            $this->reader->next();
         }
+
         $this->log("Entries informations updated", self::LOG_SUCCESS);
 
         $this->updateUser();
