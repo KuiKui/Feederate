@@ -12,8 +12,6 @@ use Feederate\FeederateBundle\Entity\Entry;
 
 class FeedParser
 {
-    const NUMBER_ENTRIES_TO_BE_PARSED = 20;
-
     const LOG_INFO    = 'question';
     const LOG_SUCCESS = 'info';
     const LOG_ERROR   = 'error';
@@ -39,6 +37,11 @@ class FeedParser
     private $newEntries = 0;
 
     /**
+     * @var integer
+     */
+    private $limitEntries = 20;
+
+    /**
      * @var OutputInterface
      */
     private $output = null;
@@ -53,6 +56,13 @@ class FeedParser
     {
         $this->feed        = $feed;
         $this->manager     = $manager;
+    }
+
+    public function setLimitEntries($limitEntries)
+    {
+        $this->limitEntries = $limitEntries;
+
+        return $this;
     }
 
     /**
@@ -118,11 +128,11 @@ class FeedParser
         $this->log("Feed informations updated", self::LOG_SUCCESS);
 
         /**
-         * For each elements in reader
+         * For limitEntries elements in reader
          * Update/create entry informations
          * Update user entry unread informations
          */
-        while ($this->reader->key() < self::NUMBER_ENTRIES_TO_BE_PARSED && $this->reader->key() < $this->reader->count()) {
+        while ($this->reader->key() < $this->limitEntries && $this->reader->key() < $this->reader->count()) {
             $rss = $this->reader->current();
 
             $entry = $this->manager

@@ -22,7 +22,8 @@ class ParseCommand extends ContainerAwareCommand
         $this
             ->setName('parse')
             ->setDescription('Parse and saves all feeds')
-            ->addOption('feed', 'f', InputOption::VALUE_REQUIRED, 'feed to parse');
+            ->addOption('feed', 'f', InputOption::VALUE_REQUIRED, 'feed to parse')
+            ->addOption('limit', 'l', InputOption::VALUE_REQUIRED, 'limit entries to be parsed');
     }
 
     protected function getManager()
@@ -49,12 +50,18 @@ class ParseCommand extends ContainerAwareCommand
             }
         }
 
+        $limitEntries = (int) $input->getOption('limit');
+
         foreach ($feeds as $feed) {
             try {
                 $feedParser = new FeedParser($feed, $this->getManager());
-                $feedParser
-                    ->setOutput($output)
-                    ->parse();
+                $feedParser->setOutput($output);
+
+                if ($limitEntries) {
+                    $feedParser->setLimitEntries($limitEntries);
+                }
+
+                $feedParser->parse();
 
             } catch (\Exception $e) {
                 $output->writeln(sprintf("<error>%s</error>", $e->getMessage()));
