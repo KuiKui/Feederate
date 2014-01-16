@@ -41,12 +41,18 @@
 
     var app = angular.module('feederate', ['ngSanitize', 'truncate', 'restangular']);
 
-    app.filter('toArray', function() {
+    app.filter('objectToArray', function() {
         return function(obj) {
             if (!(obj instanceof Object)) return obj;
             return _.map(obj, function(val, key) {
                 return Object.defineProperty(val, '$key', {__proto__: null, value: key});
             });
+        }
+    });
+
+    app.filter('stringToDate', function() {
+        return function(string) {
+            return new Date(string);
         }
     });
 
