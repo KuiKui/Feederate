@@ -14,6 +14,7 @@ use Feederate\FeederateBundle\Entity\Feed;
 use Feederate\FeederateBundle\Entity\UserFeed;
 use Feederate\FeederateBundle\Model\Feed as FeedModel;
 use Feederate\FeederateBundle\Form\FeedType;
+use Feederate\FeederateBundle\Parser\FeedParser;
 
 /**
  * Class FeedController
@@ -114,7 +115,7 @@ class FeedController extends FOSRestController implements ClassResourceInterface
 
         return $this->view($form, 422);
     }
-    
+
     /**
      * Entry list by feed
      *
@@ -127,8 +128,9 @@ class FeedController extends FOSRestController implements ClassResourceInterface
      */
     public function getParseAction($feedId)
     {
-        $feed = $this
-            ->get('doctrine.orm.entity_manager')
+        $manager = $this->get('doctrine.orm.entity_manager');
+
+        $feed = $manager
             ->getRepository('FeederateFeederateBundle:Feed')
             ->findByUser($this->getUser(), ['id' => $feedId]);
 
@@ -136,11 +138,10 @@ class FeedController extends FOSRestController implements ClassResourceInterface
             return $this->view(sprintf('Feed with id %s not found', $feedId), 400);
         }
 
-        $parser = $this->get('feederate.parser.command');
-        $input  = new ArrayInput(array('--feed' => $feed->getId()));
-        $output = new NullOutput();
-
-        $parser->run($input, $output);
+        $feedParser = new FeedParser($feed, $manager);
+        $feedParser
+            ->setLimitEntries(20)
+            ->parse();
 
         return $this->view("OK", 200);
     }
