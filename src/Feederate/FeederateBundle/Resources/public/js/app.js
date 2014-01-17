@@ -1,6 +1,23 @@
 (function () {
     'use strict';
 
+    moment.lang('shortEn', {
+        relativeTime : {
+            past:   "%s",
+            s:  "just now",
+            m:  "1min",
+            mm: "%dmin",
+            h:  "1h",
+            hh: "%dh",
+            d:  "yesterday",
+            dd: "long",
+            M:  "long",
+            MM: "long",
+            y:  "long",
+            yy: "long"
+        }
+    });
+
     angular.module('truncate', [])
         .filter('characters', function () {
             return function (input, chars, breakOnWord) {
@@ -50,9 +67,27 @@
         }
     });
 
-    app.filter('stringToDate', function() {
-        return function(string) {
-            return new Date(string);
+    app.filter('formatDate', function() {
+        return function(string, format) {
+            var date;
+
+            if (format == 'short') {
+                date = moment(string).fromNow();
+
+                if (date.indexOf('long') !== -1) {
+                    var year = '';
+
+                    if (moment(string).format('YYYY') !== moment().format('YYYY')) {
+                        year = ' YYYY';
+                    }
+
+                    date = moment(string).format('D MMM' + year);
+                }
+            } else {
+                date = moment(string).format(format);
+            }
+
+            return date;
         }
     });
 
@@ -170,15 +205,21 @@
                 $scope.activeSummary = summary;
             };
 
-            $scope.markAsRead = function (summary) {
-                if (!summary.is_read) {
+            $scope.markAsRead = function (summary, onlyUnread) {
+                if (onlyUnread === 'undefined' || !onlyUnread || (onlyUnread && !summary.is_read)) {
                     Restangular
                         .oneUrl(getRoute('post_summary_summaries_read', {id: summary.id}))
-                        .customPOST({is_read: true});
+                        .customPOST({is_read: !summary.is_read});
 
-                    summary.is_read = true;
-                    $scope.feeds[summary.feed_id].unread_count--;
-                    $scope.unread.unread_count--;
+                    summary.is_read = !summary.is_read;
+
+                    if (summary.is_read) {
+                        $scope.feeds[summary.feed_id].unread_count--;
+                        $scope.unread.unread_count--;
+                    } else {
+                        $scope.feeds[summary.feed_id].unread_count++;
+                        $scope.unread.unread_count++;
+                    }
                 }
             };
 
