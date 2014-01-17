@@ -1,12 +1,4 @@
-parameters:
-    feederate.parser.command.class: Feederate\FeederateBundle\Command\ParserCommand
-
 services:
-    feederate.parser.command:
-        class: %feederate.parser.command.class%
-        calls:
-            - [ setContainer, ['@service_container']]
-
     feederate.registration.form.type:
         class: Feederate\FeederateBundle\Form\RegistrationFormType
         arguments: [%fos_user.model.user.class%]
