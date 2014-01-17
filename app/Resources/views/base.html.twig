@@ -27,7 +27,7 @@
         '//cdn.jsdelivr.net/restangular/1.2.0/restangular.min.js'
         '//code.jquery.com/jquery-1.10.2.min.js'
         '@FeederateFeederateBundle/Resources/public/bootstrap/js/bootstrap.min.js'
-        '@FeederateFeederateBundle/Resources/public/js/app.js'
+        '@FeederateFeederateBundle/Resources/public/less/app.js'
         '@FOSJsRoutingBundle/Resources/public/js/router.js'
     %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -44,7 +44,6 @@
 
   <body>
 
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     <div class="navbar" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -55,26 +54,26 @@
             <span class="icon-bar"></span>
           </button>
         </div>
-        {% if app.request.attributes.get('_route') != 'feederate_feederate_front_index' %}
         <div class="collapse navbar-collapse pull-left">
           <ul class="nav navbar-nav">
             <li><a href="{{ path('feederate_feederate_front_index') }}">Feederate</a></li>
           </ul>
-        </div><!--/.nav-collapse -->
-        {% endif %}
+        </div>
         <div class="collapse navbar-collapse pull-right">
           <ul class="nav navbar-nav">
-            <li><a href="{{ path('feederate_feederate_settings_index') }}">Settings</a></li>
-            {% if is_granted("ROLE_SUPER_ADMIN") %}
-            <li><a href="{{ path('feederate_feederate_admin_index') }}">Admin</a></li>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+              {% if is_granted("ROLE_SUPER_ADMIN") %}
+                <li><a href="{{ path('feederate_feederate_admin_index') }}">Admin</a></li>
+              {% endif %}
+              <li><a href="{{ path('feederate_feederate_settings_index') }}">Settings</a></li>
+              <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
+            {% else %}
+              <li><a href="{{ path('fos_user_security_login') }}">Sign In</a></li>
             {% endif %}
-            <li class="divider"></li>
-            <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    {% endif %}
 
     <div class="container">
         {% block body %}{% endblock %}
