@@ -38,7 +38,9 @@
                 <li ng-repeat="summary in summaries" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
                     <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary, true);">
                         <span ng-show="summary.is_starred" class="label label-primary">starred</span>
-                        <div>{{ feeds[summary.feed_id].title }}</div><div title="{{ summary.generated_at | formatDate:'YYYY-MM-DD h:mm A' }}">{{ summary.generated_at | formatDate:'short' }}</div>
+                        <div class="metadata">
+                            <div>{{ feeds[summary.feed_id].title }}</div><div class="date" title="{{ summary.generated_at | formatDate:'YYYY-MM-DD h:mm A' }}">{{ summary.generated_at | formatDate:'short' }}</div>
+                        </div>
                         <h4>{{ summary.title }}</h4>
                         <p ng-bind-html="summary.description | characters:100"></p>
                     </a>
