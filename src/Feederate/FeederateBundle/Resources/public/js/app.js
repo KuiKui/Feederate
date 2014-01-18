@@ -70,7 +70,7 @@
         };
     });
 
-    app.controller('BoardCtrl', function BoardCtrl ($scope, Restangular) {
+    app.controller('BoardCtrl', function BoardCtrl ($scope, Restangular, $location, $anchorScroll) {
         angular.element(document).ready(function () {
             $scope.starred       = null;
             $scope.unread        = null;
@@ -94,6 +94,10 @@
                                 $scope.newFeedUrl = '';
                                 $scope.loadFeeds(function() {
                                     $scope.loadSummaries($scope.feeds[feed.id]);
+
+                                    // Auto scroll into active feed
+                                    $location.hash('feed_' + feed.id);
+                                    $anchorScroll();
                                 });
                             });
                     });
@@ -138,7 +142,7 @@
                     $scope.activeSummary = null;
 
                     $scope.loadEntries(feed);
-                }); 
+                });
             };
 
             $scope.isActiveSummary = function (summary) {

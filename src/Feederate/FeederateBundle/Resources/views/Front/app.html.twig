@@ -21,7 +21,7 @@
                         <span class="bullet bullet-unread pull-right" ng-show="starred.unread_count">{{ starred.unread_count }}</span>
                     </a>
                 </li>
-                <li ng-repeat="feed in feeds | objectToArray | orderBy:'title'" ng-class="{active:isActiveFeed(feed)}">
+                <li ng-repeat="feed in feeds | objectToArray | orderBy:'title'" ng-class="{active:isActiveFeed(feed)}" id="feed_{{ feed.id }}">
                     <a href="#summaries" ng-click="loadSummaries(feed)">
                         {{ feed.title }}
                         <span class="bullet bullet-unread pull-right" ng-show="feed.unread_count">{{ feed.unread_count }}</span>
