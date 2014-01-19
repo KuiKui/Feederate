@@ -36,11 +36,13 @@
         <div class="summaries-content">
             <ul class="nav">
                 <li ng-repeat="summary in summaries" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
-                    <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary);">
+                    <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary, true);">
                         <span ng-show="summary.is_starred" class="label label-primary">starred</span>
-                        <div>{{ feeds[summary.feed_id].title }} | {{ summary.generated_at | stringToDate |date:'medium' }}</div>
+                        <div class="metadata">
+                            <div>{{ feeds[summary.feed_id].title }}</div><div class="date" title="{{ summary.generated_at | formatDate:'YYYY-MM-DD h:mm A' }}">{{ summary.generated_at | formatDate:'short' }}</div>
+                        </div>
                         <h4>{{ summary.title }}</h4>
-                        <p ng-bind-html="summary.description|characters:100"></p>
+                        <p ng-bind-html="summary.description | characters:100"></p>
                     </a>
                 </li>
             </ul>
@@ -49,14 +51,15 @@
     <div id="entry" ng-show="activeSummary">
         <div class="entry-toolbar">
             <a target="_blank" href="{{ feeds[activeSummary.feed_id].target_url }}">{{ feeds[activeSummary.feed_id].title }}</a>
-            (<a target="_blank" href="{{ entry.target_url }}">View original inline</a>)
             <span class="pull-right">
-                <a class="glyphicon" ng-click="markAsStarred(activeSummary)" ng-class="{'glyphicon-star-empty': !activeSummary.is_starred, 'glyphicon-star': activeSummary.is_starred}"></a>
+                <a class="glyphicon" title="mark as read/unread" ng-click="markAsRead(activeSummary)" ng-class="{'glyphicon glyphicon-ok-sign': !activeSummary.is_read, 'glyphicon glyphicon-ok-circle': activeSummary.is_read}"></a>
+                <a class="glyphicon" title="star/unstar" ng-click="markAsStarred(activeSummary)" ng-class="{'glyphicon-star-empty': !activeSummary.is_starred, 'glyphicon-star': activeSummary.is_starred}"></a>
             </span>
         </div>
         <div class="entry-content">
             <div class="container">
-                <h2>{{ entry.title }}</h2>
+                <h2><a target="_blank" href="{{ entry.target_url }}">{{ entry.title }}</a></h2>
+                <div class="date">{{ entry.generated_at | formatDate:'MMMM D, YYYY' }} at {{ entry.generated_at | formatDate:'h:mm A' }}</div>
                 <div ng-bind-html="entry.content"></div>
             </div>
         </div>

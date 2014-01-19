@@ -155,13 +155,7 @@ h4 {
             .horizontalThickness;
 
             > a {
-                padding-right: 7px;
-                border-right: 8px solid transparent;
-            }
-
-            &.active > a {
-                background-color: @highlightBackground;
-                border-right: 2px solid @darkBackground;
+                border-right: @selectedCellBorderWidth solid transparent;
             }
 
             p {
@@ -169,6 +163,26 @@ h4 {
                 line-height: @smallLineHeight;
                 opacity: @readOpacity;
                 text-shadow: none;
+            }
+
+            .metadata {
+                font-size: @smallFontSize;
+                line-height: @smallLineHeight;
+                opacity: @readOpacity;
+                overflow: hidden;
+
+                div {
+                    float: left;
+                }
+
+                .date {
+                    float: right;
+                }
+            }
+
+            &.active > a {
+                background-color: @highlightBackground;
+                border-right: @selectedCellBorderWidth solid @darkBackground;
             }
         }
     }
@@ -217,6 +231,13 @@ h4 {
 
             a {
                 color: @darkBackground - #111;
+            }
+
+            .date {
+                font-size: @smallFontSize;
+                line-height: @smallLineHeight;
+                margin-bottom: 15px;
+                opacity: @readOpacity;
             }
         }
     }
