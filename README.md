@@ -1,75 +1,54 @@
-# Installation
+# Babitch
 
-#### Clone du projet :
+Many companies all over the world uses babyfoot to build team spirit. Babitch is a project to **record** babyfoot scores, **archive** them, and **make them easily accessible for** further analysis using a REST API.
 
-```shell
-$ cd /path/to/your/workspace
-$ git clone git@github.com:KuiKui/Feederate.git
-$ cd Feederate
-```
+## Installation
 
-#### Lancement de Vagrant :
-
-Installer vagrant en suivant les instruction de mon [projet chez C2iS](https://github.com/c2is/VagrantBoxes/tree/master/your-lamp-server#your-custom-lamp-server) puis charger l'environnement :
-
-```shell
-$ vagrant up
-```
-
-S'il y a un problème lors du lancement de Vagrant, il faut [relancer VirtualBox](https://coderwall.com/p/ydma0q).
-
-#### Accès au serveur de dev :
-
-L'accès au serveur http se fait à l'adresse `http://localhost:8888`
-
-L'accès au serveur de dev se fait par ssh :
-
-```shell
-$ vagrant ssh
-```
-
-Les sources du projet sont dans le répertoire `/vagrant`
+#### Clone the project
 
 ```
-$ cd /vagrant
+$ git clone https://github.com/M6Web/Babitch.git
+$ cd Babitch
 ```
 
-#### Installation des vendors :
+#### Install dependencies
 
-```shell
+```
 $ curl -s http://getcomposer.org/installer | php
 $ php composer.phar install
 ```
 
-Les paramètres par défaut de la configuration du projet sont correctement pré-remplis, il suffit donc de laisser les valeurs par défaut (en appuyant sur Enter).
+#### Configure database connection
 
-#### Création du modèle:
-
-```shell
-$ php app/console doctrine:database:create
-$ php app/console doctrine:schema:create
-$ php app/console doctrine:fixtures:load
-$ php app/console parse
+```
+$ cp app/config/parameters.yml.dist app/config/parameters.yml
 ```
 
-#### Publication des assets
+Edit this new file to setup your MySQL connection.
 
- ```shell
- $ php app/console assets:install --symlink web
- ```
+## Use
 
-#### Génération des fichiers uniques d'assets **DEV**
+The API documentation is available at `http://babitch-server/api/doc/`  
+You have to create a client to access Babitch's API, or you can use ours : [BabitchClient](https://github.com/M6Web/BabitchClient)
 
-```shell
-$ php app/console cache:clear
-$ php app/console assetic:dump
-```
+## Tests
 
-Lors la modification des assets, il est préférable d'utiliser l'option `--watch` de la commande `dump`.
-
-#### Génération des fichiers uniques d'assets **PROD**
+Create test database
 
 ```shell
-$ php app/console cache:clear --env=prod
-$ php app/console assetic:dump --env=prod
+php app/console doctrine:database:create --env=test
+php app/console doctrine:schema:create --env=test
 ```
+Run tests
+
+```shell
+php bin/behat
+```
+
+## Credits
+
+Developped by the [Cytron Team](http://cytron.fr/) of [M6 Web](http://tech.m6web.fr/).
+
+## License
+
+Babitch is licensed under the [MIT license](LICENSE).
