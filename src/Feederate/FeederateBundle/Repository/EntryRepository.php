@@ -16,13 +16,15 @@ class EntryRepository extends EntityRepository
     /**
      * findStarredByUser
      *
-     * @param User  $user
-     * @param array $criteria
-     * @param array $orderBy
+     * @param User    $user
+     * @param array   $criteria
+     * @param array   $orderBy
+     * @param integer $limit
+     * @param integer $offset
      *
      * @return array The entity instance or the entities collection
      */
-    public function findByUserAndType(User $user, $type, array $criteria = [], array $orderBy = null)
+    public function findByUserAndType(User $user, $type, array $criteria = [], array $orderBy = null, $limit = null, $offset = null)
     {
         $queryBuilder = $this->createQueryBuilder('Entry')
             ->setParameter('user', $user);
@@ -70,6 +72,8 @@ class EntryRepository extends EntityRepository
         }
 
         return $queryBuilder
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }

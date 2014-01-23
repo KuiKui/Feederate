@@ -8,6 +8,7 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
+use Feederate\ControllerExtraBundle\Traits\Pagination;
 use Feederate\FeederateBundle\Entity\Feed;
 use Feederate\FeederateBundle\Entity\Entry;
 use Feederate\FeederateBundle\Entity\UserEntry;
@@ -22,6 +23,7 @@ use Feederate\FeederateBundle\Form\UserEntryStarredType;
  */
 class SummaryController extends FOSRestController implements ClassResourceInterface
 {
+    use Pagination;
 
     /**
      * Summary list by feed
@@ -32,8 +34,11 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
      *     pattern="/feeds/{feedId}/summaries",
      *     requirements={"feedId"="\d+"}
      * )
+     * 
+     * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="Current page index")
+     * @Rest\QueryParam(name="per_page", requirements="\d+", default="20", description="Number of elements displayed per page")
      */
-    public function getFeedSummariesAction($feedId)
+    public function getFeedSummariesAction($feedId, ParamFetcher $paramFetcher)
     {
         $feed = $this
             ->get('doctrine.orm.entity_manager')
@@ -44,10 +49,12 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
             return $this->view(sprintf('Feed with id %s not found', $feedId), 400);
         }
 
+        list($start, $limit) = $this->getStartAndLimitFromParams($paramFetcher);
+
         $entries = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->findBy(['feed' => $feed], ['generatedAt' => 'DESC']);
+            ->findBy(['feed' => $feed], ['generatedAt' => 'DESC'], $limit, $start);
 
         $summaries = [];
 
@@ -74,13 +81,17 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
      * @return \FOS\RestBundle\View\View
      * 
      * @Rest\QueryParam(name="type", requirements="(starred|unread)", nullable=false, default="starred", strict=true, description="Summaries type")
+     * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="Current page index")
+     * @Rest\QueryParam(name="per_page", requirements="\d+", default="20", description="Number of elements displayed per page")
      */
     public function cgetAction(ParamFetcher $paramFetcher)
     {
+        list($start, $limit) = $this->getStartAndLimitFromParams($paramFetcher);
+
         $entries = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->findByUserAndType($this->getUser(), $paramFetcher->get('type'), [], ['generatedAt' => 'DESC']);
+            ->findByUserAndType($this->getUser(), $paramFetcher->get('type'), [], ['generatedAt' => 'DESC'], $limit, $start);
 
         $summaries = [];
 
