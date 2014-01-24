@@ -144,7 +144,8 @@
                     $scope.summaries     = {};
                     $scope.summariesDays = [];
                     $scope.currentPage   = 0;
-                    $scope.noMoreSummary = false;  
+                    $scope.noMoreSummary = false;
+                    $scope.activeSummary = null;
                 }
 
                 if ($scope.summariesAreLoading || $scope.noMoreSummary) {
@@ -180,8 +181,7 @@
                         }
                         $scope.summaries[day].push(summary);
                     });
-
-                    $scope.activeSummary = null;  
+                    
                     $scope.currentPage++;
                     $scope.loadEntries(feed);
                 });
