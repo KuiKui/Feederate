@@ -75,7 +75,7 @@
         };
     });
 
-    app.controller('BoardCtrl', function BoardCtrl ($scope, Restangular, $location, $anchorScroll) {
+    app.controller('BoardCtrl', function BoardCtrl ($scope, $filter, Restangular, $location, $anchorScroll) {
         angular.element(document).ready(function () {
             $scope.starred             = null;
             $scope.unread              = null;
