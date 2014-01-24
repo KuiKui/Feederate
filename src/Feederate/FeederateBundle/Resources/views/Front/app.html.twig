@@ -34,10 +34,10 @@
     </div>
     <div id="summaries">
         <div class="summaries-content" infinite-scroll="loadSummaries(activeFeed, false)" infinite-scroll-distance="1" infinite-scroll-disabled="summaryLoadIsBusy()" infinite-scroll-immediate-check="false">
-            <div ng-repeat="summariesByDay in summaries | objectToArray | arrayReverse" ng-class="{day: isUnreadFeed(activeFeed)}">
-                <div ng-show="isUnreadFeed(activeFeed)">{{ summariesByDay[0].generated_at | formatDate:'short' }}</div>
+            <div ng-repeat="day in summariesDays" ng-class="{day: isUnreadFeed(activeFeed)}">
+                <div ng-show="isUnreadFeed(activeFeed)">{{ day | formatDate:'short' }}</div>
                 <ul class="nav">
-                    <li ng-repeat="summary in summariesByDay" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
+                    <li ng-repeat="summary in summaries[day]" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
                         <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary, true);">
                             <span ng-show="summary.is_starred" class="label label-primary">starred</span>
                             <div class="metadata">

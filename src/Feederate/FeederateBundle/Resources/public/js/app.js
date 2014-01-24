@@ -86,6 +86,7 @@
             $scope.currentPage         = 0;
             $scope.feeds               = {};
             $scope.entries             = [];
+            $scope.summariesDays       = [];
             $scope.summaries           = {};
 
             $scope.addFeed = function () {
@@ -141,6 +142,7 @@
 
                 if (resetFeed = (resetFeed === undefined ? true : resetFeed)) {
                     $scope.summaries     = {};
+                    $scope.summariesDays = [];
                     $scope.currentPage   = 0;
                     $scope.noMoreSummary = false;  
                 }
@@ -150,6 +152,7 @@
                 }
 
                 $scope.summariesAreLoading = true;
+                $scope.activeFeed          = feed;
 
                 if (type = getFeedType(feed)) {
                     summaries = Restangular
@@ -162,7 +165,6 @@
                 }
 
                 summaries.then(function(summaries) {
-                    $scope.activeFeed          = feed;
                     $scope.summariesAreLoading = false; 
 
                     if (!summaries.length) {
@@ -171,8 +173,9 @@
                     }
 
                     angular.forEach(summaries, function(summary) {
-                        var day = $filter('formatDate')(summary.generated_at, 'YYYYMMDD');
-                        if ($scope.summaries[day] === undefined) {
+                        var day = $filter('formatDate')(summary.generated_at, 'YYYY-MM-DD');
+                        if ($scope.summariesDays.indexOf(day) === -1) {
+                            $scope.summariesDays.push(day);
                             $scope.summaries[day] = [];
                         }
                         $scope.summaries[day].push(summary);
