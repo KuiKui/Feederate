@@ -18,45 +18,7 @@
         }
     });
 
-    angular.module('truncate', [])
-        .filter('characters', function () {
-            return function (input, chars, breakOnWord) {
-                if (isNaN(chars)) return input;
-                if (chars <= 0) return '';
-                if (input && input.length >= chars) {
-                    input = input.substring(0, chars);
-
-                    if (!breakOnWord) {
-                        var lastspace = input.lastIndexOf(' ');
-                        //get last space
-                        if (lastspace !== -1) {
-                            input = input.substr(0, lastspace);
-                        }
-                    }else{
-                        while(input.charAt(input.length-1) == ' '){
-                            input = input.substr(0, input.length -1);
-                        }
-                    }
-                    return input + '...';
-                }
-                return input;
-            };
-        })
-        .filter('words', function () {
-            return function (input, words) {
-                if (isNaN(words)) return input;
-                if (words <= 0) return '';
-                if (input) {
-                    var inputWords = input.split(/\s+/);
-                    if (inputWords.length > words) {
-                        input = inputWords.slice(0, words).join(' ') + '...';
-                    }
-                }
-                return input;
-            };
-        });
-
-    var app = angular.module('feederate', ['ngSanitize', 'truncate', 'restangular']);
+    var app = angular.module('feederate', ['ngSanitize', 'truncate', 'restangular', 'infinite-scroll']);
 
     app.filter('objectToArray', function() {
         return function(obj) {
@@ -107,12 +69,16 @@
 
     app.controller('BoardCtrl', function BoardCtrl ($scope, Restangular, $location, $anchorScroll) {
         angular.element(document).ready(function () {
-            $scope.starred       = null;
-            $scope.unread        = null;
-            $scope.activeFeed    = null;
-            $scope.activeSummary = null;
-            $scope.feeds         = {};
-            $scope.entries       = [];
+            $scope.starred             = null;
+            $scope.unread              = null;
+            $scope.activeFeed          = null;
+            $scope.activeSummary       = null;
+            $scope.summariesAreLoading = false;
+            $scope.noMoreSummary       = false;
+            $scope.currentPage         = 0;
+            $scope.feeds               = {};
+            $scope.entries             = [];
+            $scope.summaries           = [];
 
             $scope.addFeed = function () {
                 Restangular
@@ -143,8 +109,8 @@
                     .all(getRoute('get_feeds'))
                     .getList()
                     .then(function(feeds) {
-                        $scope.unread  = feeds[0];
-                        $scope.starred = feeds[1];
+                        $scope.unread      = feeds[0];
+                        $scope.starred     = feeds[1];
 
                         angular.forEach(feeds.slice(2), function(feed) {
                             $scope.feeds[feed.id] = feed;
@@ -158,27 +124,53 @@
                 return angular.equals(feed, $scope.activeFeed);
             };
 
-            $scope.loadSummaries = function (feed) {
+            $scope.loadSummaries = function (feed, resetFeed) {
                 var summaries, type;
+
+                if (resetFeed = (resetFeed === undefined ? true : resetFeed)) {
+                    $scope.summaries     = [];
+                    $scope.currentPage   = 0;
+                    $scope.noMoreSummary = false;  
+                }
+
+                if ($scope.summariesAreLoading || $scope.noMoreSummary) {
+                    return;
+                }
+
+                $scope.summariesAreLoading = true;
 
                 if (type = getFeedType(feed)) {
                     summaries = Restangular
                         .all(getRoute('get_summaries'))
-                        .getList({type: type});
+                        .getList({type: type, page: $scope.currentPage + 1});
                 } else {
                     summaries = Restangular
                         .one(getRoute('get_feeds'), feed.id)
-                        .getList('summaries');
+                        .getList('summaries', {page: $scope.currentPage + 1});
                 }
 
                 summaries.then(function(summaries) {
-                    $scope.summaries     = summaries;
-                    $scope.activeFeed    = feed;
-                    $scope.activeSummary = null;
+                    $scope.activeFeed          = feed;
+                    $scope.summariesAreLoading = false; 
 
+                    if (!summaries.length) {
+                        $scope.noMoreSummary = true;   
+                        return;
+                    }
+
+                    angular.forEach(summaries, function(summary) {
+                        $scope.summaries.push(summary);
+                    });
+
+                    $scope.activeSummary = null;  
+                    $scope.currentPage++;
                     $scope.loadEntries(feed);
                 });
             };
+
+            $scope.summaryLoadIsBusy = function () {
+                return $scope.noMoreSummary || $scope.summariesAreLoading;
+            }
 
             $scope.isActiveSummary = function (summary) {
                 return angular.equals(summary, $scope.activeSummary);
@@ -190,11 +182,11 @@
                 if (type = getFeedType(feed)) {
                     entries = Restangular
                         .all(getRoute('get_entries'))
-                        .getList({type: type});
+                        .getList({type: type, page: $scope.currentPage});
                 } else {
                     entries = Restangular
                         .one(getRoute('get_feeds'), feed.id)
-                        .getList('entries');
+                        .getList('entries', {page: $scope.currentPage});
                 }
 
                 entries.then(function(entries) {
@@ -210,7 +202,7 @@
             };
 
             $scope.markAsRead = function (summary, onlyUnread) {
-                if (onlyUnread === 'undefined' || !onlyUnread || (onlyUnread && !summary.is_read)) {
+                if (onlyUnread === undefined || !onlyUnread || (onlyUnread && !summary.is_read)) {
                     Restangular
                         .oneUrl(getRoute('post_summary_summaries_read', {id: summary.id}))
                         .customPOST({is_read: !summary.is_read});
@@ -252,9 +244,7 @@
             }
 
             var getRoute = function(routeName, routeParams) {
-                if (routeParams === 'undefined') {
-                    var routeParams = {};
-                }
+                routeParams = (routeParams === undefined ? {} : routeParams);
 
                 return Routing.generate(routeName, routeParams, false).slice(1);
             }

@@ -8,6 +8,7 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
+use Feederate\ControllerExtraBundle\Traits\Pagination;
 use Feederate\FeederateBundle\Entity\Feed;
 use Feederate\FeederateBundle\Entity\Entry;
 
@@ -18,6 +19,7 @@ use Feederate\FeederateBundle\Entity\Entry;
  */
 class EntryController extends FOSRestController implements ClassResourceInterface
 {
+    use Pagination;
 
     /**
      * Entry list
@@ -27,13 +29,17 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
      * @return \FOS\RestBundle\View\View
      * 
      * @Rest\QueryParam(name="type", requirements="(starred|unread)", nullable=false, default="starred", strict=true, description="Summaries type")
+     * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="Current page index")
+     * @Rest\QueryParam(name="per_page", requirements="\d+", default="20", description="Number of elements displayed per page")
      */
     public function cgetAction(ParamFetcher $paramFetcher)
     {
+        list($start, $limit) = $this->getStartAndLimitFromParams($paramFetcher);
+
         $entries = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->findByUserAndType($this->getUser(), $paramFetcher->get('type'), [], ['generatedAt' => 'DESC']);
+            ->findByUserAndType($this->getUser(), $paramFetcher->get('type'), [], ['generatedAt' => 'DESC'], $limit, $start);
 
         return $this->view($entries, 200);
     }
@@ -68,8 +74,11 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
      *     pattern="/feeds/{feedId}/entries",
      *     requirements={"feedId"="\d+"}
      * )
+     * 
+     * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="Current page index")
+     * @Rest\QueryParam(name="per_page", requirements="\d+", default="20", description="Number of elements displayed per page")
      */
-    public function getFeedEntriesAction($feedId)
+    public function getFeedEntriesAction($feedId, ParamFetcher $paramFetcher)
     {
         $feed = $this
             ->get('doctrine.orm.entity_manager')
@@ -80,10 +89,12 @@ class EntryController extends FOSRestController implements ClassResourceInterfac
             return $this->view(sprintf('Feed with id %s not found', $feedId), 400);
         }
 
+        list($start, $limit) = $this->getStartAndLimitFromParams($paramFetcher);
+
         $entities = $this
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FeederateFeederateBundle:Entry')
-            ->findBy(['feed' => $feed], ['generatedAt' => 'DESC']);
+            ->findBy(['feed' => $feed], ['generatedAt' => 'DESC'], $limit, $start);
 
         return $this->view($entities, 200);
     }

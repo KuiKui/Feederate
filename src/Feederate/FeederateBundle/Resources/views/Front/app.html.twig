@@ -33,7 +33,7 @@
         </div>
     </div>
     <div id="summaries">
-        <div class="summaries-content">
+        <div class="summaries-content" infinite-scroll="loadSummaries(activeFeed, false)" infinite-scroll-distance="1" infinite-scroll-disabled="summaryLoadIsBusy()" infinite-scroll-immediate-check="false">
             <ul class="nav">
                 <li ng-repeat="summary in summaries" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
                     <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary, true);">
@@ -46,6 +46,7 @@
                     </a>
                 </li>
             </ul>
+            <div ng-show='summariesAreLoading'>Loading data...</div>
         </div>
     </div>
     <div id="entry" ng-show="activeSummary">
