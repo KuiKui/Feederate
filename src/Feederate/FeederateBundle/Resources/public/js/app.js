@@ -29,6 +29,14 @@
         }
     });
 
+    app.filter('arrayReverse', function() {
+        return function(array) {
+            if (array) {
+                return array.slice().reverse();
+            }
+        };
+    });
+
     app.filter('formatDate', function() {
         return function(string, format) {
             var date;
@@ -78,7 +86,7 @@
             $scope.currentPage         = 0;
             $scope.feeds               = {};
             $scope.entries             = [];
-            $scope.summaries           = [];
+            $scope.summaries           = {};
 
             $scope.addFeed = function () {
                 Restangular
@@ -124,11 +132,15 @@
                 return angular.equals(feed, $scope.activeFeed);
             };
 
+            $scope.isUnreadFeed = function (feed) {
+                return angular.equals(feed, $scope.unread);
+            };
+
             $scope.loadSummaries = function (feed, resetFeed) {
                 var summaries, type;
 
                 if (resetFeed = (resetFeed === undefined ? true : resetFeed)) {
-                    $scope.summaries     = [];
+                    $scope.summaries     = {};
                     $scope.currentPage   = 0;
                     $scope.noMoreSummary = false;  
                 }
@@ -159,7 +171,11 @@
                     }
 
                     angular.forEach(summaries, function(summary) {
-                        $scope.summaries.push(summary);
+                        var day = $filter('formatDate')(summary.generated_at, 'YYYYMMDD');
+                        if ($scope.summaries[day] === undefined) {
+                            $scope.summaries[day] = [];
+                        }
+                        $scope.summaries[day].push(summary);
                     });
 
                     $scope.activeSummary = null;  

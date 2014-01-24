@@ -143,6 +143,14 @@ h4 {
         transition: top .2s ease;
         -webkit-overflow-scrolling: touch;
 
+        .day {
+            border-bottom: 3px double @darkBackground;
+
+            &:nth-last-child(2) {
+                border: 0 none;
+            }
+        }
+
         .nav .read a > * {
             opacity: @readOpacity;
         }
