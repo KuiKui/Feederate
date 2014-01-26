@@ -1,8 +1,33 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-<h1>Home</h1>
-<ul>
-    <li><a href="{{ path('fos_user_registration_register') }}">Sign Up</a></li>
-</ul>
+<div class="home">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbo">
+                <h1>RSS Reader.</h1>
+                <p class="lead">Simple online RSS reader with some special features.</p>
+                <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default">Sign Up</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <h3><span class="glyphicon glyphicon-book"></span> Readable</h3>
+            <p>We try to offer the best possible reading experience. Multiple skins are available, just choose yours.</p>
+        </div>
+        <div class="col-md-3">
+            <h3><span class="glyphicon glyphicon-phone"></span> Everywhere</h3>
+            <p>Responsive toussa.</p>
+        </div>
+        <div class="col-md-3">
+            <h3><span class="glyphicon glyphicon-cloud-download"></span> Integration</h3>
+            <p>GitHub integration toussa.</p>
+        </div>
+        <div class="col-md-3">
+            <h3><span class="glyphicon glyphicon-wrench"></span> Customizable</h3>
+            <p>Thanks to our REST API, you can manage your feeds the way you want. You can even create your own dedicated client.</p>
+        </div>
+    </div>
+</div>
 {% endblock %}
