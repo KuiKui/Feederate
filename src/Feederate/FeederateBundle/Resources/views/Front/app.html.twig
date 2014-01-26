@@ -34,18 +34,23 @@
     </div>
     <div id="summaries">
         <div class="summaries-content" infinite-scroll="loadSummaries(activeFeed, false)" infinite-scroll-distance="1" infinite-scroll-disabled="summaryLoadIsBusy()" infinite-scroll-immediate-check="false">
-            <ul class="nav">
-                <li ng-repeat="summary in summaries" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
-                    <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary, true);">
-                        <span ng-show="summary.is_starred" class="label label-primary">starred</span>
-                        <div class="metadata">
-                            <div>{{ feeds[summary.feed_id].title }}</div><div class="date" title="{{ summary.generated_at | formatDate:'YYYY-MM-DD h:mm A' }}">{{ summary.generated_at | formatDate:'short' }}</div>
-                        </div>
-                        <h4>{{ summary.title }}</h4>
-                        <p ng-bind-html="summary.description | characters:100"></p>
-                    </a>
-                </li>
-            </ul>
+            <div>
+                <div ng-repeat="day in summariesDays" ng-class="{day: isUnreadFeed(activeFeed)}">
+                    <div ng-show="isUnreadFeed(activeFeed)" class="day-group">{{ day | formatDate:'short' }}</div>
+                    <ul class="nav">
+                        <li ng-repeat="summary in summaries[day]" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
+                            <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary, true);">
+                                <span ng-show="summary.is_starred" class="label label-primary">starred</span>
+                                <div class="metadata">
+                                    <div>{{ feeds[summary.feed_id].title }}</div><div class="date" title="{{ summary.generated_at | formatDate:'YYYY-MM-DD h:mm A' }}">{{ summary.generated_at | formatDate:'short' }}</div>
+                                </div>
+                                <h4>{{ summary.title }}</h4>
+                                <p ng-bind-html="summary.description | characters:100"></p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div ng-show='summariesAreLoading'>Loading data...</div>
         </div>
     </div>

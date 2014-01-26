@@ -80,11 +80,11 @@ h4 {
             }
 
             .bullet-unread {
-                background-color: @darkBackground;
+                background-color: @mainColor;
             }
 
             > li {
-                .horizontalThickness;
+                .bottomSeparator;
                 display: block;
                 margin: 0;
                 padding: 0;
@@ -93,29 +93,26 @@ h4 {
                 > a {
                     font-size: 14px;
                     padding-right: 7px;
-                    border-right: 2px solid transparent;
                 }
             }
 
             > li.active {
                 > a {
                     background-color: @highlightBackground;
-                    border-right: 2px solid @darkBackground;
                 }
             }
         }
     }
 
     .feeds-footer {
-        background-color: @highlightBackground;
-        position: absolute;
+        background-color: @darkBackground;
         bottom: 0;
-        left: 0;
-        width: 100%;
         height: 37px;
+        left: 0;
         line-height: 37px;
         padding: 0 15px;
-        border-top: 1px solid #e5e5e5;
+        position: absolute;
+        width: 100%;
     }
 }
 
@@ -143,6 +140,14 @@ h4 {
         transition: top .2s ease;
         -webkit-overflow-scrolling: touch;
 
+        .day-group {
+            background-color: @darkBackground;
+            color: @normalFontColor;
+            font-size: @smallFontSize;
+            line-height: @smallLineHeight;
+            text-align: center;
+        }
+
         .nav .read a > * {
             opacity: @readOpacity;
         }
@@ -152,11 +157,7 @@ h4 {
             margin: 0;
             padding: 0;
             position: relative;
-            .horizontalThickness;
-
-            > a {
-                border-right: @selectedCellBorderWidth solid transparent;
-            }
+            .bottomSeparator;
 
             p {
                 font-size: @smallFontSize;
@@ -182,7 +183,6 @@ h4 {
 
             &.active > a {
                 background-color: @highlightBackground;
-                border-right: @selectedCellBorderWidth solid @darkBackground;
             }
         }
     }
@@ -200,14 +200,21 @@ h4 {
     max-height: 100%;
 
     .entry-toolbar {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
+        background-color: @darkBackground;
         height: 37px;
+        left: 0;
         line-height: 37px;
         padding: 0 15px;
-        border-bottom: 1px solid #CCC;
+        position: absolute;
+        top: 0;
+        width: 100%;
+
+        .pull-right {
+            .glyphicon {
+                line-height: inherit;
+                margin-left: 5px;
+            }
+        }
     }
 
     .entry-content {
@@ -230,7 +237,7 @@ h4 {
             width: 100%;
 
             a {
-                color: @darkBackground - #111;
+                color: @mainColor - #111;
             }
 
             .date {

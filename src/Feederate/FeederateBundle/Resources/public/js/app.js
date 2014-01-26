@@ -29,6 +29,14 @@
         }
     });
 
+    app.filter('arrayReverse', function() {
+        return function(array) {
+            if (array) {
+                return array.slice().reverse();
+            }
+        };
+    });
+
     app.filter('formatDate', function() {
         return function(string, format) {
             var date;
@@ -67,7 +75,7 @@
         };
     });
 
-    app.controller('BoardCtrl', function BoardCtrl ($scope, Restangular, $location, $anchorScroll) {
+    app.controller('BoardCtrl', function BoardCtrl ($scope, $filter, Restangular, $location, $anchorScroll) {
         angular.element(document).ready(function () {
             $scope.starred             = null;
             $scope.unread              = null;
@@ -78,7 +86,8 @@
             $scope.currentPage         = 0;
             $scope.feeds               = {};
             $scope.entries             = [];
-            $scope.summaries           = [];
+            $scope.summariesDays       = [];
+            $scope.summaries           = {};
 
             $scope.addFeed = function () {
                 Restangular
@@ -124,13 +133,19 @@
                 return angular.equals(feed, $scope.activeFeed);
             };
 
+            $scope.isUnreadFeed = function (feed) {
+                return angular.equals(feed, $scope.unread);
+            };
+
             $scope.loadSummaries = function (feed, resetFeed) {
                 var summaries, type;
 
                 if (resetFeed = (resetFeed === undefined ? true : resetFeed)) {
-                    $scope.summaries     = [];
+                    $scope.summaries     = {};
+                    $scope.summariesDays = [];
                     $scope.currentPage   = 0;
-                    $scope.noMoreSummary = false;  
+                    $scope.noMoreSummary = false;
+                    $scope.activeSummary = null;
                 }
 
                 if ($scope.summariesAreLoading || $scope.noMoreSummary) {
@@ -138,6 +153,7 @@
                 }
 
                 $scope.summariesAreLoading = true;
+                $scope.activeFeed          = feed;
 
                 if (type = getFeedType(feed)) {
                     summaries = Restangular
@@ -150,7 +166,6 @@
                 }
 
                 summaries.then(function(summaries) {
-                    $scope.activeFeed          = feed;
                     $scope.summariesAreLoading = false; 
 
                     if (!summaries.length) {
@@ -159,10 +174,14 @@
                     }
 
                     angular.forEach(summaries, function(summary) {
-                        $scope.summaries.push(summary);
+                        var day = $filter('formatDate')(summary.generated_at, 'YYYY-MM-DD');
+                        if ($scope.summariesDays.indexOf(day) === -1) {
+                            $scope.summariesDays.push(day);
+                            $scope.summaries[day] = [];
+                        }
+                        $scope.summaries[day].push(summary);
                     });
-
-                    $scope.activeSummary = null;  
+                    
                     $scope.currentPage++;
                     $scope.loadEntries(feed);
                 });
