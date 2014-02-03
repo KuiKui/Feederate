@@ -20,8 +20,8 @@ class ImporterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type', 'choice', array(
-                'choices' => array_combine(Importer::getImporters(), Importer::getImporters())
+            ->add('platform', 'choice', array(
+                'choices' => array_combine(Importer::getPlatforms(), Importer::getPlatforms())
             ))
             ->add('attachment', 'file');
     }

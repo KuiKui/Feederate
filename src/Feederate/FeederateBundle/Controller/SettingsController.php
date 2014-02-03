@@ -26,7 +26,7 @@ class SettingsController extends Controller
 
     /**
      * Import feedbin action
-     * 
+     *
      * @Route("/settings/import")
      * @Template()
      */
@@ -41,7 +41,7 @@ class SettingsController extends Controller
             if ($form->isValid()) {
 
                 $viewParameters['status'] = $this->get('feederate.importer.importer')
-                    ->setType($form['type']->getData())
+                    ->setPlatform($form['platform']->getData())
                     ->import($form['attachment']->getData()->getPathname());
             }
         }

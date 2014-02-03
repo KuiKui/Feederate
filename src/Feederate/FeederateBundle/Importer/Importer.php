@@ -4,31 +4,31 @@ namespace Feederate\FeederateBundle\Importer;
 
 class Importer
 {
-    const IMPORTER_CLASS_PATTERN = 'Feederate\FeederateBundle\Importer\%sImporter';
+    const IMPORTER_CLASS_PATTERN = 'Feederate\FeederateBundle\Importer\Platform\%sPlatform';
 
-    const IMPORTER_FEEDIN = 'Feedbin';
+    const IMPORTER_PLATFORM_FEEDIN = 'Feedbin';
 
     protected $securityContext;
 
     protected $mananger;
 
-    protected $type;
+    protected $platform;
 
     /**
-     * Returns all importer allowed
-     * 
+     * Returns all platforms allowed
+     *
      * @return array
      */
-    public static function getImporters()
+    public static function getPlatforms()
     {
         return array(
-            self::IMPORTER_FEEDIN,
+            self::IMPORTER_PLATFORM_FEEDIN,
         );
     }
 
     /**
      * Constructor
-     * 
+     *
      * @param EntityManager $manager
      */
     public function __construct($securityContext, $manager)
@@ -39,7 +39,7 @@ class Importer
 
     /**
      * Set securityContext
-     * 
+     *
      * @return this
      */
     public function setSecurityContext($securityContext)
@@ -51,7 +51,7 @@ class Importer
 
     /**
      * Get securityContext
-     * 
+     *
      * @return SecurityContext
      */
     public function getSecurityContext()
@@ -61,7 +61,7 @@ class Importer
 
     /**
      * Set manager
-     * 
+     *
      * @return this
      */
     public function setManager($manager)
@@ -73,7 +73,7 @@ class Importer
 
     /**
      * Get manager
-     * 
+     *
      * @return EntityManager
      */
     public function getManager()
@@ -82,44 +82,44 @@ class Importer
     }
 
     /**
-     * Set type
-     * 
-     * @param string $type
+     * Set platform
+     *
+     * @param string $platform
      *
      * @return this
      */
-    public function setType($type)
+    public function setPlatform($platform)
     {
-        $this->type = $type;
+        $this->platform = $platform;
 
         return $this;
     }
 
     /**
-     * Get type
-     * 
+     * Get platform
+     *
      * @return string
      */
-    public function getType()
+    public function getPlatform()
     {
-        return $this->type;
+        return $this->platform;
     }
 
     /**
      * Import file
-     * 
+     *
      * @return array
      */
     public function import($file)
     {
-        $importerclass = sprintf(self::IMPORTER_CLASS_PATTERN, $this->getType());
+        $platformclass = sprintf(self::IMPORTER_CLASS_PATTERN, $this->getType());
 
-        $importer = new $importerclass($this->getSecurityContext(), $this->getManager());
-        $importer->import($file);
+        $platform = new $platformclass($this->getSecurityContext(), $this->getManager());
+        $platform->import($file);
 
         return array(
-            'errors' => $importer->getErrors(),
-            'parsed' => $importer->getParsed(),
+            'errors' => $platform->getErrors(),
+            'parsed' => $platform->getParsed(),
         );
     }
 }
