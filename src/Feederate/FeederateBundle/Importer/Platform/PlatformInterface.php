@@ -6,7 +6,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Doctrine\ORM\EntityManager;
 
 /**
- *
+ * PlatformInterface class
  */
 interface PlatformInterface
 {

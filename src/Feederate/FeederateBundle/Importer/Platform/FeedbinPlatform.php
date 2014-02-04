@@ -6,6 +6,9 @@ use Feederate\FeederateBundle\Entity\Feed;
 use Feederate\FeederateBundle\Entity\UserFeed;
 use Feederate\FeederateBundle\Parser\FeedParser;
 
+/**
+ * FeedbinPlatform class
+ */
 class FeedbinPlatform extends AbstractPlatform
 {
     /**

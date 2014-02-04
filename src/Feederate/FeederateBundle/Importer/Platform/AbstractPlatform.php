@@ -7,6 +7,9 @@ use Doctrine\ORM\EntityManager;
 
 use Feederate\FeederateBundle\Entity\Feed;
 
+/**
+ * AbstractPlatform class
+ */
 abstract class AbstractPlatform implements PlatformInterface
 {
     /**

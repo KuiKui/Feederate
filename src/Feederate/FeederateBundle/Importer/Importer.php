@@ -2,6 +2,9 @@
 
 namespace Feederate\FeederateBundle\Importer;
 
+/**
+ * Importer class
+ */
 class Importer
 {
     const IMPORTER_CLASS_PATTERN = 'Feederate\FeederateBundle\Importer\Platform\%sPlatform';
@@ -112,7 +115,7 @@ class Importer
      */
     public function import($file)
     {
-        $platformclass = sprintf(self::IMPORTER_CLASS_PATTERN, $this->getType());
+        $platformclass = sprintf(self::IMPORTER_CLASS_PATTERN, $this->getPlatform());
 
         $platform = new $platformclass($this->getSecurityContext(), $this->getManager());
         $platform->import($file);
