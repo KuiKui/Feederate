@@ -2,7 +2,7 @@
 
 {% block body %}
 {% verbatim %}
-<div id="feederate" ng-app="feederate" ng-controller="BoardCtrl">
+<div id="feederate" ng-app="feederate" ng-controller="BoardCtrl" ng-class="focusArea">
     <div id="feeds">
         <div class="feeds-toolbar">
             <input ng-enter="addFeed()" ng-model="newFeedUrl" type="text" class="subscribtion" placeholder="Adding a new feed here..">

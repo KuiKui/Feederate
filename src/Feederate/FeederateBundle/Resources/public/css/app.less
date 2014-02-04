@@ -99,6 +99,7 @@ h4 {
             > li.active {
                 > a {
                     background-color: @highlightBackground;
+                    color: @darkFontColor;
                 }
             }
         }
@@ -106,6 +107,7 @@ h4 {
 
     .feeds-footer {
         background-color: @darkBackground;
+        color: @darkFontColor;
         bottom: 0;
         height: 37px;
         left: 0;
@@ -142,7 +144,7 @@ h4 {
 
         .day-group {
             background-color: @darkBackground;
-            color: @normalFontColor;
+            color: @darkFontColor;
             font-size: @smallFontSize;
             line-height: @smallLineHeight;
             text-align: center;
@@ -201,6 +203,7 @@ h4 {
 
     .entry-toolbar {
         background-color: @darkBackground;
+        color: @darkFontColor;
         height: 37px;
         left: 0;
         line-height: 37px;
@@ -245,6 +248,95 @@ h4 {
                 line-height: @smallLineHeight;
                 margin-bottom: 15px;
                 opacity: @readOpacity;
+            }
+        }
+    }
+}
+
+
+@media (min-width:320px) {
+    body {
+        #feederate {
+            overflow: hidden;
+
+            &.feeds {
+                #feeds { z-index: 100; }
+                #summaries { z-index: 0; }
+                #entry { z-index: 0; }
+            }
+
+            &.summaries {
+                #feeds { z-index: 0; }
+                #summaries { z-index: 100; }
+                #entry { z-index: 0; }
+            }
+
+            &.entry {
+                #feeds { z-index: 0; }
+                #summaries { z-index: 0; }
+                #entry { z-index: 100; }
+            }
+
+            #feeds,
+            #summaries,
+            #entry {
+                z-index: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background-color: @lightBackground;
+            }
+        }
+    }
+}
+@media (min-width:641px) {
+    body {
+        #feederate {
+            overflow: hidden;
+
+            &.feeds,
+            &.summaries {
+                #feeds { z-index: 100; }
+                #summaries { z-index: 100; }
+                #entry { z-index: 0; }
+            }
+
+            &.entry {
+                #feeds { z-index: 0; }
+                #summaries { z-index: 0; }
+                #entry { z-index: 100; }
+            }
+
+            #feeds,
+            #summaries {
+                position: relative;
+                width: 50%;
+                z-index: 100;
+            }
+            #entry {
+                width: 100%;
+                z-index: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+        }
+    }
+}
+@media (min-width:1025px) {
+    body {
+        #feederate {
+            #feeds {
+                width: 20%;
+            }
+            #summaries {
+                width: 25%;
+            }
+            #entry {
+                width: 55%;
+                position: relative;
             }
         }
     }
