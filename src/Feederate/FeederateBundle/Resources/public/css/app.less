@@ -92,7 +92,14 @@ h4 {
 
                 > a {
                     font-size: 14px;
-                    padding-right: 7px;
+
+                    span.title {
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        display: block;
+                        overflow: hidden;
+                        margin-right: 40px;
+                    }
                 }
             }
 
@@ -174,12 +181,16 @@ h4 {
                 opacity: @readOpacity;
                 overflow: hidden;
 
-                div {
-                    float: left;
+                span.title {
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    display: block;
+                    overflow: hidden;
                 }
 
-                .date {
+                span.date {
                     float: right;
+                    margin-left: 10px;
                 }
             }
 
@@ -223,6 +234,14 @@ h4 {
         top: 0;
         width: 100%;
 
+        & > a {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: block;
+            overflow: hidden;
+            margin-right: 50px;
+        }
+
         .pull-right {
             .glyphicon {
                 line-height: inherit;
@@ -259,6 +278,10 @@ h4 {
                 line-height: @smallLineHeight;
                 margin-bottom: 15px;
                 opacity: @readOpacity;
+            }
+
+            img {
+                max-width: 100%;
             }
         }
     }
