@@ -16,3 +16,7 @@ services:
     feederate.user_provider.email:
         class: Feederate\FeederateBundle\Security\EmailProvider
         arguments: [@fos_user.user_manager]
+
+    feederate.importer.importer:
+        class: Feederate\FeederateBundle\Importer\Importer
+        arguments: [@security.context, @doctrine.orm.entity_manager]

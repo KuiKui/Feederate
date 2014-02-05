@@ -149,7 +149,7 @@ class Feed
      */
     public function setUrl($url)
     {
-        $this->url = $url;
+        $this->url = (string) $url;
 
         return $this;
     }
@@ -172,7 +172,7 @@ class Feed
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+        $this->title = (string) $title;
 
         return $this;
     }
@@ -195,7 +195,7 @@ class Feed
      */
     public function setDescription($description)
     {
-        $this->description = $description;
+        $this->description = (string) $description;
 
         return $this;
     }
@@ -218,7 +218,7 @@ class Feed
      */
     public function setTargetUrl($targetUrl)
     {
-        $this->targetUrl = $targetUrl;
+        $this->targetUrl = (string) $targetUrl;
 
         return $this;
     }
@@ -241,7 +241,7 @@ class Feed
      */
     public function setAuthorName($authorName)
     {
-        $this->authorName = $authorName;
+        $this->authorName = (string) $authorName;
 
         return $this;
     }
@@ -264,7 +264,7 @@ class Feed
      */
     public function setAuthorEmail($authorEmail)
     {
-        $this->authorEmail = $authorEmail;
+        $this->authorEmail = (string) $authorEmail;
 
         return $this;
     }

@@ -38,7 +38,7 @@ class UserFeed
     /**
      * @var \Feederate\FeederateBundle\Entity\Feed
      *
-     * @ORM\ManyToOne(targetEntity="Feed", inversedBy="userFeeds")
+     * @ORM\ManyToOne(targetEntity="Feed", inversedBy="userFeeds", cascade={"persist"})
      * @ORM\JoinColumn(name="feed_id", referencedColumnName="id")
      * @Assert\NotBlank()
      * @Serializer\Exclude()
@@ -48,7 +48,7 @@ class UserFeed
     /**
      * @var \Feederate\FeederateBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="userFeeds")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="userFeeds", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * @Assert\NotBlank()
      * @Serializer\Exclude()
