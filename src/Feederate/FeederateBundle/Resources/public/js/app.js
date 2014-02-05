@@ -281,7 +281,7 @@
                 if (value) {
                     $scope.focusArea = value.replace('/', '');
                 } else {
-                    $scope.focusArea = 'feeds';
+                    $scope.focusArea = 'summaries';
                 }
             });
 
