@@ -278,6 +278,7 @@
             $scope.$watch(function(){
                 return $location.path();
             }, function(value){
+                console.log(value);
                 if (value) {
                     $scope.focusArea = value.replace('/', '');
                 } else {

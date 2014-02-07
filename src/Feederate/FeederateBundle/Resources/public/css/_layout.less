@@ -44,26 +44,33 @@ html {
     right: 0;
     overflow: auto;
 
-    .navbar-brand {
-        color: #fff;
-    }
-
-    .navbar-toggle {
-        .icon-bar {
-            background-color: #fff;
-        }
-    }
-
-    .navbar-nav > li > a {
-        color: #fff;
-
-        &:hover {
-            background: none;
-        }
-    }
-
-    .container {
+    & > .container {
         width: 100%;
+
+        .navbar-brand {
+            color: #fff;
+            margin-left: 15px;
+        }
+
+        .navigation-area {
+            position: absolute;
+            top: 17px;
+            color: white;
+        }
+
+        .navbar-toggle {
+            .icon-bar {
+                background-color: #fff;
+            }
+        }
+
+        .navbar-nav > li > a {
+            color: #fff;
+
+            &:hover {
+                background: none;
+            }
+        }
     }
 }
 
@@ -71,4 +78,97 @@ html {
 
 .nav > li > a:hover {
     background-color: transparent;
+}
+
+@media (min-width:320px) {
+    body {
+        overflow: hidden;
+
+        &.feeds {
+            #feeds { z-index: 100; }
+            #summaries { z-index: 0; }
+            #entry { z-index: 0; }
+        }
+
+        &.summaries {
+            #feeds { z-index: 0; }
+            #summaries { z-index: 100; }
+            #entry { z-index: 0; }
+        }
+
+        &.entry {
+            #feeds { z-index: 0; }
+            #summaries { z-index: 0; }
+            #entry { z-index: 100; }
+        }
+
+        #feeds,
+        #summaries,
+        #entry {
+            z-index: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: @lightBackground;
+        }
+    }
+}
+
+@media (min-width:769px) {
+    body {
+        overflow: hidden;
+
+        &.feeds,
+        &.summaries {
+            #feeds { z-index: 100; }
+            #summaries { z-index: 100; }
+            #entry { z-index: 0; }
+        }
+
+        &.entry {
+            #feeds { z-index: 0; }
+            #summaries { z-index: 0; }
+            #entry { z-index: 100; }
+        }
+
+        #feeds,
+        #summaries {
+            position: relative;
+            width: 50%;
+            z-index: 100;
+        }
+        #entry {
+            width: 100%;
+            z-index: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+    }
+}
+
+@media (min-width:1025px) {
+    body {
+        #feeds {
+            width: 20%;
+        }
+        #summaries {
+            width: 25%;
+        }
+        #entry {
+            width: 55%;
+            position: relative;
+        }
+    }
+}
+
+/**
+ * Override toggle button nav-bar
+ */
+@media (min-width: 1025px) {
+  .navbar-toggle {
+    display: none;
+  }
 }
