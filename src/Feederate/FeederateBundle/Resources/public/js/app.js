@@ -129,12 +129,47 @@
                     })
             };
 
+            $scope.deleteFeed = function (feed) {
+                if (confirm('Do you want really delete feed "' + feed.title + '" ?')) {
+                    feed
+                        .remove()
+                        .then(function() {
+                            if ($scope.isActiveFeed(feed)) {
+                                $scope.loadSummaries($scope.unread);
+                            }
+                            delete $scope.feeds[feed.id];
+                        });
+                }
+            };
+
+            $scope.markFeedAsRead = function (feed) {
+                if (confirm('Do you want really mark all entries of "' + feed.title + '" as read ?')) {
+                    Restangular
+                        .oneUrl(getRoute('post_feed_read', {id: feed.id}))
+                        .customPOST({is_read: true})
+                        .then(function() {
+                            if (!$scope.isStarredFeed(feed)) {
+                                feed.unread_count = 0;
+                            }
+                            angular.forEach($scope.summariesDays, function(day) {
+                                angular.forEach($scope.summaries[day], function(summary) {
+                                    summary.is_read = true;
+                                });
+                            });
+                        });
+                }
+            };
+
             $scope.isActiveFeed = function (feed) {
                 return angular.equals(feed, $scope.activeFeed);
             };
 
             $scope.isUnreadFeed = function (feed) {
                 return angular.equals(feed, $scope.unread);
+            };
+
+            $scope.isStarredFeed = function (feed) {
+                return angular.equals(feed, $scope.starred);
             };
 
             $scope.loadSummaries = function (feed, resetFeed) {

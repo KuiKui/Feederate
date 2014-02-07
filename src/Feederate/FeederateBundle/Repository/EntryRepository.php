@@ -14,9 +14,10 @@ use Feederate\FeederateBundle\Entity\User;
 class EntryRepository extends EntityRepository
 {
     /**
-     * findStarredByUser
+     * findByUserAndType
      *
      * @param User    $user
+     * @param string  $type
      * @param array   $criteria
      * @param array   $orderBy
      * @param integer $limit

@@ -85,6 +85,13 @@ class Feed
     private $generatedAt;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="unused", type="boolean")
+     */
+    private $unused;
+
+    /**
      * @ORM\OneToMany(targetEntity="Feederate\FeederateBundle\Entity\Entry", mappedBy="feed", cascade={"persist", "remove"})
      * @ORM\OrderBy({"updatedAt" = "ASC"})
      */
@@ -300,6 +307,29 @@ class Feed
     public function getGeneratedAt()
     {
         return $this->generatedAt;
+    }
+
+    /**
+     * Set unused
+     *
+     * @param boolean $unused
+     * @return Feed
+     */
+    public function setUnused($unused)
+    {
+        $this->unused = (string) $unused;
+
+        return $this;
+    }
+
+    /**
+     * Get unused
+     *
+     * @return boolean
+     */
+    public function getUnused()
+    {
+        return $this->unused;
     }
 
     /**

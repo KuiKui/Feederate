@@ -200,7 +200,6 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
         }
 
         $form = $this->container->get('form.factory')->createNamed('', new UserEntryStarredType(), $userEntry);
-
         $form->submit($request);
 
         if ($form->isValid()) {
