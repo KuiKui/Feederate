@@ -89,7 +89,7 @@ class Feed
      *
      * @ORM\Column(name="unused", type="boolean")
      */
-    private $unused;
+    private $unused = false;
 
     /**
      * @ORM\OneToMany(targetEntity="Feederate\FeederateBundle\Entity\Entry", mappedBy="feed", cascade={"persist", "remove"})

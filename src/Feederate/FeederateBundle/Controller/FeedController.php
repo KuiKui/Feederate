@@ -12,7 +12,6 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 
 use Feederate\FeederateBundle\Entity\Feed;
 use Feederate\FeederateBundle\Entity\UserFeed;
-use Feederate\FeederateBundle\Entity\UserEntry;
 use Feederate\FeederateBundle\Model\Feed as FeedModel;
 use Feederate\FeederateBundle\Form\FeedType;
 use Feederate\FeederateBundle\Form\FeedReadType;
@@ -103,7 +102,18 @@ class FeedController extends FOSRestController implements ClassResourceInterface
         $form->submit($request);
 
         if ($form->isValid()) {
-            $manager->persist($entity);
+            // Checking that this feed doesn't already exist
+            $existingFeed = $this
+                ->get('doctrine.orm.entity_manager')
+                ->getRepository('FeederateFeederateBundle:Feed')
+                ->findOneBy(['url' => $entity->getUrl()]);
+
+            if ($existingFeed) {
+                $entity = $existingFeed;
+                $entity->setUnused(false);
+            } else {
+                $manager->persist($entity);
+            }
 
             $userFeed = new UserFeed();
             $userFeed
@@ -142,17 +152,23 @@ class FeedController extends FOSRestController implements ClassResourceInterface
             return $this->view(sprintf('Feed with id %s not found', $id), 404);
         }
 
+        // Delete userEntries
+        $userEntries = $manager
+            ->getRepository('FeederateFeederateBundle:UserEntry')
+            ->deleteByUserAndFeed($this->getUser(), $feed);
+
+        // Delete userFeed
         $userFeed = $manager
             ->getRepository('FeederateFeederateBundle:UserFeed')
             ->findOneBy(['user' => $this->getUser(), 'feed' => $feed]);
 
         $manager->remove($userFeed);
 
-        $userFeed = $manager
+        $userFeeds = $manager
             ->getRepository('FeederateFeederateBundle:UserFeed')
-            ->find(['feed' => $feed]);
+            ->findBy(['feed' => $feed]);
 
-        if (count($userFeed) === 0) {
+        if (count($userFeeds) === 1) {
             $feed->setUnused(true);
         }
 
@@ -177,12 +193,11 @@ class FeedController extends FOSRestController implements ClassResourceInterface
      */
     public function postReadAction($id, Request $request)
     {
-        $manager     = $this->get('doctrine.orm.entity_manager');
-        $classicFeed = $id !== 'unread' && $id !== 'starred';
+        $manager = $this->get('feederate.manager.feed');
 
-        if ($classicFeed) { 
+        if ($id !== 'unread' && $id !== 'starred') { 
             $feed = $manager
-                ->getRepository('FeederateFeederateBundle:Feed')
+                ->getRepository()
                 ->findByUser($this->getUser(), ['id' => $id]);
 
             if (!$feed) {
@@ -196,46 +211,20 @@ class FeedController extends FOSRestController implements ClassResourceInterface
         if ($form->isValid()) {
             $isRead = $form->getData()['is_read'];
 
-            // Update userEntries
-            if ($classicFeed) {
-                $entries = $manager
-                    ->getRepository('FeederateFeederateBundle:Entry')
-                    ->findBy(['feed' => $feed]);
-            } else {
-                $entries = $manager
-                    ->getRepository('FeederateFeederateBundle:Entry')
-                    ->findByUserAndType($this->getUser(), $id);
+            switch ($id) {
+                case 'unread' :
+                    if (!$isRead) {
+                        return $this->view('Impossible to mark the "unread" feed as unread', 422);
+                    }
+                    $manager->setUnreadAsRead($this->getUser());
+                    break;
+                case 'starred' :
+                    $manager->setStarredIsRead($this->getUser(), $isRead);
+                    break;
+                default:
+                    $manager->setIsRead($this->getUser(), $feed, $isRead);
+
             }
-
-            foreach ($entries as $entry) {
-                $userEntry = $manager
-                    ->getRepository('FeederateFeederateBundle:UserEntry')
-                    ->findOneBy(['user' => $this->getUser(), 'entry' => $entry]);
-
-                if ($isRead && !$userEntry) {
-                    $userEntry = new UserEntry();
-                    $userEntry
-                        ->setEntry($entry)
-                        ->setUser($this->getUser());
-                }
-
-                if ($userEntry) {
-                    $userEntry->setIsRead($isRead);
-                    $manager->persist($userEntry);
-                }
-            }
-
-            // Update userFeed
-            if ($classicFeed) {
-                $userFeed = $manager
-                    ->getRepository('FeederateFeederateBundle:UserFeed')
-                    ->findOneBy(['user' => $this->getUser(), 'feed' => $feed]);
-
-                $userFeed->setUnreadCount(!$isRead ? count($entries) : 0);
-                $manager->persist($userFeed);
-            }
-
-            $manager->flush();
 
             return $this->view('', 204);
         }

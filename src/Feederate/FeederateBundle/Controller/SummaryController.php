@@ -151,7 +151,12 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
             $userFeed = $manager
                 ->getRepository('FeederateFeederateBundle:UserFeed')
                 ->findOneBy(['feed' => $entry->getFeed(), 'user' => $this->getUser()]);
-            $userFeed->decrUnreadCount();
+            
+            if ($userEntry->getIsRead()) {
+                $userFeed->decrUnreadCount();
+            } else {
+                $userFeed->incrUnreadCount();
+            }
 
             $manager->persist($userEntry);
             $manager->persist($userFeed);

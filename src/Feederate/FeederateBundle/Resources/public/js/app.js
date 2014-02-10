@@ -149,13 +149,39 @@
                         .customPOST({is_read: true})
                         .then(function() {
                             if (!$scope.isStarredFeed(feed)) {
-                                feed.unread_count = 0;
-                            }
-                            angular.forEach($scope.summariesDays, function(day) {
-                                angular.forEach($scope.summaries[day], function(summary) {
-                                    summary.is_read = true;
+                                if (!$scope.isUnreadFeed(feed)) {
+                                    $scope.feeds[feed.id].unread_count = 0;
+                                } else {
+                                    // All unread_count must be null
+                                    $scope.unread.unread_count = 0;
+                                    angular.forEach($scope.feeds, function(feed) {
+                                        feed.unread_count = 0;
+                                    });
+                                }
+
+                                var readCount = 0;
+                                angular.forEach($scope.summariesDays, function(day) {
+                                    angular.forEach($scope.summaries[day], function(summary) {
+                                        if (!summary.is_read) {
+                                            readCount++;
+                                        }
+                                        summary.is_read = true;
+                                    });
                                 });
-                            });
+
+                                if (!$scope.isUnreadFeed(feed)) {
+                                    $scope.unread.unread_count -= readCount;
+                                }
+                            } else {
+                                // We reload feeds because it's too complex to manage unread_count
+                                $scope.loadFeeds(function() {
+                                    $scope.loadSummaries($scope.starred);
+
+                                    // Auto scroll into active feed
+                                    $location.hash('feed_' + feed.id);
+                                    $anchorScroll();
+                                });
+                            }
                         });
                 }
             };

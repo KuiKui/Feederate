@@ -1,4 +1,8 @@
 services:
+    feederate.manager.feed:
+        class: Feederate\FeederateBundle\Manager\FeedManager
+        arguments: [@doctrine.orm.entity_manager]
+
     feederate.registration.form.type:
         class: Feederate\FeederateBundle\Form\RegistrationFormType
         arguments: [%fos_user.model.user.class%]
