@@ -87,21 +87,21 @@ html {
         overflow: hidden;
 
         &.feeds {
-            #feeds { z-index: 100; }
-            #summaries { z-index: 0; }
-            #entry { z-index: 0; }
+            #feeds { left: 0; }
+            #summaries { left: 100%; }
+            #entry { left: 200%; }
         }
 
         &.summaries {
-            #feeds { z-index: 0; }
-            #summaries { z-index: 100; }
-            #entry { z-index: 0; }
+            #feeds { left: -100%; }
+            #summaries { left: 0; }
+            #entry { left: 100%; }
         }
 
         &.entry {
-            #feeds { z-index: 0; }
-            #summaries { z-index: 0; }
-            #entry { z-index: 100; }
+            #feeds { left: -200%; }
+            #summaries { left: -100%; }
+            #entry { left: 0; }
         }
 
         #feeds,
@@ -113,6 +113,10 @@ html {
             left: 0;
             width: 100%;
             background-color: @lightBackground;
+
+            -moz-transition: all 300ms;
+            -webkit-transition: all 300ms;
+            transition: all 300ms;
         }
     }
 }
@@ -121,47 +125,45 @@ html {
     body {
         overflow: hidden;
 
-        &.feeds,
-        &.summaries {
-            #feeds { z-index: 100; }
-            #summaries { z-index: 100; }
-            #entry { z-index: 0; }
+        &.feeds {
+            #feeds { left: 0; }
+            #summaries { left: 50%; }
+            #entry { left: 100%; }
         }
 
+        &.summaries,
         &.entry {
-            #feeds { z-index: 0; }
-            #summaries { z-index: 0; }
-            #entry { z-index: 100; }
+            #feeds { left: -100%; }
+            #summaries { left: 0; width: 30%; }
+            #entry { left: 30%; width: 70%; }
         }
 
         #feeds,
-        #summaries {
-            position: relative;
-            width: 50%;
-            z-index: 100;
-        }
+        #summaries,
         #entry {
-            width: 100%;
-            z-index: 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+            width: 50%;
         }
     }
 }
 
 @media (min-width:1025px) {
     body {
-        #feeds {
-            width: 20%;
-        }
-        #summaries {
-            width: 25%;
-        }
-        #entry {
-            width: 55%;
-            position: relative;
+        &.feeds,
+        &.summaries,
+        &.entry {
+            #feeds {
+                left: 0;
+                width: 20%;
+            }
+            #summaries {
+                left: 20%;
+                width: 25%;
+            }
+            #entry {
+                left: 45%;
+                width: 55%;
+                position: relative;
+            }
         }
     }
 }
