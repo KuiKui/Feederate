@@ -55,13 +55,13 @@ html {
                 width: 120px;
                 text-align: center;
                 color: #fff;
-                padding-left: 30px;
             }
 
             .navigation-area {
                 position: absolute;
-                top: 17px;
+                top: 14px;
                 color: white;
+                font-size: 20px;
             }
 
             .navbar-toggle {
@@ -93,6 +93,10 @@ html {
         overflow: hidden;
         .navbar > .container .navbar-brand {
             padding-left: 15px;
+        }
+
+        .navigation-area {
+            margin-left: 15px;
         }
 
         &.feeds {
@@ -130,9 +134,16 @@ html {
     }
 }
 
-@media (min-width:769px) {
+@media (min-width:768px) {
     body {
         overflow: hidden;
+        .navbar > .container .navbar-brand {
+            padding-left: 30px;
+        }
+
+        .navigation-area {
+            margin-left: 0;
+        }
 
         &.feeds,
         &.summaries {
