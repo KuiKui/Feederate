@@ -118,8 +118,9 @@
                     .all(getRoute('get_feeds'))
                     .getList()
                     .then(function(feeds) {
-                        $scope.unread      = feeds[0];
-                        $scope.starred     = feeds[1];
+                        $scope.feeds   = {};
+                        $scope.unread  = feeds[0];
+                        $scope.starred = feeds[1];
 
                         angular.forEach(feeds.slice(2), function(feed) {
                             $scope.feeds[feed.id] = feed;
@@ -134,10 +135,13 @@
                     feed
                         .remove()
                         .then(function() {
-                            if ($scope.isActiveFeed(feed)) {
+                            $scope.loadFeeds(function() {
                                 $scope.loadSummaries($scope.unread);
-                            }
-                            delete $scope.feeds[feed.id];
+
+                                // Auto scroll into active feed
+                                $location.hash('feed_unread');
+                                $anchorScroll();
+                            });
                         });
                 }
             };
@@ -150,6 +154,7 @@
                         .then(function() {
                             if (!$scope.isStarredFeed(feed)) {
                                 if (!$scope.isUnreadFeed(feed)) {
+                                    $scope.unread.unread_count -= $scope.feeds[feed.id].unread_count;
                                     $scope.feeds[feed.id].unread_count = 0;
                                 } else {
                                     // All unread_count must be null
@@ -159,19 +164,11 @@
                                     });
                                 }
 
-                                var readCount = 0;
                                 angular.forEach($scope.summariesDays, function(day) {
                                     angular.forEach($scope.summaries[day], function(summary) {
-                                        if (!summary.is_read) {
-                                            readCount++;
-                                        }
                                         summary.is_read = true;
                                     });
                                 });
-
-                                if (!$scope.isUnreadFeed(feed)) {
-                                    $scope.unread.unread_count -= readCount;
-                                }
                             } else {
                                 // We reload feeds because it's too complex to manage unread_count
                                 $scope.loadFeeds(function() {

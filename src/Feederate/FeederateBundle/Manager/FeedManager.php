@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Feederate\FeederateBundle\Entity\Feed;
 use Feederate\FeederateBundle\Entity\User;
 use Feederate\FeederateBundle\Entity\UserEntry;
+use Feederate\FeederateBundle\Entity\UserFeed;
 
 /**
  * FeedManager class
@@ -26,6 +27,90 @@ class FeedManager
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
+    }
+
+    /**
+     * Save a feed for an user
+     *
+     * @param User $user
+     * @param Feed $feed
+     *
+     * @return $this
+     */
+    public function saveUserFeed(User $user, Feed &$feed)
+    {
+        // Checking that this feed doesn't already exist
+        $existingFeed = $this
+            ->getRepository()
+            ->findOneBy(['url' => $feed->getUrl()]);
+
+        $existingUserFeed = false;
+
+        if ($existingFeed) {
+            $existingFeed->setUnused(false);
+            $feed = $existingFeed;
+
+            $existingUserFeed = $this
+                ->em
+                ->getRepository('FeederateFeederateBundle:UserFeed')
+                ->findOneBy(['user' => $user, 'feed' => $feed]);
+        } else {
+            $this->em->persist($feed);
+        }       
+
+        if (!$existingUserFeed) {
+            $userFeed = new UserFeed();
+            $userFeed
+                ->setFeed($feed)
+                ->setUser($user);
+
+            $this->em->persist($userFeed);
+            $this->em->flush();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a feed for an user
+     *
+     * @param User $user
+     * @param Feed $feed
+     *
+     * @return $this
+     */
+    public function removeUserFeed(User $user, Feed $feed)
+    {
+        // Delete userEntries
+        $userEntries = $this
+            ->em
+            ->getRepository('FeederateFeederateBundle:UserEntry')
+            ->findByUserAndFeed($user, $feed);
+
+        foreach ($userEntries as $userEntry) {
+            $this->em->remove($userEntry);
+        }
+
+        // Delete userFeed
+        $userFeed = $this
+            ->em
+            ->getRepository('FeederateFeederateBundle:UserFeed')
+            ->findOneBy(['user' => $user, 'feed' => $feed]);
+
+        $this->em->remove($userFeed);
+
+        $userFeeds = $this
+            ->em
+            ->getRepository('FeederateFeederateBundle:UserFeed')
+            ->findBy(['feed' => $feed]);
+
+        if (count($userFeeds) === 1) {
+            $feed->setUnused(true);
+        }
+
+        $this->em->flush();
+
+        return $this;
     }
 
     /**

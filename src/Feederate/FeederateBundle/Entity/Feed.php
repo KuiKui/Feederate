@@ -12,7 +12,7 @@ use Feederate\ORMBundle\Entity\TimestampableTrait;
 /**
  * Feed
  *
- * @ORM\Table(name="feed")
+ * @ORM\Table(name="feed", uniqueConstraints={@ORM\UniqueConstraint(name="unique_url", columns={"url"})})
  * @ORM\Entity(repositoryClass="Feederate\FeederateBundle\Repository\FeedRepository")
  */
 class Feed
