@@ -12,7 +12,7 @@ use Feederate\ORMBundle\Entity\TimestampableTrait;
 /**
  * Feed
  *
- * @ORM\Table(name="feed")
+ * @ORM\Table(name="feed", uniqueConstraints={@ORM\UniqueConstraint(name="unique_url", columns={"url"})})
  * @ORM\Entity(repositoryClass="Feederate\FeederateBundle\Repository\FeedRepository")
  */
 class Feed
@@ -83,6 +83,13 @@ class Feed
      * @ORM\Column(name="generated_at", type="datetime", nullable=true)
      */
     private $generatedAt;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="unused", type="boolean")
+     */
+    private $unused = false;
 
     /**
      * @ORM\OneToMany(targetEntity="Feederate\FeederateBundle\Entity\Entry", mappedBy="feed", cascade={"persist", "remove"})
@@ -300,6 +307,29 @@ class Feed
     public function getGeneratedAt()
     {
         return $this->generatedAt;
+    }
+
+    /**
+     * Set unused
+     *
+     * @param boolean $unused
+     * @return Feed
+     */
+    public function setUnused($unused)
+    {
+        $this->unused = (string) $unused;
+
+        return $this;
+    }
+
+    /**
+     * Get unused
+     *
+     * @return boolean
+     */
+    public function getUnused()
+    {
+        return $this->unused;
     }
 
     /**

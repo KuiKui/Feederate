@@ -9,13 +9,13 @@
         </div>
         <div class="feeds-content">
             <ul class="nav">
-                <li ng-class="{active:isActiveFeed(unread)}" id="unread_feed">
+                <li ng-class="{active:isActiveFeed(unread)}" id="feed_unread">
                     <a href="#summaries" ng-click="loadSummaries(unread)">
                         <span class="bullet bullet-unread pull-right" ng-show="unread.unread_count">{{ unread.unread_count }}</span>
                         <span class="title">Unread</span>
                     </a>
                 </li>
-                <li ng-class="{active:isActiveFeed(starred)}" id="starred_feed">
+                <li ng-class="{active:isActiveFeed(starred)}" id="feed_starred">
                     <a href="#summaries" ng-click="loadSummaries(starred)">
                         <span class="bullet bullet-unread pull-right" ng-show="starred.unread_count">{{ starred.unread_count }}</span>
                         <span class="title">Starred</span>
@@ -30,6 +30,12 @@
             </ul>
         </div>
         <div class="feeds-footer">
+            <button type="button" class="btn btn-default btn-sm" ng-click="markFeedAsRead(activeFeed)" ng-disabled="!activeFeed.unread_count" title="Mark {{ activeFeed.title }} as read">
+                <span class="glyphicon glyphicon-ok-circle"></span> Mark as read
+            </button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="deleteFeed(activeFeed)" ng-disabled="isActiveFeed(unread) || isActiveFeed(starred)" title="Delete feed {{ activeFeed.title }}">
+                <span class="glyphicon glyphicon-trash"></span> Delete
+            </button>
         </div>
     </div>
     <div id="summaries">
@@ -58,8 +64,8 @@
     <div id="entry" ng-show="activeSummary">
         <div class="entry-toolbar">
             <span class="pull-right">
-                <a class="glyphicon" title="mark as read/unread" ng-click="markAsRead(activeSummary)" ng-class="{'glyphicon glyphicon-ok-sign': !activeSummary.is_read, 'glyphicon glyphicon-ok-circle': activeSummary.is_read}"></a>
-                <a class="glyphicon" title="star/unstar" ng-click="markAsStarred(activeSummary)" ng-class="{'glyphicon-star-empty': !activeSummary.is_starred, 'glyphicon-star': activeSummary.is_starred}"></a>
+                <a class="glyphicon" title="{{ activeSummary.is_read ? 'Mark as unread' : 'Mark as read' }}" ng-click="markAsRead(activeSummary)" ng-class="{'glyphicon glyphicon-ok-sign': !activeSummary.is_read, 'glyphicon glyphicon-ok-circle': activeSummary.is_read}"></a>
+                <a class="glyphicon" title="{{ activeSummary.is_starred ? 'Unstar' : 'Star' }}" ng-click="markAsStarred(activeSummary)" ng-class="{'glyphicon-star-empty': !activeSummary.is_starred, 'glyphicon-star': activeSummary.is_starred}"></a>
             </span>
             <a target="_blank" href="{{ feeds[activeSummary.feed_id].target_url }}">{{ feeds[activeSummary.feed_id].title }}</a>
         </div>

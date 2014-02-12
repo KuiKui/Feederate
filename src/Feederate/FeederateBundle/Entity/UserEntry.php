@@ -14,7 +14,7 @@ use Feederate\ORMBundle\Entity\ActivableTrait;
  * User
  *
  * @ORM\Table(name="user_entry")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Feederate\FeederateBundle\Repository\UserEntryRepository")
  */
 class UserEntry
 {
