@@ -28,18 +28,14 @@
                         targetUrl: $scope.newFeedUrl
                     })
                     .then(function (feed) {
-                        feed
-                            .customGET('parse')
-                            .then(function() {
-                                $scope.newFeedUrl = '';
-                                $scope.loadFeeds(function() {
-                                    $scope.loadSummaries($scope.feeds[feed.id]);
+                        $scope.newFeedUrl = '';
+                        $scope.loadFeeds(function() {
+                            $scope.loadSummaries($scope.feeds[feed.id]);
 
-                                    // Auto scroll into active feed
-                                    $location.hash('feed_' + feed.id);
-                                    $anchorScroll();
-                                });
-                            });
+                            // Auto scroll into active feed
+                            $location.hash('feed_' + feed.id);
+                            $anchorScroll();
+                        });
                     });
             };
 

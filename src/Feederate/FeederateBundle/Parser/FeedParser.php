@@ -116,7 +116,7 @@ class FeedParser
     /**
      * Parse
      *
-     * @return void
+     * @return integer Total entries
      */
     public function parse()
     {
@@ -157,6 +157,8 @@ class FeedParser
 
         $this->updateUser();
         $this->log("User informations updated", self::LOG_SUCCESS);
+
+        return min($this->reader->count(), $this->limitEntries);
     }
 
     /**

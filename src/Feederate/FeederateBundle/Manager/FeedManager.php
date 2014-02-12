@@ -8,6 +8,7 @@ use Feederate\FeederateBundle\Entity\Feed;
 use Feederate\FeederateBundle\Entity\User;
 use Feederate\FeederateBundle\Entity\UserEntry;
 use Feederate\FeederateBundle\Entity\UserFeed;
+use Feederate\FeederateBundle\Parser\FeedParser;
 
 /**
  * FeedManager class
@@ -21,7 +22,7 @@ class FeedManager
 
     /**
      * Constructor
-     * 
+     *
      * @param EntityManager $em
      */
     public function __construct(EntityManager $em)
@@ -56,13 +57,20 @@ class FeedManager
                 ->findOneBy(['user' => $user, 'feed' => $feed]);
         } else {
             $this->em->persist($feed);
-        }       
+        }
 
         if (!$existingUserFeed) {
+            $this->parse($feed);
+
+            $unreadEntries = $this->em
+                ->getRepository('FeederateFeederateBundle:Entry')
+                ->findBy(['feed' => $feed]);
+
             $userFeed = new UserFeed();
             $userFeed
                 ->setFeed($feed)
-                ->setUser($user);
+                ->setUser($user)
+                ->setUnreadCount(count($unreadEntries));
 
             $this->em->persist($userFeed);
             $this->em->flush();
@@ -177,10 +185,10 @@ class FeedManager
             ->findBy(['user' => $user, 'isStarred' => true]);
 
         $feedsToUpdate = [];
-        foreach ($userEntries as $userEntry) {           
+        foreach ($userEntries as $userEntry) {
             if ($isRead != $userEntry->getIsRead()) {
                 $feed = $userEntry->getEntry()->getFeed();
-                
+
                 if (isset($feedsToUpdate[$feed->getId()])) {
                     $feedsToUpdate[$feed->getId()]['count']++;
                 } else {
@@ -264,11 +272,26 @@ class FeedManager
 
     /**
      * Get Feed repository
-     * 
+     *
      * @return \Doctrine\ORM\EntityRepository
      */
     public function getRepository()
     {
         return $this->em->getRepository('FeederateFeederateBundle:Feed');
+    }
+
+    /**
+     * Parse feed by ID
+     *
+     * @param integer $feedId
+     *
+     * @return void
+     */
+    public function parse(Feed $feed)
+    {
+        $feedParser = new FeedParser($feed, $this->em);
+        $feedParser
+            ->setLimitEntries(20)
+            ->parse();
     }
 }
