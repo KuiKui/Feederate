@@ -18,5 +18,6 @@
         }
     });
 
+
     angular.module('feederate', ['ngSanitize', 'truncate', 'restangular', 'infinite-scroll']);
 })();

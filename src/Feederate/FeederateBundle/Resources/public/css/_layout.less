@@ -1,4 +1,6 @@
 html {
+    height: 100%;
+
     body {
         background-color: @lightBackground;
         color: @normalFontColor;
@@ -18,46 +20,184 @@ html {
             text-decoration: none;
         }
     }
-}
 
-/*! top navbar */
+    /*! top navbar */
 
-.navbar {
-    background: @mainColor;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    margin-left: 0;
-    margin-right: 0;
-    margin: 0;
-    min-height: 45px;
-    padding-left: 0;
-    padding-right: 0;
-    position: relative;
-    text-shadow: none;
+    .navbar {
+        background: @mainColor;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        margin-left: 0;
+        margin-right: 0;
+        margin: 0;
+        min-height: 45px;
+        padding-left: 0;
+        padding-right: 0;
+        position: relative;
+        text-shadow: none;
+        z-index:200;
 
-    top: 0px;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    overflow: auto;
+        top: 0px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        overflow: auto;
 
-    .navbar-nav > li > a {
-        color: #fff;
+        & > .container {
+            width: 100%;
 
-        &:hover {
-            background: none;
+            .navbar-brand {
+                float: none;
+                margin: auto;
+                display: block;
+                width: 120px;
+                text-align: center;
+                color: #fff;
+            }
+
+            .navigation-area {
+                position: absolute;
+                top: 14px;
+                color: white;
+                font-size: 20px;
+            }
+
+            .navbar-toggle {
+                .icon-bar {
+                    background-color: #fff;
+                }
+            }
+
+            .navbar-nav > li > a {
+                color: #fff;
+
+                &:hover {
+                    background: none;
+                }
+            }
         }
     }
 
-    .container {
-        width: 100%;
+    /*! ??? */
+
+    .nav > li > a:hover {
+        background-color: transparent;
     }
 }
 
-/*! ??? */
 
-.nav > li > a:hover {
-    background-color: transparent;
+@media (min-width:320px) {
+    body {
+        overflow: hidden;
+        .navbar > .container .navbar-brand {
+            padding-left: 15px;
+        }
+
+        .navigation-area {
+            margin-left: 15px;
+        }
+
+        &.feeds {
+            #feeds { left: 0; }
+            #summaries { left: 100%; }
+            #entry { left: 200%; }
+        }
+
+        &.summaries {
+            #feeds { left: -100%; }
+            #summaries { left: 0; }
+            #entry { left: 100%; }
+        }
+
+        &.entry {
+            #feeds { left: -200%; }
+            #summaries { left: -100%; }
+            #entry { left: 0; }
+        }
+
+        #feeds,
+        #summaries,
+        #entry {
+            z-index: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: @lightBackground;
+
+            -moz-transition: all 300ms;
+            -webkit-transition: all 300ms;
+            transition: all 300ms;
+        }
+    }
+}
+
+@media (min-width:768px) {
+    body {
+        overflow: hidden;
+        .navbar > .container .navbar-brand {
+            padding-left: 30px;
+        }
+
+        .navigation-area {
+            margin-left: 0;
+        }
+
+        &.feeds,
+        &.summaries {
+            #feeds { left: 0; }
+            #summaries { left: 50%; }
+            #entry { left: 100%; }
+
+            .navigation-area-feeds { display: none; }
+        }
+
+        &.entry {
+            #feeds { left: -100%; }
+            #summaries { left: 0; width: 30%; }
+            #entry { left: 30%; width: 70%; }
+        }
+
+        #feeds,
+        #summaries,
+        #entry {
+            width: 50%;
+        }
+    }
+}
+
+@media (min-width:1025px) {
+    body {
+        &.feeds,
+        &.summaries,
+        &.entry {
+            #feeds {
+                left: 0;
+                width: 20%;
+            }
+            #summaries {
+                left: 20%;
+                width: 25%;
+            }
+            #entry {
+                left: 45%;
+                width: 55%;
+                position: relative;
+            }
+        }
+
+        .navigation-area-feeds { display: none; }
+        .navigation-area-summaries { display: none; }
+    }
+}
+
+/**
+ * Override toggle button nav-bar
+ */
+@media (min-width: 1025px) {
+  .navbar-toggle {
+    display: none;
+  }
 }
