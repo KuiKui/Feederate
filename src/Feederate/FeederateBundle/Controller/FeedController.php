@@ -156,7 +156,7 @@ class FeedController extends FOSRestController implements ClassResourceInterface
     {
         $manager = $this->get('feederate.manager.feed');
 
-        if ($id !== 'unread' && $id !== 'starred') { 
+        if ($id !== 'unread' && $id !== 'starred') {
             $feed = $manager
                 ->getRepository()
                 ->findByUser($this->getUser(), ['id' => $id]);
@@ -191,38 +191,6 @@ class FeedController extends FOSRestController implements ClassResourceInterface
         }
 
         return $this->view($form, 422);
-    }
-
-    /**
-     * Parse feed
-     *
-     * @param integer $feedId Feed id
-     * 
-     * @return \FOS\RestBundle\View\View
-     *
-     * @Rest\Route(
-     *     pattern="/feeds/{feedId}/parse",
-     *     requirements={"feedId"="\d+"}
-     * )
-     */
-    public function getParseAction($feedId)
-    {
-        $manager = $this->get('doctrine.orm.entity_manager');
-
-        $feed = $manager
-            ->getRepository('FeederateFeederateBundle:Feed')
-            ->findByUser($this->getUser(), ['id' => $feedId]);
-
-        if (!$feed) {
-            return $this->view(sprintf('Feed with id %s not found', $feedId), 400);
-        }
-
-        $feedParser = new FeedParser($feed, $manager);
-        $feedParser
-            ->setLimitEntries(20)
-            ->parse();
-
-        return $this->view("OK", 200);
     }
 
     /**
