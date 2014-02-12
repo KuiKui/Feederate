@@ -10,6 +10,7 @@
             $scope.unread              = null;
             $scope.activeFeed          = null;
             $scope.activeSummary       = null;
+            $scope.focusArea           = null;
             $scope.summariesAreLoading = false;
             $scope.noMoreSummary       = false;
             $scope.currentPage         = 0;
@@ -56,7 +57,7 @@
                         });
 
                         callback();
-                    })
+                    });
             };
 
             $scope.deleteFeed = function (feed) {
@@ -153,10 +154,10 @@
                 }
 
                 summaries.then(function(summaries) {
-                    $scope.summariesAreLoading = false; 
+                    $scope.summariesAreLoading = false;
 
                     if (!summaries.length) {
-                        $scope.noMoreSummary = true;   
+                        $scope.noMoreSummary = true;
                         return;
                     }
 
@@ -168,7 +169,7 @@
                         }
                         $scope.summaries[day].push(summary);
                     });
-                    
+
                     $scope.currentPage++;
                     $scope.loadEntries(feed);
                 });
@@ -260,6 +261,16 @@
                     return object.title;
                 }
             }
+
+            $scope.$watch(function(){
+                return $location.path();
+            }, function(value){
+                if (value) {
+                    $scope.focusArea = value.replace('/', '');
+                } else {
+                    $scope.focusArea = 'summaries';
+                }
+            });
 
             $scope.loadFeeds(function() {
                 $scope.loadSummaries($scope.unread);
