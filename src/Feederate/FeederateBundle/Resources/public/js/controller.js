@@ -172,8 +172,6 @@
                     $scope.currentPage++;
                     $scope.loadEntries(feed);
                 });
-
-                $('.feeds-footer button').tooltip();
             };
 
             $scope.summaryLoadIsBusy = function () {
@@ -207,7 +205,6 @@
             $scope.loadEntry = function (summary) {
                 $scope.entry         = $scope.entries[summary.id];
                 $scope.activeSummary = summary;
-                $('.entry-toolbar a').tooltip();
             };
 
             $scope.markAsRead = function (summary, onlyUnread) {
