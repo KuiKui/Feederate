@@ -78,13 +78,18 @@ html {
         background-color: transparent;
     }
 
-    .feedback {
-        position: absolute;
-        top: 2px;
-        left: 5%;
+    form {
+        max-width: 300px;
+
+        input[type="text"] {
+            margin-bottom: 10px;
+        }
+
+        &.form-signin {
+            margin: auto;
+        }
     }
 }
-
 
 @media (min-width:320px) {
     body {

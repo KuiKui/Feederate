@@ -3,6 +3,7 @@
     {% if is_granted("ROLE_SUPER_ADMIN") %}
       <li><a href="{{ path('feederate_feederate_admin_index') }}">Admin</a></li>
     {% endif %}
+    <li><a href="{{ path('feederate_feederate_front_index') }}">Feeds</a></li>
     <li><a href="{{ path('feederate_feederate_settings_index') }}">Settings</a></li>
     <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
   {% else %}
