@@ -1,5 +1,6 @@
 <ul class="nav navbar-nav navbar-right">
   {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    <li id="feedback"><a href="{{ path('feederate_feederate_front_feedback') }}">Feedback</a></li>
     {% if is_granted("ROLE_SUPER_ADMIN") %}
       <li><a href="{{ path('feederate_feederate_admin_index') }}">Admin</a></li>
     {% endif %}
