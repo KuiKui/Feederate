@@ -202,6 +202,9 @@
             $scope.loadEntry = function (summary) {
                 $scope.entry         = $scope.entries[summary.id];
                 $scope.activeSummary = summary;
+
+                // reset scroll entry
+                $('#entry .entry-content').scrollTop(0);
             };
 
             $scope.markAsRead = function (summary, onlyUnread) {
