@@ -3,8 +3,47 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "9feb791a64e97a3bcd77d5143a811f7e",
+    "hash": "6610becfedf004e3b0d874682c9796eb",
     "packages": [
+        {
+            "name": "adrienbrault/form-serializer",
+            "version": "0.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adrienbrault/form-serializer.git",
+                "reference": "7a782af9573fac94e25d0ab759a49dd74eec7745"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adrienbrault/form-serializer/zipball/7a782af9573fac94e25d0ab759a49dd74eec7745",
+                "reference": "7a782af9573fac94e25d0ab759a49dd74eec7745",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "symfony/form": "~2.1"
+            },
+            "require-dev": {
+                "jms/serializer": "~0.13",
+                "jms/serializer-bundle": "~0.13",
+                "phpunit/phpunit": "~3.7",
+                "symfony/framework-bundle": "~2.2",
+                "symfony/http-foundation": "~2.2",
+                "symfony/validator": "~2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "AdrienBrault\\FormSerializer": "src",
+                    "AdrienBrault\\FormSerializer\\Tests": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "time": "2013-12-06 18:38:44"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.1.2",
@@ -929,6 +968,75 @@
                 "User management"
             ],
             "time": "2013-09-23 08:24:12"
+        },
+        {
+            "name": "fsc/hateoas-bundle",
+            "version": "dev-master",
+            "target-dir": "FSC/HateoasBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TheFootballSocialClub/FSCHateoasBundle.git",
+                "reference": "0b741ecf6b46ad89e9f342f62eba43a2b0b95d74"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TheFootballSocialClub/FSCHateoasBundle/zipball/0b741ecf6b46ad89e9f342f62eba43a2b0b95d74",
+                "reference": "0b741ecf6b46ad89e9f342f62eba43a2b0b95d74",
+                "shasum": ""
+            },
+            "require": {
+                "adrienbrault/form-serializer": "~0.1.2",
+                "jms/metadata": "~1.1",
+                "jms/serializer": ">=0.12.0,<0.15.0-dev",
+                "jms/serializer-bundle": "*",
+                "php": ">=5.3.0",
+                "symfony/framework-bundle": "~2.1",
+                "symfony/property-access": "~2.2"
+            },
+            "require-dev": {
+                "jms/serializer": "*@dev",
+                "pagerfanta/pagerfanta": "*",
+                "symfony/browser-kit": "*",
+                "symfony/class-loader": "*",
+                "symfony/form": "*",
+                "symfony/validator": "*",
+                "symfony/yaml": "*"
+            },
+            "suggest": {
+                "pagerfanta/pagerfanta": "*",
+                "symfony/form": "~2.1",
+                "symfony/validator": "~2.1"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "FSC\\HateoasBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adrien Brault",
+                    "email": "adrien.brault@gmail.com"
+                },
+                {
+                    "name": "Baldur Rensch",
+                    "email": "brensch@gmail.com"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/TheFootballSocialClub/FSCHateoasBundle/contributors"
+                }
+            ],
+            "time": "2014-02-15 07:29:30"
         },
         {
             "name": "gedmo/doctrine-extensions",

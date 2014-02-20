@@ -88,6 +88,11 @@ fos_rest:
     serializer:
         serialize_null: true
 
+fsc_hateoas:
+    json:
+        links_key:     _links
+        relations_key: _embedded
+
 fos_user:
     db_driver: orm
     firewall_name: main

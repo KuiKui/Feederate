@@ -3,6 +3,7 @@
 namespace Feederate\FeederateBundle\Model;
 
 use JMS\Serializer\Annotation as Serializer;
+use FSC\HateoasBundle\Annotation as Hateoas;
 
 use Feederate\FeederateBundle\Entity\Feed as FeedEntity;
 use Feederate\FeederateBundle\Entity\UserFeed;
@@ -11,6 +12,8 @@ use Feederate\FeederateBundle\Entity\UserFeed;
  * Class Feef
  *
  * @author Florent Dubost <florent.dubost@gmail.com>
+ *
+ * @Hateoas\Relation("self", href = @Hateoas\Route("get_feed", parameters = { "id" = ".id"}))
  */
 class Feed
 {
@@ -56,7 +59,7 @@ class Feed
 
     /**
      * @var date
-     * 
+     *
      * @JMS\Serializer\Annotation\Type("DateTime<'Y-m-d H:i:s'>")
      */
     private $generatedAt;
