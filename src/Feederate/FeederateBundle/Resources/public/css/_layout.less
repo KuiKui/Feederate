@@ -51,7 +51,7 @@ html {
             .navbar-brand {
                 float: none;
                 margin: auto;
-                display: block;
+                display: none;
                 width: 120px;
                 text-align: center;
                 color: #fff;
@@ -91,9 +91,6 @@ html {
 @media (min-width:320px) {
     body {
         overflow: hidden;
-        .navbar > .container .navbar-brand {
-            padding-left: 15px;
-        }
 
         .navigation-area {
             margin-left: 15px;
@@ -137,9 +134,6 @@ html {
 @media (min-width:768px) {
     body {
         overflow: hidden;
-        .navbar > .container .navbar-brand {
-            padding-left: 30px;
-        }
 
         .navigation-area {
             margin-left: 0;
@@ -170,6 +164,10 @@ html {
 
 @media (min-width:1025px) {
     body {
+        .navbar > .container .navbar-brand {
+            display: block;
+        }
+
         &.feeds,
         &.summaries,
         &.entry {
