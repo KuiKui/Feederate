@@ -10,7 +10,7 @@
             $scope.unread              = null;
             $scope.activeFeed          = null;
             $scope.activeSummary       = null;
-            $scope.focusArea           = null;
+            $scope.selectedType        = 'summaries';
             $scope.summariesAreLoading = false;
             $scope.noMoreSummary       = false;
             $scope.currentPage         = 0;
@@ -264,10 +264,14 @@
             $scope.$watch(function(){
                 return $location.path();
             }, function(value){
-                if (value) {
-                    $scope.focusArea = value.replace('/', '');
-                } else {
-                    $scope.focusArea = 'summaries';
+                var splitUrl = value.replace(/^\/+|\/+$/g,'').split('/');
+
+                if (splitUrl[0]) {
+                    $scope.selectedType = splitUrl[0];
+                }
+
+                if (splitUrl[1]) {
+                    $scope.selectedTypeId = splitUrl[1];
                 }
             });
 

@@ -17,7 +17,7 @@
     <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
   </head>
 
-  <body ng-controller="BoardCtrl" ng-class="focusArea">
+  <body ng-controller="BoardCtrl" ng-class="selectedType">
 
     <div class="navbar" role="navigation">
       <div class="container">
@@ -29,8 +29,8 @@
             <span class="icon-bar"></span>
           </button>
           {% verbatim %}
-            <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-feeds" href="#feeds" ng-show="focusArea=='summaries'"></a>
-            <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-summaries" href="#summaries" ng-show="focusArea=='entry'"></a>
+            <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-feeds" href="#feeds" ng-show="selectedType=='summaries'"></a>
+            <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-summaries" href="#summaries" ng-show="selectedType=='entry'"></a>
           {% endverbatim %}
           <a class="navbar-brand" href="{{ path('feederate_feederate_front_index') }}">Feederate</a>
         </div>
