@@ -46,16 +46,8 @@ html {
         overflow: auto;
 
         & > .container {
+            background: url('/img/icon.png') no-repeat center center;
             width: 100%;
-
-            .navbar-brand {
-                float: none;
-                margin: auto;
-                display: none;
-                width: 120px;
-                text-align: center;
-                color: #fff;
-            }
 
             .navigation-area {
                 position: absolute;
@@ -164,8 +156,8 @@ html {
 
 @media (min-width:1025px) {
     body {
-        .navbar > .container .navbar-brand {
-            display: block;
+        .navbar > .container {
+            background: url('/img/icon.png') no-repeat left center;
         }
 
         &.feeds,
