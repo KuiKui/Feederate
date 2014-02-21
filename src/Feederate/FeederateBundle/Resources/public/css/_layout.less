@@ -62,11 +62,19 @@ html {
                 }
             }
 
-            .navbar-nav > li > a {
-                color: #fff;
+            .navbar-nav > li {
+                & > a {
+                    color: #fff;
 
-                &:hover {
-                    background: none;
+                    &:hover {
+                        background: none;
+                    }
+                }
+
+                &#feedback > a {
+                    display: inline-block;
+                    padding : 4px;
+                    margin : 3px 11px;
                 }
             }
         }
@@ -81,8 +89,12 @@ html {
     form {
         max-width: 300px;
 
-        input[type="text"] {
+        input[type="text"], input[type="email"], textarea {
             margin-bottom: 10px;
+        }
+
+        textarea {
+            min-height: 85px;
         }
 
         &.form-signin {
@@ -161,6 +173,14 @@ html {
         #summaries,
         #entry {
             width: 50%;
+        }
+
+        .navbar > .container .navbar-nav > li#feedback > a {
+            display: block;
+            padding-top : 4px;
+            padding-bottom : 4px;
+            margin-top : 11px;
+            margin-bottom : 11px;
         }
     }
 }

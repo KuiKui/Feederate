@@ -1,12 +1,12 @@
 {% extends '::symfony.html.twig' %}
 
 {% block body %}
-<h1>Feedback</h1>
-<form role="form" action="{{ path('feederate_feederate_front_feedback') }}" method="post" {{ form_enctype(form) }}>
+<form role="form" class="form-signin" action="{{ path('feederate_feederate_front_feedback') }}" method="post" {{ form_enctype(form) }}>
+    <h2>Feedback</h2>
     {{ form_errors(form) }}
 
     {{ form_widget(form.email, {'attr': {'placeholder': 'My email'}}) }}
-    {{ form_widget(form.message, {'attr': {'class': 'form-control', 'placeholder': 'My message for Feederate development team.'}}) }}
+    {{ form_widget(form.message, {'attr': {'class': 'form-control', 'placeholder': 'My message for Feederate development team'}}) }}
 
     {{ form_rest(form) }}
 
