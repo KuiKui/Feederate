@@ -3,13 +3,14 @@
 {% block body %}
 <form role="form" class="form-signin" action="{{ path('feederate_feederate_front_feedback') }}" method="post" {{ form_enctype(form) }}>
     <h2>Feedback</h2>
-    <p>Your email is <strong>{{ user.email }}</strong></p>
     {{ form_errors(form) }}
 
     {{ form_widget(form.message, {'attr': {'class': 'form-control', 'placeholder': 'My message for Feederate development team'}}) }}
 
     {{ form_rest(form) }}
 
-    <button type="submit" class="btn btn-primary btn-lg btn-block">Send</button>
+    <p>Feedback will be sent as <strong>{{ user.email }}</strong>. We will use this address to send you a reply.</p>
+
+    <button type="submit" class="btn btn-primary btn-lg btn-block">Send feedback</button>
 </form>
 {% endblock %}
