@@ -15,3 +15,5 @@ parameters:
     mailer_encryption: ssl
     mailer_user:       team@feederate.me
     mailer_password:   ~
+
+    feedback_email:    %mailer_user%

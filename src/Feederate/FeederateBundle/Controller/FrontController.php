@@ -43,9 +43,10 @@ class FrontController extends Controller
                 
                 $message = \Swift_Message::newInstance()
                     ->setSubject('[Feedback]')
-                    ->setFrom($form->getData()['email'])
-                    ->setTo('team@feederate.me')
-                    ->setBody($form->getData()['message']);
+                    ->setFrom($this->container->getParameter('feedback_email'))
+                    ->setTo($this->container->getParameter('feedback_email'))
+                    ->setBody($form->getData()['message'])
+                    ->setReplyTo($this->getUser()->getEmail());
 
                 $this->get('mailer')->send($message);
 
@@ -54,7 +55,8 @@ class FrontController extends Controller
         }
 
         return $this->render('FeederateFeederateBundle:Front:feedback.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user' => $this->getUser(),
         ));
     }
 
