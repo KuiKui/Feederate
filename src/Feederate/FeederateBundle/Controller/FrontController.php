@@ -42,7 +42,7 @@ class FrontController extends Controller
             if ($form->isValid()) {
                 
                 $message = \Swift_Message::newInstance()
-                    ->setSubject('[Feedback]')
+                    ->setSubject(sprintf('[Feedback] from %s', $this->getUser()->getEmail()))
                     ->setFrom($this->container->getParameter('feedback_email'))
                     ->setTo($this->container->getParameter('feedback_email'))
                     ->setBody($form->getData()['message'])
