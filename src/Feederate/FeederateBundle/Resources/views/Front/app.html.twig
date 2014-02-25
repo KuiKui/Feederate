@@ -9,19 +9,19 @@
         </div>
         <div class="feeds-content">
             <ul class="nav">
-                <li ng-class="{active:isActiveFeed(unread)}" id="feed_unread">
-                    <a href="#summaries" ng-click="loadSummaries(unread)">
-                        <span class="bullet bullet-unread pull-right" ng-show="unread.unread_count">{{ unread.unread_count }}</span>
+                <li ng-class="{active:Feeds.isActive(Feeds.unread)}" id="feed_unread">
+                    <a href="#summaries" ng-click="loadSummaries(Feeds.unread)">
+                        <span class="bullet bullet-unread pull-right" ng-show="Feeds.unread.unread_count">{{ Feeds.unread.unread_count }}</span>
                         <span class="title">Unread</span>
                     </a>
                 </li>
-                <li ng-class="{active:isActiveFeed(starred)}" id="feed_starred">
-                    <a href="#summaries" ng-click="loadSummaries(starred)">
-                        <span class="bullet bullet-unread pull-right" ng-show="starred.unread_count">{{ starred.unread_count }}</span>
+                <li ng-class="{active:Feeds.isActive(Feeds.starred)}" id="feed_starred">
+                    <a href="#summaries" ng-click="loadSummaries(Feeds.starred)">
+                        <span class="bullet bullet-unread pull-right" ng-show="Feeds.starred.unread_count">{{ Feeds.starred.unread_count }}</span>
                         <span class="title">Starred</span>
                     </a>
                 </li>
-                <li ng-repeat="feed in feeds | objectToArray | orderBy:'title'" ng-class="{active:isActiveFeed(feed)}" id="feed_{{ feed.id }}">
+                <li ng-repeat="feed in Feeds.list | objectToArray | orderBy:'title'" ng-class="{active:Feeds.isActive(feed)}" id="feed_{{ feed.id }}">
                     <a href="#summaries" ng-click="loadSummaries(feed)">
                         <span class="bullet bullet-unread pull-right" ng-show="feed.unread_count">{{ feed.unread_count }}</span>
                         <span class="title">{{ feed.title }}</span>
@@ -30,26 +30,26 @@
             </ul>
         </div>
         <div class="feeds-footer">
-            <button type="button" class="btn btn-default btn-sm" ng-click="markFeedAsRead(activeFeed)" ng-disabled="!activeFeed.unread_count" title="Mark {{ activeFeed.title }} as read">
+            <button type="button" class="btn btn-default btn-sm" ng-click="markFeedAsRead(Feeds.active)" ng-disabled="!Feeds.active.unread_count" title="Mark {{ Feeds.active.title }} as read">
                 <span class="glyphicon glyphicon-ok-circle"></span> Mark as read
             </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="deleteFeed(activeFeed)" ng-disabled="isActiveFeed(unread) || isActiveFeed(starred)" title="Delete feed {{ activeFeed.title }}">
+            <button type="button" class="btn btn-default btn-sm" ng-click="deleteFeed(Feeds.active)" ng-disabled="Feeds.isActive(Feeds.unread) || Feeds.isActive(Feeds.starred)" title="Delete feed {{ Feeds.active.title }}">
                 <span class="glyphicon glyphicon-trash"></span> Delete
             </button>
         </div>
     </div>
     <div id="summaries">
-        <div class="summaries-content" infinite-scroll="loadSummaries(activeFeed, false)" infinite-scroll-distance="1" infinite-scroll-disabled="summaryLoadIsBusy()" infinite-scroll-immediate-check="false">
+        <div class="summaries-content" infinite-scroll="loadSummaries(Feeds.active, false)" infinite-scroll-distance="1" infinite-scroll-disabled="summaryLoadIsBusy()" infinite-scroll-immediate-check="false">
             <div>
-                <div ng-repeat="day in summariesDays" ng-class="{day: isUnreadFeed(activeFeed)}">
-                    <div ng-show="isUnreadFeed(activeFeed)" class="day-group">{{ day | formatDate:'short' }}</div>
+                <div ng-repeat="day in summariesDays" ng-class="{day: Feeds.isUnread(Feeds.active)}">
+                    <div ng-show="Feeds.isUnread(Feeds.active)" class="day-group">{{ day | formatDate:'short' }}</div>
                     <ul class="nav">
                         <li ng-repeat="summary in summaries[day]" ng-class="{active:isActiveSummary(summary),read: summary.is_read}">
                             <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary, true);">
                                 <span ng-show="summary.is_starred" class="label label-primary">starred</span>
                                 <div class="metadata">
                                     <span class="date pull-right" title="{{ summary.generated_at | formatDate:'YYYY-MM-DD h:mm A' }}">{{ summary.generated_at | formatDate:'short' }}</span>
-                                    <span class="title">{{ feeds[summary.feed_id].title }}</span>
+                                    <span class="title">{{ Feeds.list[summary.feed_id].title }}</span>
                                 </div>
                                 <h4>{{ summary.title }}</h4>
                                 <p ng-bind-html="summary.description | characters:100"></p>
@@ -67,7 +67,7 @@
                 <a class="glyphicon" title="{{ activeSummary.is_read ? 'Mark as unread' : 'Mark as read' }}" ng-click="markAsRead(activeSummary)" ng-class="{'glyphicon glyphicon-ok-sign': !activeSummary.is_read, 'glyphicon glyphicon-ok-circle': activeSummary.is_read}"></a>
                 <a class="glyphicon" title="{{ activeSummary.is_starred ? 'Unstar' : 'Star' }}" ng-click="markAsStarred(activeSummary)" ng-class="{'glyphicon-star-empty': !activeSummary.is_starred, 'glyphicon-star': activeSummary.is_starred}"></a>
             </span>
-            <a target="_blank" href="{{ feeds[activeSummary.feed_id].target_url }}">{{ feeds[activeSummary.feed_id].title }}</a>
+            <a target="_blank" href="{{ Feeds.list[activeSummary.feed_id].target_url }}">{{ Feeds.list[activeSummary.feed_id].title }}</a>
         </div>
         <div class="entry-content">
             <div class="container">
