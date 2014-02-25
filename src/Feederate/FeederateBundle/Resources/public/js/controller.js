@@ -13,8 +13,10 @@
             $scope.focusArea           = null;
             $scope.summariesAreLoading = false;
             $scope.noMoreSummary       = false;
+            $scope.readFeedsHidden     = false;
             $scope.currentPage         = 0;
             $scope.feeds               = {};
+            $scope.allFeeds            = {};
             $scope.entries             = [];
             $scope.summariesDays       = [];
             $scope.summaries           = {};
@@ -108,6 +110,21 @@
                         });
                 }
             };
+
+            $scope.toggleReadFeeds = function () {
+                if ($scope.readFeedsHidden) {
+                    $scope.feeds = angular.copy($scope.allFeeds);
+                } else {
+                    $scope.allFeeds = angular.copy($scope.feeds);
+                    angular.forEach($scope.feeds, function(feed) {
+                        if (feed.unread_count === 0) {
+                            delete $scope.feeds[feed.id];
+                        }
+                    });
+                }
+
+                $scope.readFeedsHidden = !$scope.readFeedsHidden;
+            }
 
             $scope.isActiveFeed = function (feed) {
                 return angular.equals(feed, $scope.activeFeed);
@@ -272,6 +289,7 @@
             });
 
             $scope.loadFeeds(function() {
+                $scope.toggleReadFeeds();
                 $scope.loadSummaries($scope.unread);
             });
         });

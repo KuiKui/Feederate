@@ -36,6 +36,9 @@
             <button type="button" class="btn btn-default btn-sm" ng-click="deleteFeed(activeFeed)" ng-disabled="isActiveFeed(unread) || isActiveFeed(starred)" title="Delete feed {{ activeFeed.title }}">
                 <span class="glyphicon glyphicon-trash"></span> Delete
             </button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="toggleReadFeeds()" title="{{ readFeedsHidden ? 'Show' : 'Hide' }} read feeds">
+                <span class="glyphicon glyphicon-{{ readFeedsHidden ? 'open' : 'save' }}"></span> {{ readFeedsHidden ? 'Show' : 'Hide' }} read
+            </button>
         </div>
     </div>
     <div id="summaries">
