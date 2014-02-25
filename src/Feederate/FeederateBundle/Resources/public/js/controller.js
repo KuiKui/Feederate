@@ -11,9 +11,9 @@
             $scope.activeFeed          = null;
             $scope.activeSummary       = null;
             $scope.focusArea           = null;
+            $scope.user                = null;
             $scope.summariesAreLoading = false;
             $scope.noMoreSummary       = false;
-            $scope.readFeedsHidden     = false;
             $scope.currentPage         = 0;
             $scope.feeds               = {};
             $scope.allFeeds            = {};
@@ -53,6 +53,10 @@
                         angular.forEach(feeds.slice(2), function(feed) {
                             $scope.feeds[feed.id] = feed;
                         });
+
+                        if ($scope.user.is_read_feeds_hidden) {
+                            $scope.showOrHideReadFeeds();
+                        }
 
                         callback();
                     });
@@ -112,7 +116,12 @@
             };
 
             $scope.toggleReadFeeds = function () {
-                if ($scope.readFeedsHidden) {
+                $scope.user.is_read_feeds_hidden = !$scope.user.is_read_feeds_hidden;
+                $scope.showOrHideReadFeeds();
+            }
+
+            $scope.showOrHideReadFeeds = function () {
+                if (!$scope.user.is_read_feeds_hidden) {
                     $scope.feeds = angular.copy($scope.allFeeds);
                 } else {
                     $scope.allFeeds = angular.copy($scope.feeds);
@@ -122,8 +131,6 @@
                         }
                     });
                 }
-
-                $scope.readFeedsHidden = !$scope.readFeedsHidden;
             }
 
             $scope.isActiveFeed = function (feed) {
@@ -288,10 +295,15 @@
                 }
             });
 
-            $scope.loadFeeds(function() {
-                $scope.toggleReadFeeds();
-                $scope.loadSummaries($scope.unread);
-            });
+            Restangular
+                .one(getRoute('get_user'))
+                .get()
+                .then(function(user) {
+                    $scope.user = user;
+                    $scope.loadFeeds(function() {
+                        $scope.loadSummaries($scope.unread);
+                    });
+                });
         });
     });
 })();
