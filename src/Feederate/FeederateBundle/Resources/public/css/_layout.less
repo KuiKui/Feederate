@@ -46,16 +46,8 @@ html {
         overflow: auto;
 
         & > .container {
+            background: url('/img/icon.png') no-repeat center center;
             width: 100%;
-
-            .navbar-brand {
-                float: none;
-                margin: auto;
-                display: block;
-                width: 120px;
-                text-align: center;
-                color: #fff;
-            }
 
             .navigation-area {
                 position: absolute;
@@ -70,11 +62,19 @@ html {
                 }
             }
 
-            .navbar-nav > li > a {
-                color: #fff;
+            .navbar-nav > li {
+                & > a {
+                    color: #fff;
 
-                &:hover {
-                    background: none;
+                    &:hover {
+                        background: none;
+                    }
+                }
+
+                &#feedback > a {
+                    display: inline-block;
+                    padding : 4px;
+                    margin : 3px 11px;
                 }
             }
         }
@@ -85,15 +85,27 @@ html {
     .nav > li > a:hover {
         background-color: transparent;
     }
-}
 
+    form {
+        max-width: 300px;
+
+        input[type="text"], input[type="email"], textarea {
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            min-height: 85px;
+        }
+
+        &.form-signin {
+            margin: auto;
+        }
+    }
+}
 
 @media (min-width:320px) {
     body {
         overflow: hidden;
-        .navbar > .container .navbar-brand {
-            padding-left: 15px;
-        }
 
         .navigation-area {
             margin-left: 15px;
@@ -137,9 +149,6 @@ html {
 @media (min-width:768px) {
     body {
         overflow: hidden;
-        .navbar > .container .navbar-brand {
-            padding-left: 30px;
-        }
 
         .navigation-area {
             margin-left: 0;
@@ -165,11 +174,23 @@ html {
         #entry {
             width: 50%;
         }
+
+        .navbar > .container .navbar-nav > li#feedback > a {
+            display: block;
+            padding-top : 4px;
+            padding-bottom : 4px;
+            margin-top : 11px;
+            margin-bottom : 11px;
+        }
     }
 }
 
 @media (min-width:1025px) {
     body {
+        .navbar > .container {
+            background: url('/img/icon.png') no-repeat left center;
+        }
+
         &.feeds,
         &.summaries,
         &.entry {
