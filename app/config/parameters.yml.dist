@@ -8,3 +8,12 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    mailer_transport:  smtp
+    mailer_host:       mail.gandi.net
+    mailer_port:       465
+    mailer_encryption: ssl
+    mailer_user:       team@feederate.me
+    mailer_password:   ~
+
+    feedback_email:    %mailer_user%
