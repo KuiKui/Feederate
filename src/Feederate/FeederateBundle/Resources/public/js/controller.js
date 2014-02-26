@@ -16,7 +16,6 @@
             $scope.noMoreSummary       = false;
             $scope.currentPage         = 0;
             $scope.feeds               = {};
-            $scope.allFeeds            = {};
             $scope.entries             = [];
             $scope.summariesDays       = [];
             $scope.summaries           = {};
@@ -53,10 +52,6 @@
                         angular.forEach(feeds.slice(2), function(feed) {
                             $scope.feeds[feed.id] = feed;
                         });
-
-                        if ($scope.user.is_read_feeds_hidden) {
-                            $scope.showOrHideReadFeeds();
-                        }
 
                         callback();
                     });
@@ -117,23 +112,24 @@
 
             $scope.toggleReadFeeds = function () {
                 $scope.user.is_read_feeds_hidden = !$scope.user.is_read_feeds_hidden;
-                $scope.showOrHideReadFeeds();
 
                 Restangular
                     .one(getRoute('get_user'))
                     .customPOST({is_read_feeds_hidden: $scope.user.is_read_feeds_hidden});
             }
 
-            $scope.showOrHideReadFeeds = function () {
-                if (!$scope.user.is_read_feeds_hidden) {
-                    $scope.feeds = angular.copy($scope.allFeeds);
+            $scope.getShownFeeds = function () {
+                if (!$scope.user || !$scope.user.is_read_feeds_hidden) {
+                    return $scope.feeds;
                 } else {
-                    $scope.allFeeds = angular.copy($scope.feeds);
+                    var shownFeeds = {}
                     angular.forEach($scope.feeds, function(feed) {
-                        if (feed.unread_count === 0) {
-                            delete $scope.feeds[feed.id];
+                        if (feed.unread_count !== 0) {
+                            shownFeeds[feed.id] = feed;
                         }
                     });
+
+                    return shownFeeds;
                 }
             }
 
