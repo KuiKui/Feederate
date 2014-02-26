@@ -118,6 +118,10 @@
             $scope.toggleReadFeeds = function () {
                 $scope.user.is_read_feeds_hidden = !$scope.user.is_read_feeds_hidden;
                 $scope.showOrHideReadFeeds();
+
+                Restangular
+                    .one(getRoute('get_user'))
+                    .customPOST({is_read_feeds_hidden: $scope.user.is_read_feeds_hidden});
             }
 
             $scope.showOrHideReadFeeds = function () {
