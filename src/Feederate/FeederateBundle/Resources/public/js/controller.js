@@ -353,6 +353,29 @@
                 Entries.markAsStarred(summary);
             };
 
+            $scope.toggleReadFeeds = function () {
+                $scope.user.is_read_feeds_hidden = !$scope.user.is_read_feeds_hidden;
+
+                Restangular
+                    .one(Router.get('get_user'))
+                    .customPOST({is_read_feeds_hidden: $scope.user.is_read_feeds_hidden});
+            }
+
+            $scope.getShownFeeds = function () {
+                if (!$scope.user || !$scope.user.is_read_feeds_hidden) {
+                    return Feeds.list;
+                } else {
+                    var shownFeeds = {}
+                    angular.forEach(Feeds.list, function(feed) {
+                        if (feed.unread_count !== 0) {
+                            shownFeeds[feed.id] = feed;
+                        }
+                    });
+
+                    return shownFeeds;
+                }
+            }
+
             $scope.$watch(function (){
                 return $location.path();
             }, function (value){
@@ -367,9 +390,15 @@
                 }
             });
 
-            $scope.loadFeeds(function () {
-                $scope.loadSummaries(Feeds.unread);
-            });
+            Restangular
+                .one(Router.get('get_user'))
+                .get()
+                .then(function(user) {
+                    $scope.user = user;
+                    $scope.loadFeeds(function () {
+                        $scope.loadSummaries(Feeds.unread);
+                    });
+                });
         });
     });
 })();

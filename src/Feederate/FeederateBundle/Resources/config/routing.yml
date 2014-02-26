@@ -17,6 +17,13 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
 
+FeederateFeederateBundle_User:
+    resource: "@FeederateFeederateBundle/Controller/UserController.php"
+    prefix: api
+    type: rest
+    options:
+        expose: true
+
 FeederateFeederateBundle_Feed:
     resource: "@FeederateFeederateBundle/Controller/FeedController.php"
     prefix: api
