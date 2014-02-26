@@ -11,6 +11,7 @@
             $scope.activeFeed          = null;
             $scope.activeSummary       = null;
             $scope.focusArea           = null;
+            $scope.user                = null;
             $scope.summariesAreLoading = false;
             $scope.noMoreSummary       = false;
             $scope.currentPage         = 0;
@@ -108,6 +109,29 @@
                         });
                 }
             };
+
+            $scope.toggleReadFeeds = function () {
+                $scope.user.is_read_feeds_hidden = !$scope.user.is_read_feeds_hidden;
+
+                Restangular
+                    .one(getRoute('get_user'))
+                    .customPOST({is_read_feeds_hidden: $scope.user.is_read_feeds_hidden});
+            }
+
+            $scope.getShownFeeds = function () {
+                if (!$scope.user || !$scope.user.is_read_feeds_hidden) {
+                    return $scope.feeds;
+                } else {
+                    var shownFeeds = {}
+                    angular.forEach($scope.feeds, function(feed) {
+                        if (feed.unread_count !== 0) {
+                            shownFeeds[feed.id] = feed;
+                        }
+                    });
+
+                    return shownFeeds;
+                }
+            }
 
             $scope.isActiveFeed = function (feed) {
                 return angular.equals(feed, $scope.activeFeed);
@@ -271,9 +295,15 @@
                 }
             });
 
-            $scope.loadFeeds(function() {
-                $scope.loadSummaries($scope.unread);
-            });
+            Restangular
+                .one(getRoute('get_user'))
+                .get()
+                .then(function(user) {
+                    $scope.user = user;
+                    $scope.loadFeeds(function() {
+                        $scope.loadSummaries($scope.unread);
+                    });
+                });
         });
     });
 })();

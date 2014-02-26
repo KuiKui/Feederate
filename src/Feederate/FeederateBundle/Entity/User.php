@@ -16,6 +16,7 @@ use Feederate\ORMBundle\Entity\ActivableTrait;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity
+ * @Serializer\ExclusionPolicy("all")
  */
 class User extends BaseUser
 {
@@ -27,6 +28,7 @@ class User extends BaseUser
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose()
      */
     protected $id;
 
@@ -38,10 +40,17 @@ class User extends BaseUser
     private $status;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_read_feeds_hidden", type="boolean")
+     * @Serializer\Expose()
+     */
+    private $isReadFeedsHidden = true;
+
+    /**
      * @var UserFeeds[]
      *
      * @ORM\OneToMany(targetEntity="UserFeed", mappedBy="user")
-     * @Serializer\Exclude()
      */
     private $userFeeds;
 
@@ -49,7 +58,6 @@ class User extends BaseUser
      * @var UserEntries[]
      *
      * @ORM\OneToMany(targetEntity="UserEntry", mappedBy="user")
-     * @Serializer\Exclude()
      */
     private $userEntries;
 
@@ -102,6 +110,29 @@ class User extends BaseUser
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set isReadFeedsHidden
+     *
+     * @param string $isReadFeedsHidden
+     * @return User
+     */
+    public function setIsReadFeedsHidden($isReadFeedsHidden)
+    {
+        $this->isReadFeedsHidden = $isReadFeedsHidden;
+
+        return $this;
+    }
+
+    /**
+     * Get isReadFeedsHidden
+     *
+     * @return string
+     */
+    public function getIsReadFeedsHidden()
+    {
+        return $this->isReadFeedsHidden;
     }
 
     /**

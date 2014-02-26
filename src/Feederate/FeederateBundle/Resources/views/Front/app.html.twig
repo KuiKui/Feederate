@@ -21,7 +21,7 @@
                         <span class="title">Starred</span>
                     </a>
                 </li>
-                <li ng-repeat="feed in feeds | objectToArray | orderBy:'title'" ng-class="{active:isActiveFeed(feed)}" id="feed_{{ feed.id }}">
+                <li ng-repeat="feed in getShownFeeds() | objectToArray | orderBy:'title'" ng-class="{active:isActiveFeed(feed)}" id="feed_{{ feed.id }}">
                     <a href="#summaries" ng-click="loadSummaries(feed)">
                         <span class="bullet bullet-unread pull-right" ng-show="feed.unread_count">{{ feed.unread_count }}</span>
                         <span class="title">{{ feed.title }}</span>
@@ -31,11 +31,16 @@
         </div>
         <div class="feeds-footer">
             <button type="button" class="btn btn-default btn-sm" ng-click="markFeedAsRead(activeFeed)" ng-disabled="!activeFeed.unread_count" title="Mark {{ activeFeed.title }} as read">
-                <span class="glyphicon glyphicon-ok-circle"></span> Mark as read
+                <span class="glyphicon glyphicon-ok-circle"></span>
             </button>
             <button type="button" class="btn btn-default btn-sm" ng-click="deleteFeed(activeFeed)" ng-disabled="isActiveFeed(unread) || isActiveFeed(starred)" title="Delete feed {{ activeFeed.title }}">
-                <span class="glyphicon glyphicon-trash"></span> Delete
+                <span class="glyphicon glyphicon-trash"></span>
             </button>
+            <div class="pull-right">
+                <button type="button" class="btn btn-default btn-sm" ng-click="toggleReadFeeds()" title="{{ user.is_read_feeds_hidden ? 'Show' : 'Hide' }} read feeds">
+                    <span class="glyphicon glyphicon-{{ user.is_read_feeds_hidden ? 'open' : 'save' }}"></span>
+                </button>
+            </div>
         </div>
     </div>
     <div id="summaries">
