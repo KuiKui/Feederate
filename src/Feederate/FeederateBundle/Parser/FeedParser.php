@@ -121,44 +121,50 @@ class FeedParser
     public function parse()
     {
         $this->log(sprintf("Import %s feed", $this->feed->getUrl()));
-        $this->reader = Reader::import($this->feed->getUrl());
+        try {
+            $this->reader = Reader::import($this->feed->getUrl());
 
-        // Update feed infos
-        $this->updateFeed();
-        $this->log("Feed informations updated", self::LOG_SUCCESS);
+            // Update feed infos
+            $this->updateFeed();
+            $this->log("Feed informations updated", self::LOG_SUCCESS);
 
-        /**
-         * For limitEntries elements in reader
-         * Update/create entry informations
-         * Update user entry unread informations
-         */
-        while ($this->reader->key() < $this->limitEntries && $this->reader->key() < $this->reader->count()) {
-            $rss = $this->reader->current();
+            /**
+             * For limitEntries elements in reader
+             * Update/create entry informations
+             * Update user entry unread informations
+             */
+            while ($this->reader->key() < $this->limitEntries && $this->reader->key() < $this->reader->count()) {
+                $rss = $this->reader->current();
 
-            $entry = $this->manager
-                ->getRepository('FeederateFeederateBundle:Entry')
-                ->findOneBy(['generatedId' => $rss->getId(), 'feed' => $this->feed]);
+                $entry = $this->manager
+                    ->getRepository('FeederateFeederateBundle:Entry')
+                    ->findOneBy(['generatedId' => $rss->getId(), 'feed' => $this->feed]);
 
-            if (!$entry) {
-                $entry = new Entry();
-                $entry
-                    ->setGeneratedId($rss->getId())
-                    ->setFeed($this->feed);
+                if (!$entry) {
+                    $entry = new Entry();
+                    $entry
+                        ->setGeneratedId($rss->getId())
+                        ->setFeed($this->feed);
 
-                $this->incrementNewEntries();
+                    $this->incrementNewEntries();
+                }
+
+                $this->updateEntry($entry, $rss);
+
+                $this->reader->next();
             }
 
-            $this->updateEntry($entry, $rss);
+            $this->log("Entries informations updated", self::LOG_SUCCESS);
 
-            $this->reader->next();
+            $this->updateUser();
+            $this->log("User informations updated", self::LOG_SUCCESS);
+
+            return min($this->reader->count(), $this->limitEntries);
+        } catch (\Exception $e) {
+            $this->log(sprintf("Impossible to parse feed %s : %s", $this->feed->getUrl(), $e->getMessage()), self::LOG_ERROR);
+
+            return 0;
         }
-
-        $this->log("Entries informations updated", self::LOG_SUCCESS);
-
-        $this->updateUser();
-        $this->log("User informations updated", self::LOG_SUCCESS);
-
-        return min($this->reader->count(), $this->limitEntries);
     }
 
     /**

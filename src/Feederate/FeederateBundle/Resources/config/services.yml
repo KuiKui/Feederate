@@ -23,4 +23,4 @@ services:
 
     feederate.importer.importer:
         class: Feederate\FeederateBundle\Importer\Importer
-        arguments: [@security.context, @doctrine.orm.entity_manager]
+        arguments: [@security.context, @doctrine.orm.entity_manager, @feederate.manager.feed]

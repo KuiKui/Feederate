@@ -57,6 +57,7 @@ class FeedManager
                 ->findOneBy(['user' => $user, 'feed' => $feed]);
         } else {
             $this->em->persist($feed);
+            $this->em->flush();
         }
 
         if (!$existingUserFeed) {
