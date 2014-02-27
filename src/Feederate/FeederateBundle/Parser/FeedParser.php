@@ -188,7 +188,7 @@ class FeedParser
     private function updateEntry(Entry $entry, EntryInterface $rss)
     {
         $entry
-            ->setGeneratedAt($rss->getDateCreated())
+            ->setGeneratedAt($rss->getDateCreated() ?: $rss->getDateModified())
             ->setTitle($rss->getTitle())
             ->setTargetUrl($rss->getLink())
             ->setDescription(strip_tags($rss->getDescription()))
