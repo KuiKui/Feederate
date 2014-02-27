@@ -4,6 +4,7 @@ namespace Feederate\FeederateBundle\Importer\Platform;
 
 use Symfony\Component\Security\Core\SecurityContext;
 use Doctrine\ORM\EntityManager;
+use Feederate\FeederateBundle\Manager\FeedManager;
 
 /**
  * PlatformInterface class
@@ -25,18 +26,32 @@ interface PlatformInterface
     public function getSecurityContext();
 
     /**
-     * Set manager
+     * Set entityManager
      *
      * @return this
      */
-    public function setManager(EntityManager $manager);
+    public function setEntityManager(EntityManager $entityManager);
 
     /**
-     * Get manager
+     * Get entityManager
      *
      * @return EntityManager
      */
-    public function getManager();
+    public function getEntityManager();
+
+    /**
+     * Set feedManager
+     *
+     * @return this
+     */
+    public function setFeedManager(FeedManager $feedManager);
+
+    /**
+     * Get feedManager
+     *
+     * @return FeedManager
+     */
+    public function getFeedManager();
 
     /**
      * Import file

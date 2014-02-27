@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Doctrine\ORM\EntityManager;
 
 use Feederate\FeederateBundle\Entity\Feed;
+use Feederate\FeederateBundle\Manager\FeedManager;
 
 /**
  * AbstractPlatform class
@@ -20,7 +21,12 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * @var EntityManager
      */
-    protected $mananger;
+    protected $entityManager;
+
+    /**
+     * @var FeedManager
+     */
+    protected $feedManager;
 
     /**
      * @var array
@@ -51,12 +57,15 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * Constructor
      *
-     * @param EntityManager $manager
+     * @param SecurityContext $securityContext
+     * @param EntityManager   $entityManager
+     * @param FeedManager     $feedManager
      */
-    public function __construct(SecurityContext $securityContext, EntityManager $manager)
+    public function __construct(SecurityContext $securityContext, EntityManager $entityManager, FeedManager $feedManager)
     {
         $this->securityContext = $securityContext;
-        $this->manager         = $manager;
+        $this->entityManager   = $entityManager;
+        $this->feedManager     = $feedManager;
     }
 
     /**
@@ -82,25 +91,47 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
-     * Set manager
+     * Set entityManager
      *
      * @return this
      */
-    public function setManager(EntityManager $manager)
+    public function setEntityManager(EntityManager $entityManager)
     {
-        $this->manager = $manager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
 
     /**
-     * Get manager
+     * Get entityManager
      *
      * @return EntityManager
      */
-    public function getManager()
+    public function getEntityManager()
     {
-        return $this->manager;
+        return $this->entityManager;
+    }
+
+    /**
+     * Set feedManager
+     *
+     * @return this
+     */
+    public function setFeedManager(FeedManager $feedManager)
+    {
+        $this->feedManager = $feedManager;
+
+        return $this;
+    }
+
+    /**
+     * Get feedManager
+     *
+     * @return FeedManager
+     */
+    public function getFeedManager()
+    {
+        return $this->feedManager;
     }
 
     /**
