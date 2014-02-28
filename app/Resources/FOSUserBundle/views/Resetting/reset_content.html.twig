@@ -1,14 +1,8 @@
-<h1>Change my account password</h1>
-<form role="form" action="{{ path('fos_user_change_password') }}" {{ form_enctype(form) }} method="POST">
+<h1>Resetting my account password</h1>
+<form role="form" action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_resetting_reset">
     {{ form_errors(form) }}
 
-    <div class="form-group">
-        {{ form_label(form.current_password, 'Current password') }}
-        {{ form_errors(form.current_password) }}
-        {{ form_widget(form.current_password) }}
-    </div>
-
-    <div class="form-group">
+     <div class="form-group">
         {{ form_label(form.new.first, 'New password') }}
         {{ form_errors(form.new.first) }}
         {{ form_widget(form.new.first) }}
@@ -24,4 +18,3 @@
 
     <button type="submit" class="btn btn-primary btn-lg btn-block">Change password</button>
 </form>
-
