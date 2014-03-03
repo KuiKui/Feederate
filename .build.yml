@@ -3,6 +3,8 @@ writable:
 
 build:
   - composer install --no-interaction --ansi --no-progress
+  - chmod 777 app/cache
+  - chmod 777 app/logs
   - php app/console doctrine:database:create
   - php app/console doctrine:schema:create
   - yes | php app/console doctrine:fixtures:load --no-interaction
