@@ -1,3 +1,6 @@
+writable:
+  - app/cache
+
 build:
   - composer install --no-interaction --ansi --no-progress
   - php app/console doctrine:database:create
