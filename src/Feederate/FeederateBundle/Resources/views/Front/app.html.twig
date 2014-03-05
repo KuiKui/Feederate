@@ -78,7 +78,7 @@
             <div class="container">
                 <h2><a target="_blank" href="{{ entry.target_url }}">{{ entry.title }}</a></h2>
                 <div class="date">{{ entry.generated_at | formatDate:'MMMM D, YYYY' }} at {{ entry.generated_at | formatDate:'h:mm A' }}</div>
-                <div ng-bind-html="entry.content"></div>
+                <div entry-content-bind="entry.content"></div>
             </div>
         </div>
     </div>
