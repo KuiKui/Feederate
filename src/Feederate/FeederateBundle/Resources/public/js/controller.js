@@ -10,6 +10,7 @@
             $scope.unread              = null;
             $scope.activeFeed          = null;
             $scope.activeSummary       = null;
+            $scope.entry               = null;
             $scope.focusArea           = null;
             $scope.user                = null;
             $scope.summariesAreLoading = false;
@@ -149,6 +150,7 @@
                 var summaries, type;
 
                 if (resetFeed = (resetFeed === undefined ? true : resetFeed)) {
+                    $scope.entry         = null;
                     $scope.summaries     = {};
                     $scope.summariesDays = [];
                     $scope.currentPage   = 0;
@@ -226,9 +228,6 @@
             $scope.loadEntry = function (summary) {
                 $scope.entry         = $scope.entries[summary.id];
                 $scope.activeSummary = summary;
-
-                // reset scroll entry
-                $('#entry .entry-content').scrollTop(0);
             };
 
             $scope.markAsRead = function (summary, onlyUnread) {
