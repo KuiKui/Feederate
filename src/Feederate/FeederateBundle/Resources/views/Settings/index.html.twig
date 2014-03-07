@@ -1,8 +1,19 @@
 {% extends '::symfony.html.twig' %}
 
 {% block body %}
+{% for type, messages in app.session.flashBag.all %}
+    {% for message in messages %}
+        {% if type == 'fos_user_success' %}
+            <div class="alert alert-success alert-dismissable">
+                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ message|trans({}, 'FOSUserBundle') }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endfor %}
 <h1>Settings</h1>
 <ul>
-    <li><a href="{{ path('feederate_feederate_settings_import') }}">Import</a></li>
+    <li><a href="{{ path('feederate_feederate_settings_import') }}">Import feeds from file</a></li>
+    <li><a href="{{ path('fos_user_change_password') }}">Change account password</a></li>
 </ul>
 {% endblock %}

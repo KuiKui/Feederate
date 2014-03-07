@@ -1,0 +1,13 @@
+<h1>Resetting my account password</h1>
+<form role="form" action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+    {% if invalid_username is defined %}
+        <div class="alert alert-danger">{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}</div>
+    {% endif %}
+
+    <div class="form-group">
+        <label for="username">My email address</label>
+        <input class="form-control" type="text" id="username" name="username" required="required" />
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg btn-block">Reset password</button>
+</form>

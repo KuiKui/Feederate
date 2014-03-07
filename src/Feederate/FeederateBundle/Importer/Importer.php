@@ -2,6 +2,10 @@
 
 namespace Feederate\FeederateBundle\Importer;
 
+use Symfony\Component\Security\Core\SecurityContext;
+use Doctrine\ORM\EntityManager;
+use Feederate\FeederateBundle\Manager\FeedManager;
+
 /**
  * Importer class
  */
@@ -13,7 +17,7 @@ class Importer
 
     protected $securityContext;
 
-    protected $mananger;
+    protected $entityManager;
 
     protected $platform;
 
@@ -32,12 +36,13 @@ class Importer
     /**
      * Constructor
      *
-     * @param EntityManager $manager
+     * @param EntityManager $entityManager
      */
-    public function __construct($securityContext, $manager)
+    public function __construct(SecurityContext $securityContext, EntityManager $entityManager, FeedManager $feedManager)
     {
         $this->securityContext = $securityContext;
-        $this->manager         = $manager;
+        $this->entityManager   = $entityManager;
+        $this->feedManager     = $feedManager;
     }
 
     /**
@@ -45,7 +50,7 @@ class Importer
      *
      * @return this
      */
-    public function setSecurityContext($securityContext)
+    public function setSecurityContext(SecurityContext $securityContext)
     {
         $this->securityContext = $securityContext;
 
@@ -63,25 +68,47 @@ class Importer
     }
 
     /**
-     * Set manager
+     * Set entityManager
      *
      * @return this
      */
-    public function setManager($manager)
+    public function setEntityManager(EntityManager $entityManager)
     {
-        $this->manager = $manager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
 
     /**
-     * Get manager
+     * Get entityManager
      *
      * @return EntityManager
      */
-    public function getManager()
+    public function getEntityManager()
     {
-        return $this->manager;
+        return $this->entityManager;
+    }
+
+    /**
+     * Set feedManager
+     *
+     * @return this
+     */
+    public function setFeedManager(FeedManager $feedManager)
+    {
+        $this->feedManager = $feedManager;
+
+        return $this;
+    }
+
+    /**
+     * Get feedManager
+     *
+     * @return FeedManager
+     */
+    public function getFeedManager()
+    {
+        return $this->feedManager;
     }
 
     /**
@@ -117,7 +144,7 @@ class Importer
     {
         $platformclass = sprintf(self::IMPORTER_CLASS_PATTERN, $this->getPlatform());
 
-        $platform = new $platformclass($this->getSecurityContext(), $this->getManager());
+        $platform = new $platformclass($this->getSecurityContext(), $this->getEntityManager(), $this->getFeedManager());
         $platform->import($file);
 
         return array(
