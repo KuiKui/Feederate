@@ -127,6 +127,11 @@
 
         Entries.loadSummaries = function (feed, callback) {
 
+            if (!angular.equals(Feeds.active, feed)) {
+                Entries.reset();
+                Feeds.active = feed;
+            }
+
             // If the load is in progress or if there are no more pages
             if (Entries.areLoading || Entries.noMore) {
                 return;
@@ -134,11 +139,6 @@
 
             var request = null,
                 type    = Feeds.type(feed);
-
-            if (!angular.equals(Feeds.active, feed)) {
-                Entries.reset();
-                Feeds.active = feed;
-            }
 
             Entries.areLoading = true;
 
