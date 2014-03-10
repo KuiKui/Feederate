@@ -56,7 +56,7 @@ class Feed
 
     /**
      * @var date
-     * 
+     *
      * @JMS\Serializer\Annotation\Type("DateTime<'Y-m-d H:i:s'>")
      */
     private $generatedAt;

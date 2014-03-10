@@ -5,6 +5,7 @@ namespace Feederate\FeederateBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use FSC\HateoasBundle\Annotation as Hateoas;
 
 use Feederate\ORMBundle\Entity\BaseEntity;
 use Feederate\ORMBundle\Entity\TimestampableTrait;
@@ -14,6 +15,8 @@ use Feederate\ORMBundle\Entity\TimestampableTrait;
  *
  * @ORM\Table(name="entry")
  * @ORM\Entity(repositoryClass="Feederate\FeederateBundle\Repository\EntryRepository")
+ * @Hateoas\Relation("self", href = @Hateoas\Route("get_entry", parameters = { "id" = ".id"}))
+ * @Hateoas\Relation("feed", href = @Hateoas\Route("get_feed", parameters = { "id" = ".feed.id"}))
  */
 class Entry
 {

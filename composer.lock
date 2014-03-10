@@ -3,8 +3,47 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "271b178e545a5b60a09834456a256467",
+    "hash": "fd60b47de15a2e6da188777a59cf456b",
     "packages": [
+        {
+            "name": "adrienbrault/form-serializer",
+            "version": "0.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adrienbrault/form-serializer.git",
+                "reference": "7a782af9573fac94e25d0ab759a49dd74eec7745"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adrienbrault/form-serializer/zipball/7a782af9573fac94e25d0ab759a49dd74eec7745",
+                "reference": "7a782af9573fac94e25d0ab759a49dd74eec7745",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "symfony/form": "~2.1"
+            },
+            "require-dev": {
+                "jms/serializer": "~0.13",
+                "jms/serializer-bundle": "~0.13",
+                "phpunit/phpunit": "~3.7",
+                "symfony/framework-bundle": "~2.2",
+                "symfony/http-foundation": "~2.2",
+                "symfony/validator": "~2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "AdrienBrault\\FormSerializer": "src",
+                    "AdrienBrault\\FormSerializer\\Tests": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "time": "2013-12-06 18:38:44"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.1.2",
@@ -931,6 +970,75 @@
             "time": "2013-09-23 08:24:12"
         },
         {
+            "name": "fsc/hateoas-bundle",
+            "version": "dev-master",
+            "target-dir": "FSC/HateoasBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TheFootballSocialClub/FSCHateoasBundle.git",
+                "reference": "0b741ecf6b46ad89e9f342f62eba43a2b0b95d74"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TheFootballSocialClub/FSCHateoasBundle/zipball/0b741ecf6b46ad89e9f342f62eba43a2b0b95d74",
+                "reference": "0b741ecf6b46ad89e9f342f62eba43a2b0b95d74",
+                "shasum": ""
+            },
+            "require": {
+                "adrienbrault/form-serializer": "~0.1.2",
+                "jms/metadata": "~1.1",
+                "jms/serializer": ">=0.12.0,<0.15.0-dev",
+                "jms/serializer-bundle": "*",
+                "php": ">=5.3.0",
+                "symfony/framework-bundle": "~2.1",
+                "symfony/property-access": "~2.2"
+            },
+            "require-dev": {
+                "jms/serializer": "*@dev",
+                "pagerfanta/pagerfanta": "*",
+                "symfony/browser-kit": "*",
+                "symfony/class-loader": "*",
+                "symfony/form": "*",
+                "symfony/validator": "*",
+                "symfony/yaml": "*"
+            },
+            "suggest": {
+                "pagerfanta/pagerfanta": "*",
+                "symfony/form": "~2.1",
+                "symfony/validator": "~2.1"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "FSC\\HateoasBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adrien Brault",
+                    "email": "adrien.brault@gmail.com"
+                },
+                {
+                    "name": "Baldur Rensch",
+                    "email": "brensch@gmail.com"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/TheFootballSocialClub/FSCHateoasBundle/contributors"
+                }
+            ],
+            "time": "2014-02-15 07:29:30"
+        },
+        {
             "name": "gedmo/doctrine-extensions",
             "version": "v2.3.9",
             "source": {
@@ -1201,16 +1309,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "0.15.0",
+            "version": "0.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "4a49caf0a20babcf8040fb1cf84f26faff6e7d85"
+                "reference": "22daa254e54f4b69292bd8679d7a6f3a78dc85d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/4a49caf0a20babcf8040fb1cf84f26faff6e7d85",
-                "reference": "4a49caf0a20babcf8040fb1cf84f26faff6e7d85",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/22daa254e54f4b69292bd8679d7a6f3a78dc85d4",
+                "reference": "22daa254e54f4b69292bd8679d7a6f3a78dc85d4",
                 "shasum": ""
             },
             "require": {
@@ -1226,7 +1334,7 @@
                 "jackalope/jackalope-doctrine-dbal": "1.0.*",
                 "propel/propel1": "~1.7",
                 "symfony/filesystem": "2.*",
-                "symfony/form": ">=2.1,<=2.4-dev",
+                "symfony/form": ">=2.1,<2.2-dev",
                 "symfony/translation": ">=2.0,<2.2-dev",
                 "symfony/validator": ">=2.0,<2.2-dev",
                 "symfony/yaml": "2.*",
@@ -1267,7 +1375,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2014-02-10 11:00:05"
+            "time": "2013-12-04 16:46:05"
         },
         {
             "name": "jms/serializer-bundle",
