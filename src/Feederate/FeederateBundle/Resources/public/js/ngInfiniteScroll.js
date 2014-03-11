@@ -6,7 +6,6 @@ angular.module('infinite-scroll', [])
                 $window = angular.element($window);
                 elem.css('overflow-y', 'scroll');
                 elem.css('overflow-x', 'hidden');
-                elem.css('height', 'inherit');
                 scrollDistance = 0;
 
                 if (attrs.infiniteScrollDistance != null) {

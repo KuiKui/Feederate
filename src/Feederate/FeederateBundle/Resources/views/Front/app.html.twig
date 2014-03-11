@@ -29,18 +29,10 @@
                 </li>
             </ul>
         </div>
-        <div class="feeds-footer">
-            <button type="button" class="btn btn-default btn-sm" ng-click="markFeedAsRead(Feeds.active)" ng-disabled="!Feeds.active.unread_count" title="Mark {{ Feeds.active.title }} as read">
-                <span class="glyphicon glyphicon-ok-circle"></span>
+        <div class="column-footer">
+            <button type="button" class="btn btn-default btn-sm" ng-click="toggleReadFeeds()" title="{{ user.is_read_feeds_hidden ? 'Show' : 'Hide' }} read feeds">
+                <span class="glyphicon glyphicon-{{ user.is_read_feeds_hidden ? 'open' : 'save' }}"></span>
             </button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="deleteFeed(Feeds.active)" ng-disabled="Feeds.isActive(Feeds.unread) || Feeds.isActive(Feeds.starred)" title="Delete feed {{ Feeds.active.title }}">
-                <span class="glyphicon glyphicon-trash"></span>
-            </button>
-            <div class="pull-right">
-                <button type="button" class="btn btn-default btn-sm" ng-click="toggleReadFeeds()" title="{{ user.is_read_feeds_hidden ? 'Show' : 'Hide' }} read feeds">
-                    <span class="glyphicon glyphicon-{{ user.is_read_feeds_hidden ? 'open' : 'save' }}"></span>
-                </button>
-            </div>
         </div>
     </div>
     <div id="summaries">
@@ -64,6 +56,16 @@
                 </div>
             </div>
             <div ng-show='Entries.areLoading' class="loader"></div>
+        </div>
+        <div class="column-footer">
+            <div class="pull-right">
+                <button type="button" class="btn btn-default btn-sm" ng-click="markFeedAsRead(Feeds.active)" ng-disabled="!Feeds.active.unread_count" title="Mark {{ Feeds.active.title }} as read">
+                    <span class="glyphicon glyphicon-ok-circle"></span>
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="deleteFeed(Feeds.active)" ng-disabled="Feeds.isActive(Feeds.unread) || Feeds.isActive(Feeds.starred)" title="Delete feed {{ Feeds.active.title }}">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </div>
         </div>
     </div>
     <div id="entry" ng-show="Entries.activeEntry">
