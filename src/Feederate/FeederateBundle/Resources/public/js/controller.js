@@ -63,7 +63,7 @@
         };
 
         Feeds.delete = function (feed, callback) {
-            feed.remove()
+            Restangular.oneUrl(Router.get('delete_feed', {id: feed.id})).customDELETE()
                 .then(function () {
                     if (callback !== undefined) {
                         callback();
