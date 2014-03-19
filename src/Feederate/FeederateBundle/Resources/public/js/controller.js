@@ -124,6 +124,7 @@
             Entries.activeEntry   = null;
             Entries.noMore        = false;
             Entries.page          = 0;
+            Feeds.active          = null;
         };
 
         Entries.loadSummaries = function (feed, callback) {
@@ -263,10 +264,10 @@
         .controller('BoardCtrl', function BoardCtrl ($scope, Router, Feeds, Entries, Restangular, $location, $anchorScroll) {
 
         angular.element(document).ready(function () {
+            $scope.user         = null;
+            $scope.Feeds        = Feeds;
+            $scope.Entries      = Entries;
             $scope.selectedType = 'summaries';
-
-            $scope.Feeds   = Feeds;
-            $scope.Entries = Entries;
 
             $scope.loadFeeds = function (callback) {
                 Feeds.load(callback);
@@ -289,11 +290,8 @@
                 if (confirm('Do you really want delete feed "' + feed.title + '" ?')) {
                     Feeds.delete(feed, function () {
                         Feeds.load(function () {
-                            $scope.loadSummaries(Feeds.unread);
-
-                            // Auto scroll into active feed
-                            $location.hash('feed_unread');
-                            $anchorScroll();
+                            Entries.reset();
+                            $location.path('feeds');
                         })
                     });
                 }
@@ -306,8 +304,12 @@
                             if (!Feeds.isUnread(feed)) {
                                 Feeds.unread.unread_count       -= Feeds.list[feed.id].unread_count;
                                 Feeds.list[feed.id].unread_count = 0;
-                            } else {
 
+                                // If read feeds is hidden, reset active
+                                if ($scope.user.is_read_feeds_hidden) {
+                                    Entries.reset();
+                                }
+                            } else {
                                 // All unread_count must be null
                                 Feeds.unread.unread_count = 0;
                                 angular.forEach(Feeds.list, function (feed) {
@@ -321,7 +323,6 @@
                                 });
                             });
                         } else {
-
                             // We reload feeds because it's too complex to manage unread_count
                             Feeds.load(function () {
                                 $scope.loadSummaries(Feeds.starred);
@@ -331,6 +332,8 @@
                                 $anchorScroll();
                             });
                         }
+
+                        $location.path('feeds');
                     });
                 }
             };

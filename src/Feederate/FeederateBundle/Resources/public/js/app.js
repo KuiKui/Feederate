@@ -19,5 +19,9 @@
     });
 
 
-    angular.module('feederate', ['ngSanitize', 'truncate', 'restangular', 'infinite-scroll']);
+    var app = angular.module('feederate', ['ngSanitize', 'truncate', 'restangular', 'infinite-scroll']);
+
+    app.config(function(RestangularProvider) {
+        RestangularProvider.setDefaultHeaders({'Content-Type': 'application/json'});
+    });
 })();
