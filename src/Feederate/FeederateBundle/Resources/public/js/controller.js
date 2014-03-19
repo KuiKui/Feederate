@@ -308,7 +308,6 @@
                                 // If read feeds is hidden, reset active
                                 if ($scope.user.is_read_feeds_hidden) {
                                     Entries.reset();
-                                    $location.path('feeds');
                                 }
                             } else {
                                 // All unread_count must be null
@@ -333,6 +332,8 @@
                                 $anchorScroll();
                             });
                         }
+
+                        $location.path('feeds');
                     });
                 }
             };
