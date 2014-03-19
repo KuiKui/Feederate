@@ -110,7 +110,8 @@
             entriesList: {},
             summariesList: {},
             daysList: [],
-            active: null,
+            activeEntry: null,
+            activeSummary: null,
             noMore: false,
             areLoading: false,
             page: 0
@@ -245,6 +246,13 @@
             return angular.equals(summary, Entries.activeSummary);
         };
 
+        Entries.setActiveEntry = function(entry) {
+            // Replace relative img path
+            entry.content = entry.content.replace(/(<img[^>]+src=["'])(\/[^"']+)/gi, '$1' + Feeds.active.target_url + '$2');
+
+            Entries.activeEntry = entry;
+        }
+
         return Entries;
     });
 
@@ -339,7 +347,7 @@
 
             $scope.loadEntry = function (summary) {
                 Entries.activeSummary = summary;
-                Entries.activeEntry   = Entries.entriesList[summary.id];
+                Entries.setActiveEntry(Entries.entriesList[summary.id]);
             };
 
             $scope.markAsRead = function (summary, canToggled) {
