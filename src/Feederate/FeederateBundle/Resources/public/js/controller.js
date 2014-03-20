@@ -29,7 +29,8 @@
             unread: {},
             starred: {},
             active: null,
-            error: null
+            error: null,
+            arePosting : false
         };
 
         /**
@@ -55,13 +56,16 @@
         };
 
         Feeds.add = function (url, callback) {
+            Feeds.arePosting = true;
             Restangular.all(Router.get('get_feeds')).post({ title: url, url: url, targetUrl: url })
                 .then(function (feed) {
                     if (callback !== undefined) {
                         callback(feed);
                     }
+                    Feeds.arePosting = false;
                 }, function(response) {
                     Feeds.error = JSON.parse(response.data);
+                    Feeds.arePosting = false;
                 });
         };
 
@@ -250,11 +254,16 @@
             return angular.equals(summary, Entries.activeSummary);
         };
 
-        Entries.setActiveEntry = function(entry) {
-            // Replace relative img path
-            entry.content = entry.content.replace(/(<img[^>]+src=["'])(\/[^"']+)/gi, '$1' + Feeds.active.target_url.replace(/\/$/, '') + '$2');
+        Entries.setActive = function(summary) {
+            Entries.activeSummary = summary;
 
-            Entries.activeEntry = entry;
+            // Replace relative img path
+            Entries.entriesList[summary.id].content = Entries
+                .entriesList[summary.id]
+                .content
+                .replace(/(<img[^>]+src=["'])(\/[^"']+)/gi, '$1' + Feeds.list[summary.feed_id].target_url.replace(/\/$/, '') + '$2');
+
+            Entries.activeEntry = Entries.entriesList[summary.id];
         }
 
         return Entries;
@@ -352,8 +361,7 @@
             };
 
             $scope.loadEntry = function (summary) {
-                Entries.activeSummary = summary;
-                Entries.setActiveEntry(Entries.entriesList[summary.id]);
+                Entries.setActive(summary);
             };
 
             $scope.markAsRead = function (summary, canToggled) {
