@@ -5,9 +5,13 @@
 <div id="feederate">
     <div id="feeds">
         <div class="feeds-toolbar">
-            <input ng-enter="addFeed()" ng-model="newFeedUrl" type="text" class="subscribtion" placeholder="Adding a new feed here..">
+            <input ng-enter="addFeed()" ng-model="newFeedUrl" type="text" class="subscribtion" placeholder="Adding a new feed here.." ng-class="{processing: Feeds.arePosting}">
         </div>
         <div class="feeds-content">
+            <div class="alert alert-danger alert-dismissable" ng-show="Feeds.error">
+                <button type="button" class="close" ng-click="Feeds.error = null">&times;</button>
+                {{ Feeds.error }}
+            </div>
             <ul class="nav">
                 <li ng-class="{active:Feeds.isActive(Feeds.unread)}" id="feed_unread">
                     <a href="#summaries" ng-click="loadSummaries(Feeds.unread)">
@@ -38,6 +42,7 @@
         </div>
     </div>
     <div id="summaries">
+        <div ng-show='Entries.areLoading' class="loader"></div>
         <div class="summaries-content" infinite-scroll="loadSummaries(Feeds.active)" infinite-scroll-distance="1" infinite-scroll-disabled="Entries.loadIsBusy()" infinite-scroll-immediate-check="false">
             <div>
                 <div ng-repeat="day in Entries.daysList" ng-class="{day: Feeds.isUnread(Feeds.active)}">
@@ -57,7 +62,6 @@
                     </ul>
                 </div>
             </div>
-            <div ng-show='Entries.areLoading' class="loader"></div>
         </div>
         <div class="column-footer">
             <div class="pull-right">
@@ -76,11 +80,11 @@
                 <a class="glyphicon" title="{{ Entries.activeSummary.is_read ? 'Mark as unread' : 'Mark as read' }}" ng-click="markAsRead(Entries.activeSummary, true)" ng-class="{'glyphicon glyphicon-ok-sign': !Entries.activeSummary.is_read, 'glyphicon glyphicon-ok-circle': Entries.activeSummary.is_read}"></a>
                 <a class="glyphicon" title="{{ Entries.activeSummary.is_starred ? 'Unstar' : 'Star' }}" ng-click="markAsStarred(Entries.activeSummary)" ng-class="{'glyphicon-star-empty': !Entries.activeSummary.is_starred, 'glyphicon-star': Entries.activeSummary.is_starred}"></a>
             </span>
-            <a target="_blank" href="{{ Feeds.list[Entries.activeEntry.feed_id].target_url }}">{{ Feeds.list[Entries.activeEntry.feed_id].title }}</a>
+            <a target="_blank" href="{{ Feeds.list[Entries.activeSummary.feed_id].target_url }}">{{ Feeds.list[Entries.activeSummary.feed_id].title }}</a>
         </div>
         <div class="entry-content">
             <div class="container">
-                <h2><a target="_blank" href="{{ Entries.activeEntry.target_url }}">{{ Entries.activeEntry.title }}</a></h2>
+                <h2><a target="_blank" href="{{ Entries.activeEntry.target_url ? Entries.activeEntry.target_url : Feeds.list[Entries.activeSummary.feed_id].target_url }}">{{ Entries.activeEntry.title }}</a></h2>
                 <div class="date">{{ Entries.activeEntry.generated_at | formatDate:'MMMM D, YYYY' }} at {{ Entries.activeEntry.generated_at | formatDate:'h:mm A' }}</div>
                 <div entry-content-bind="Entries.activeEntry.content"></div>
             </div>

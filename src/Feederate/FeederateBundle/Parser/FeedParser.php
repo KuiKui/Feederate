@@ -47,6 +47,11 @@ class FeedParser
     private $output = null;
 
     /**
+     * @var string
+     */
+    private $error = '';
+
+    /**
      * Constructor
      *
      * @param Feed          $feed
@@ -69,12 +74,36 @@ class FeedParser
      * Set output
      *
      * @param OutputInterface $output
+     *
+     * @return $this
      */
     public function setOutput(OutputInterface $output)
     {
         $this->output = $output;
 
         return $this;
+    }
+
+    /**
+     * Set error
+     * 
+     * @param string $error
+     *
+     * @return $this
+     */
+    public function setError($error) {
+        $this->error = $error;
+
+        return $this;
+    }
+
+    /**
+     * Get error
+     * 
+     * @return string
+     */
+    public function getError() {
+        return $this->error;
     }
 
     /**
@@ -88,6 +117,10 @@ class FeedParser
     {
         if ($this->output) {
             $this->output->writeln(sprintf("<%s>%s</%s>", $type, $message, $type));
+        }
+
+        if ($type == self::LOG_ERROR) {
+            $this->setError($message);
         }
     }
 
@@ -161,9 +194,9 @@ class FeedParser
 
             return min($this->reader->count(), $this->limitEntries);
         } catch (\Exception $e) {
-            $this->log(sprintf("Impossible to parse feed %s : %s", $this->feed->getUrl(), $e->getMessage()), self::LOG_ERROR);
+            $this->log(sprintf("Impossible to parse feed %s - %s", $this->feed->getUrl(), $e->getMessage()), self::LOG_ERROR);
 
-            return 0;
+            return false;
         }
     }
 
@@ -175,6 +208,7 @@ class FeedParser
     private function updateFeed()
     {
         $this->feed->setTitle($this->reader->getTitle());
+        $this->feed->setTargetUrl($this->reader->getLink());
 
         $this->manager->persist($this->feed);
         $this->manager->flush();

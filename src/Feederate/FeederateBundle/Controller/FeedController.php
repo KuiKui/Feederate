@@ -102,7 +102,11 @@ class FeedController extends FOSRestController implements ClassResourceInterface
 
         if ($form->isValid()) {
 
-            $this->get('feederate.manager.feed')->saveUserFeed($this->getUser(), $entity);
+            try {
+                $this->get('feederate.manager.feed')->saveUserFeed($this->getUser(), $entity);
+            } catch (\Exception $e) {
+                return $this->view($e->getMessage(), 422);
+            }
 
             return $this->view($this->getFeedResources($entity), 201, array(
                 'Location' => $this->generateUrl('get_feed', ['id' => $entity->getId()], true),
