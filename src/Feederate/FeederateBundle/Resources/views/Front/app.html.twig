@@ -8,6 +8,10 @@
             <input ng-enter="addFeed()" ng-model="newFeedUrl" type="text" class="subscribtion" placeholder="Adding a new feed here..">
         </div>
         <div class="feeds-content">
+            <div class="alert alert-danger alert-dismissable" ng-show="Feeds.error">
+                <button type="button" class="close" ng-click="Feeds.error = null">&times;</button>
+                {{ Feeds.error }}
+            </div>
             <ul class="nav">
                 <li ng-class="{active:Feeds.isActive(Feeds.unread)}" id="feed_unread">
                     <a href="#summaries" ng-click="loadSummaries(Feeds.unread)">
@@ -80,7 +84,7 @@
         </div>
         <div class="entry-content">
             <div class="container">
-                <h2><a target="_blank" href="{{ Entries.activeEntry.target_url }}">{{ Entries.activeEntry.title }}</a></h2>
+                <h2><a target="_blank" href="{{ Entries.activeEntry.target_url ? Entries.activeEntry.target_url : Feeds.active.target_url }}">{{ Entries.activeEntry.title }}</a></h2>
                 <div class="date">{{ Entries.activeEntry.generated_at | formatDate:'MMMM D, YYYY' }} at {{ Entries.activeEntry.generated_at | formatDate:'h:mm A' }}</div>
                 <div entry-content-bind="Entries.activeEntry.content"></div>
             </div>

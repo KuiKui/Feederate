@@ -291,8 +291,10 @@ class FeedManager
     public function parse(Feed $feed)
     {
         $feedParser = new FeedParser($feed, $this->em);
-        $feedParser
-            ->setLimitEntries(20)
-            ->parse();
+        $feedParser->setLimitEntries(20);
+
+        if ($feedParser->parse() === false) {
+            throw new \Exception($feedParser->getError());
+        }
     }
 }

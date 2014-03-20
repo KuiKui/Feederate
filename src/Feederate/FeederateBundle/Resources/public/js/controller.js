@@ -29,6 +29,7 @@
             unread: {},
             starred: {},
             active: null,
+            error: null
         };
 
         /**
@@ -55,10 +56,12 @@
 
         Feeds.add = function (url, callback) {
             Restangular.all(Router.get('get_feeds')).post({ title: url, url: url, targetUrl: url })
-                .then(function () {
+                .then(function (feed) {
                     if (callback !== undefined) {
-                        callback();
+                        callback(feed);
                     }
+                }, function(response) {
+                    Feeds.error = JSON.parse(response.data);
                 });
         };
 
@@ -249,7 +252,7 @@
 
         Entries.setActiveEntry = function(entry) {
             // Replace relative img path
-            entry.content = entry.content.replace(/(<img[^>]+src=["'])(\/[^"']+)/gi, '$1' + Feeds.active.target_url + '$2');
+            entry.content = entry.content.replace(/(<img[^>]+src=["'])(\/[^"']+)/gi, '$1' + Feeds.active.target_url.replace(/\/$/, '') + '$2');
 
             Entries.activeEntry = entry;
         }

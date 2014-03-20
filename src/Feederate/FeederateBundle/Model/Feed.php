@@ -310,6 +310,7 @@ class Feed
             ->setGeneratedId($feed->getGeneratedId())
             ->setTitle($feed->getTitle())
             ->setDescription($feed->getDescription())
+            ->setUrl($feed->getUrl())
             ->setTargetUrl($feed->getTargetUrl())
             ->setAuthorName($feed->getAuthorName())
             ->setAuthorEmail($feed->getAuthorEmail())
