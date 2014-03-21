@@ -105,7 +105,11 @@ html {
 
 @media (min-width:320px) {
     body {
-        overflow: hidden;
+        overflow: scroll;
+
+        & > .container {
+            padding: 0;
+        }
 
         .navigation-area {
             margin-left: 15px;
@@ -113,27 +117,30 @@ html {
 
         &.feeds {
             #feeds { left: 0; }
-            #summaries { left: 100%; }
-            #entry { left: 200%; }
+            #summaries { left: 100%; display: none;}
+            #entry { left: 200%; display: none;}
         }
 
         &.summaries {
-            #feeds { left: -100%; }
+            #feeds { left: -100%; display: none;}
             #summaries { left: 0; }
-            #entry { left: 100%; }
+            #entry { left: 100%; display: none;}
         }
 
         &.entry {
-            #feeds { left: -200%; }
-            #summaries { left: -100%; }
+            #feeds { left: -200%; display: none;}
+            #summaries { left: -100%; display: none;}
             #entry { left: 0; }
+        }
+
+        #feederate {
+            position: initial;
         }
 
         #feeds,
         #summaries,
         #entry {
             z-index: 0;
-            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
@@ -142,6 +149,15 @@ html {
             -moz-transition: all 300ms;
             -webkit-transition: all 300ms;
             transition: all 300ms;
+            position: relative;
+        }
+
+        #feeds .feeds-content,
+        #summaries .summaries-content,
+        #entry .entry-content {
+            bottom: initial;
+            top: initial;
+            position: relative;
         }
     }
 }
@@ -154,25 +170,30 @@ html {
             margin-left: 0;
         }
 
+        #feederate {
+            position: fixed;
+        }
+
         &.feeds,
         &.summaries {
-            #feeds { left: 0; }
-            #summaries { left: 50%; }
-            #entry { left: 100%; }
+            #feeds { left: 0; display: block;}
+            #summaries { left: 50%; display: block;}
+            #entry { left: 100%; display: block;}
 
             .navigation-area-feeds { display: none; }
         }
 
         &.entry {
-            #feeds { left: -100%; }
-            #summaries { left: 0; width: 30%; }
-            #entry { left: 30%; width: 70%; }
+            #feeds { left: -100%; display: block;}
+            #summaries { left: 0; width: 30%; display: block;}
+            #entry { left: 30%; width: 70%; display: block;}
         }
 
         #feeds,
         #summaries,
         #entry {
             width: 50%;
+            position: absolute;
         }
 
         .navbar > .container .navbar-nav > li#feedback > a {
@@ -181,6 +202,22 @@ html {
             padding-bottom : 4px;
             margin-top : 11px;
             margin-bottom : 11px;
+        }
+
+        #feeds .feeds-content,
+        #summaries .summaries-content,
+        #entry .entry-content {
+            bottom: 37px;
+            position: absolute;
+        }
+
+        #feeds .feeds-content,
+        #entry .entry-content {
+            top: 37px;
+        }
+
+        #summaries .summaries-content {
+            top: 0;
         }
     }
 }
