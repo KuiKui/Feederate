@@ -415,7 +415,11 @@
                 .then(function(user) {
                     $scope.user = user;
                     $scope.loadFeeds(function () {
-                        $scope.loadSummaries(Feeds.unread);
+                        if (Feeds.unread.unread_count > 0) {
+                            $scope.loadSummaries(Feeds.unread);
+                        } else {
+                            $location.path('feeds');
+                        }
                     });
                 });
         });
