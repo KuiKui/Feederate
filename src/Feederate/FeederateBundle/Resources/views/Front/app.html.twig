@@ -35,6 +35,9 @@
         </div>
         <div class="column-footer">
             <div class="pull-right">
+                <button type="button" class="btn btn-default btn-sm" ng-click="refreshFeedsAndEntries()" title="Refresh feeds">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                </button>
                 <button type="button" class="btn btn-default btn-sm" ng-click="toggleReadFeeds()" title="{{ user.is_read_feeds_hidden ? 'Show' : 'Hide' }} read feeds">
                     <span class="glyphicon glyphicon-{{ user.is_read_feeds_hidden ? 'open' : 'save' }}"></span>
                 </button>
