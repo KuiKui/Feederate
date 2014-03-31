@@ -5,7 +5,7 @@ namespace Feederate\FeederateBundle\Parser;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zend\Feed\Reader\Reader;
-use Zend\Http\Client as HTTPClient;
+use Zend\Http\Client as HttpClient;
 use Zend\Feed\Reader\Entry\EntryInterface;
 
 use Feederate\FeederateBundle\Entity\Feed;
@@ -63,7 +63,7 @@ class FeedParser
         $this->feed        = $feed;
         $this->manager     = $manager;
 
-        $httpClient = new HTTPClient(null, ['sslverifypeer' => false]);
+        $httpClient = new HttpClient(null, ['sslverifypeer' => false]);
         Reader::setHttpClient($httpClient);
     }
 
