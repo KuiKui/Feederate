@@ -24,6 +24,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+          {% if app.request.attributes.get('_route') != 'feederate_feederate_front_index' %}
+            <a class="glyphicon glyphicon-chevron-left navigation-area" href="{{ path('feederate_feederate_front_index') }}"></a>
+          {% endif %}
         </div>
         <div class="collapse navbar-collapse">
           {% include '::includes/navigation.html.twig' %}

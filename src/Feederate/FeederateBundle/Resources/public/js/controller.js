@@ -397,6 +397,15 @@
                 }
             }
 
+            $scope.refreshFeedsAndEntries = function () {
+                $scope.loadFeeds(function () {
+                    var activeFeed = Feeds.active;
+                    Entries.reset();
+                    Feeds.active = activeFeed;
+                    $scope.loadSummaries(Feeds.active);
+                });
+            }
+
             $scope.$watch(function (){
                 return $location.path();
             }, function (value){
@@ -427,4 +436,3 @@
         });
     });
 })();
-
