@@ -109,7 +109,9 @@ class UserFeed
      * @return integer
      */
     public function decrUnreadCount($count = 1) {
-        $this->unreadCount -= $count;
+        if ($this->unreadCount > 0) {
+            $this->unreadCount -= $count;
+        }
         
         return $this;
     }
