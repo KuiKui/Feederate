@@ -224,8 +224,9 @@
 
                 if (summary.is_read) {
                     if ((Feeds.list[summary.feed_id].unread_count > 0) && (Feeds.unread.unread_count > 0))
-                    Feeds.list[summary.feed_id].unread_count--;
-                    Feeds.unread.unread_count--;
+                        Feeds.list[summary.feed_id].unread_count--;
+                        Feeds.unread.unread_count--;
+                    }
                 } else {
                     Feeds.list[summary.feed_id].unread_count++;
                     Feeds.unread.unread_count++;
