@@ -226,8 +226,10 @@
                 summary.is_read = !summary.is_read;
 
                 if (summary.is_read) {
-                    Feeds.list[summary.feed_id].unread_count--;
-                    Feeds.unread.unread_count--;
+                    if ((Feeds.list[summary.feed_id].unread_count > 0) && (Feeds.unread.unread_count > 0)) {
+                        Feeds.list[summary.feed_id].unread_count--;
+                        Feeds.unread.unread_count--;
+                    }
                 } else {
                     Feeds.list[summary.feed_id].unread_count++;
                     Feeds.unread.unread_count++;
@@ -399,7 +401,16 @@
                 }
             }
 
-            $scope.$watch(function () {
+            $scope.refreshFeedsAndEntries = function () {
+                $scope.loadFeeds(function () {
+                    var activeFeed = Feeds.active;
+                    Entries.reset();
+                    Feeds.active = activeFeed;
+                    $scope.loadSummaries(Feeds.active);
+                });
+            }
+
+            $scope.$watch(function (){
                 return $location.path();
             }, function (value){
                 var splitUrl = value.replace(/^\/+|\/+$/g,'').split('/');
@@ -433,10 +444,13 @@
                 .then(function(user) {
                     $scope.user = user;
                     $scope.loadFeeds(function () {
-                        $scope.loadSummaries(Feeds.unread);
+                        if (Feeds.unread.unread_count > 0) {
+                            $scope.loadSummaries(Feeds.unread);
+                        } else {
+                            $location.path('feeds');
+                        }
                     });
                 });
         });
     });
 })();
-
