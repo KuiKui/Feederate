@@ -269,7 +269,11 @@
         };
 
         Entries.isActiveSummary = function (summary) {
-            return angular.equals(summary, Entries.activeSummary);
+            if (!Entries.activeSummary) {
+                return false;
+            }
+
+            return angular.equals(summary.id, Entries.activeSummary.id);
         };
 
         Entries.setActive = function(summary) {
