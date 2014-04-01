@@ -133,6 +133,10 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
             ->getRepository('FeederateFeederateBundle:UserEntry')
             ->findOneBy(['entry' => $entry, 'user' => $this->getUser()]);
 
+        if (!$userEntry) {
+            return $this->view(sprintf('Unauthorized to access on the entry id %s', $id), 401);
+        }
+
         $summary = new Summary();
         $summary->load($entry, $userEntry);
 
