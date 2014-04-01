@@ -43,7 +43,7 @@
     </div>
     <div id="summaries">
         <div ng-show='Entries.areLoading' class="loader"></div>
-        <div class="summaries-content" infinite-scroll="loadSummaries(Feeds.active)" infinite-scroll-distance="1" infinite-scroll-disabled="Entries.loadIsBusy()" infinite-scroll-immediate-check="false">
+        <div class="summaries-content" infinite-scroll="loadSummaries(Feeds.active)" infinite-scroll-distance="1" infinite-scroll-disabled="Entries.loadIsBusy() && oneColumn" infinite-scroll-immediate-check="false">
             <div>
                 <div ng-repeat="day in Entries.daysList" ng-class="{day: Feeds.isUnread(Feeds.active)}">
                     <div ng-show="Feeds.isUnread(Feeds.active)" class="day-group">{{ day | formatDate:'short' }}</div>

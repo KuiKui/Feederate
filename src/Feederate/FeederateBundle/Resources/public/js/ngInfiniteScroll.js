@@ -51,7 +51,12 @@ angular.module('infinite-scroll', [])
                     }
                 };
 
-                elem.on('scroll', handler);
+                if (elem.prop('tagName') === 'BODY') {
+                    $(window).on('scroll', handler);
+                } else {
+                    elem.on('scroll', handler);
+                }
+
                 scope.$on('$destroy', function() {
                   return $window.off('scroll', handler);
                 });

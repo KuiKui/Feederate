@@ -280,6 +280,7 @@
             $scope.Feeds        = Feeds;
             $scope.Entries      = Entries;
             $scope.selectedType = 'summaries';
+            $scope.oneColumn    = false;
 
             $scope.loadFeeds = function (callback) {
                 Feeds.load(callback);
@@ -395,7 +396,7 @@
                 }
             }
 
-            $scope.$watch(function (){
+            $scope.$watch(function () {
                 return $location.path();
             }, function (value){
                 var splitUrl = value.replace(/^\/+|\/+$/g,'').split('/');
@@ -408,6 +409,20 @@
                     $scope.selectedTypeId = splitUrl[1];
                 }
             });
+
+            window.onresize = function () {
+                setColumnMode();
+            };
+
+            var setColumnMode = function () {
+                if ($(window).width() >= 768) {
+                    $scope.oneColumn = false;
+                } else {
+                    $scope.oneColumn = true;
+                }
+            }
+
+            setColumnMode();
 
             Restangular
                 .one(Router.get('get_user'))
