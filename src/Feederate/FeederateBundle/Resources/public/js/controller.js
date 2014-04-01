@@ -441,7 +441,6 @@
                 return $location.path();
             }, function (path) {
                 var splittedPath = path.replace(/^\/+|\/+$/g,'').split('/');
-                console.log(splittedPath);
 
                 if (splittedPath[1] == undefined) {
                     $scope.selectedType = 'feeds';
