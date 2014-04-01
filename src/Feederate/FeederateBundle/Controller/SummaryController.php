@@ -111,6 +111,39 @@ class SummaryController extends FOSRestController implements ClassResourceInterf
     }
 
     /**
+     * Summary list
+     *
+     * @return \FOS\RestBundle\View\View
+     *
+     * @Rest\Route(requirements={"id"="\d+"})
+     */
+    public function getAction($id)
+    {
+        $entry = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:Entry')
+            ->find($id);
+
+        if (!$entry) {
+            return $this->view(sprintf('Entry with id %s not found', $id), 404);
+        }
+
+        $userEntry = $this
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FeederateFeederateBundle:UserEntry')
+            ->findOneBy(['entry' => $entry, 'user' => $this->getUser()]);
+
+        if (!$userEntry) {
+            return $this->view(sprintf('Unauthorized to access on the entry id %s', $id), 401);
+        }
+
+        $summary = new Summary();
+        $summary->load($entry, $userEntry);
+
+        return $this->view($summary, 200);
+    }
+
+    /**
      * Mark summary as read
      *
      * @return \FOS\RestBundle\View\View
