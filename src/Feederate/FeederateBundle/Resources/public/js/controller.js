@@ -135,6 +135,9 @@
         };
 
         Entries.loadSummaries = function (feed, callback) {
+            if (!feed) {
+                return;
+            }
 
             if (!angular.equals(Feeds.active, feed)) {
                 Entries.reset();

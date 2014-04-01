@@ -4,8 +4,6 @@ angular.module('infinite-scroll', [])
             link: function(scope, elem, attrs) {
                 var checkWhenEnabled, handler, scrollDistance, scrollEnabled;
                 $window = angular.element($window);
-                elem.css('overflow-y', 'scroll');
-                elem.css('overflow-x', 'hidden');
                 scrollDistance = 0;
 
                 if (attrs.infiniteScrollDistance != null) {
