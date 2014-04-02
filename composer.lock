@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "ee6e4e789bf533133fa6ff8ee7571762",
+    "hash": "55b0512044f9562872b200d670de8b39",
     "packages": [
         {
             "name": "adrienbrault/form-serializer",
@@ -43,6 +43,49 @@
                 "MIT"
             ],
             "time": "2013-12-06 18:38:44"
+        },
+        {
+            "name": "celd/opml-import-export",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/clarence-eldefors/opml-feeds.git",
+                "reference": "b60650625e9ce89a72ba7ea4cc87b6b0fd5ad262"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/clarence-eldefors/opml-feeds/zipball/b60650625e9ce89a72ba7ea4cc87b6b0fd5ad262",
+                "reference": "b60650625e9ce89a72ba7ea4cc87b6b0fd5ad262",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/serializer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Celd\\Opml\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Clarence Eldefors",
+                    "email": "clarence@eldefors.com"
+                }
+            ],
+            "description": "Library for importing and exporting OPML documents for list of (RSS/Atom) feeds.",
+            "keywords": [
+                "atom",
+                "feeds",
+                "opml",
+                "rss"
+            ],
+            "time": "2014-04-02 11:49:17"
         },
         {
             "name": "doctrine/annotations",
@@ -2937,7 +2980,8 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "doctrine/doctrine-fixtures-bundle": 20
+        "doctrine/doctrine-fixtures-bundle": 20,
+        "celd/opml-import-export": 20
     },
     "platform": {
         "php": ">=5.3.3"

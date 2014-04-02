@@ -5,33 +5,29 @@ namespace Feederate\FeederateBundle\Importer;
 use Symfony\Component\Security\Core\SecurityContext;
 use Doctrine\ORM\EntityManager;
 use Feederate\FeederateBundle\Manager\FeedManager;
+use Feederate\FeederateBundle\Entity\Feed;
+use Feederate\FeederateBundle\Parser\FeedParser;
+
+use Celd\Opml\Importer as OpmlImporter;
 
 /**
  * Importer class
  */
 class Importer
 {
-    const IMPORTER_CLASS_PATTERN = 'Feederate\FeederateBundle\Importer\Platform\%sPlatform';
-
-    const IMPORTER_PLATFORM_FEEDIN = 'Feedbin';
-
     protected $securityContext;
 
     protected $entityManager;
 
-    protected $platform;
+    /**
+     * @var array
+     */
+    protected $errors = array();
 
     /**
-     * Returns all platforms allowed
-     *
-     * @return array
+     * @var integer
      */
-    public static function getPlatforms()
-    {
-        return array(
-            self::IMPORTER_PLATFORM_FEEDIN,
-        );
-    }
+    protected $parsed = 0;
 
     /**
      * Constructor
@@ -112,27 +108,49 @@ class Importer
     }
 
     /**
-     * Set platform
-     *
-     * @param string $platform
+     * Increment number of parsed feed
      *
      * @return this
      */
-    public function setPlatform($platform)
+    protected function incrementParsed()
     {
-        $this->platform = $platform;
+        $this->parsed++;
 
         return $this;
     }
 
     /**
-     * Get platform
+     * Get number of parsed feed
      *
-     * @return string
+     * @return integer
      */
-    public function getPlatform()
+    public function getParsed()
     {
-        return $this->platform;
+        return $this->parsed;
+    }
+
+    /**
+     * Add error
+     *
+     * @param string $message
+     *
+     * @return this
+     */
+    protected function addError($message)
+    {
+        $this->errors[] = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 
     /**
@@ -142,14 +160,46 @@ class Importer
      */
     public function import($file)
     {
-        $platformclass = sprintf(self::IMPORTER_CLASS_PATTERN, $this->getPlatform());
+        $importer = new OpmlImporter(file_get_contents($file));
+        $feedList = $importer->getFeedList();
 
-        $platform = new $platformclass($this->getSecurityContext(), $this->getEntityManager(), $this->getFeedManager());
-        $platform->import($file);
+        foreach ($feedList->getItems() as $item) {
+            if ($item->getType() == 'category') {
+                foreach($item->getFeeds() as $feed) {
+                    $this->addFeed($feed);
+                }
+            } else {
+                $this->addFeed($item);
+            }
+        }
 
         return array(
-            'errors' => $platform->getErrors(),
-            'parsed' => $platform->getParsed(),
+            'errors' => $this->getErrors(),
+            'parsed' => $this->getParsed(),
         );
+    }
+
+    protected function addFeed($opmlItem)
+    {
+        $this->getEntityManager()->getConnection()->beginTransaction();
+
+        try {
+            $feed = new Feed();
+            $feed->setTitle($opmlItem->getTitle())
+                ->setUrl($opmlItem->getXmlUrl())
+                ->setTargetUrl($opmlItem->getHtmlUrl());
+
+            $this->getFeedManager()->saveUserFeed(
+                $this->getSecurityContext()->getToken()->getUser(),
+                $feed,
+                false
+            );
+
+            $this->getEntityManager()->getConnection()->commit();
+            $this->incrementParsed();
+        } catch (\Exception $e) {
+            $this->getEntityManager()->getConnection()->rollback();
+            $this->addError(sprintf("It's not possible to parse the feed %s. (Exception: %s)", $feed->getTitle(), $e->getMessage()));
+        }
     }
 }

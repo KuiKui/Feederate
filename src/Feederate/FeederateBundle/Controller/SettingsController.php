@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-use Feederate\FeederateBundle\Form\ImporterType;
-
 class SettingsController extends Controller
 {
     /**
@@ -25,27 +23,30 @@ class SettingsController extends Controller
     }
 
     /**
-     * Import feedbin action
+     * Import OPML action
      *
      * @Route("/settings/import")
      * @Template()
      */
     public function importAction(Request $request)
     {
-        $form = $this->container->get('form.factory')->createNamed('', new ImporterType());
-        $viewParameters['form'] = $form->createView();
+        $form = $this->createFormBuilder()
+            ->add('attachment', 'file')
+            ->getForm();
+
+        $twigParams = array('form' => $form->createView());
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
 
             if ($form->isValid()) {
-
-                $viewParameters['status'] = $this->get('feederate.importer.importer')
-                    ->setPlatform($form['platform']->getData())
-                    ->import($form['attachment']->getData()->getPathname());
+                $filename = $form['attachment']->getData()->getPathname();
+                $twigParams['status'] = $this
+                    ->get('feederate.importer.importer')
+                    ->import($filename);
             }
         }
 
-        return $viewParameters;
+        return $twigParams;
     }
 }
