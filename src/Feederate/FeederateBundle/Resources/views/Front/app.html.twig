@@ -24,19 +24,19 @@
             </div>
             <ul class="nav">
                 <li ng-class="{active:Feeds.isActive(Feeds.unread)}" id="feed_unread">
-                    <a href="#summaries" ng-click="loadSummaries(Feeds.unread)">
+                    <a href="#feeds/unread" ng-click="loadSummaries(Feeds.unread)">
                         <span class="bullet bullet-unread pull-right" ng-show="Feeds.unread.unread_count">{{ Feeds.unread.unread_count }}</span>
                         <span class="title">Unread</span>
                     </a>
                 </li>
                 <li ng-class="{active:Feeds.isActive(Feeds.starred)}" id="feed_starred">
-                    <a href="#summaries" ng-click="loadSummaries(Feeds.starred)">
+                    <a href="#feeds/starred" ng-click="loadSummaries(Feeds.starred)">
                         <span class="bullet bullet-unread pull-right" ng-show="Feeds.starred.unread_count">{{ Feeds.starred.unread_count }}</span>
                         <span class="title">Starred</span>
                     </a>
                 </li>
                 <li ng-repeat="feed in getShownFeeds() | objectToArray | orderBy:'title'" ng-class="{active:Feeds.isActive(feed)}" id="feed_{{ feed.id }}">
-                    <a href="#summaries" ng-click="loadSummaries(feed)">
+                    <a href="#feeds/{{ feed.id }}" ng-click="loadSummaries(feed)">
                         <span class="bullet bullet-unread pull-right" ng-show="feed.unread_count">{{ feed.unread_count }}</span>
                         <span class="title">{{ feed.title }}</span>
                     </a>
@@ -62,7 +62,7 @@
                     <div ng-show="Feeds.isUnread(Feeds.active)" class="day-group">{{ day | formatDate:'short' }}</div>
                     <ul class="nav">
                         <li ng-repeat="summary in Entries.summariesList[day]" ng-class="{active:Entries.isActiveSummary(summary),read: summary.is_read}">
-                            <a href="#entry" ng-click="loadEntry(summary); markAsRead(summary);">
+                            <a href="#entries/{{summary.id}}" ng-click="loadEntry(summary); markAsRead(summary);">
                                 <span ng-show="summary.is_starred" class="label label-primary">starred</span>
                                 <div class="metadata">
                                     <span class="date pull-right" title="{{ summary.generated_at | formatDate:'YYYY-MM-DD h:mm A' }}">{{ summary.generated_at | formatDate:'short' }}</span>

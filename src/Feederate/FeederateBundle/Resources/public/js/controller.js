@@ -134,6 +134,18 @@
             Feeds.active          = null;
         };
 
+        Entries.loadSummariesById = function (id) {
+            var request = Restangular.one(Router.get('get_summaries'), id).get()
+                .then(function(summary) {
+                    var feed = Feeds.list[summary.feed_id];
+                    Entries.loadSummaries(feed, function () {
+                        Entries.loadEntries(feed, function () {
+                            Entries.setActive(summary);
+                        });
+                    })
+                });
+        };
+
         Entries.loadSummaries = function (feed, callback) {
             if (!feed) {
                 return;
@@ -193,7 +205,7 @@
             });
         };
 
-        Entries.loadEntries = function (feed) {
+        Entries.loadEntries = function (feed, callback) {
             var request = null,
                 type    = Feeds.type(feed);
 
@@ -212,6 +224,10 @@
                 angular.forEach(entries, function (entry) {
                     Entries.entriesList[entry.id] = entry;
                 });
+
+                if (callback !== undefined) {
+                    callback();
+                }
             });
         };
 
@@ -256,7 +272,11 @@
         };
 
         Entries.isActiveSummary = function (summary) {
-            return angular.equals(summary, Entries.activeSummary);
+            if (!Entries.activeSummary) {
+                return false;
+            }
+
+            return angular.equals(summary.id, Entries.activeSummary.id);
         };
 
         Entries.setActive = function(summary) {
@@ -281,10 +301,11 @@
         .controller('BoardCtrl', function BoardCtrl ($scope, Router, Feeds, Entries, Restangular, $location, $anchorScroll) {
 
         angular.element(document).ready(function () {
-            $scope.user         = null;
-            $scope.Feeds        = Feeds;
-            $scope.Entries      = Entries;
-            $scope.selectedType = 'summaries';
+            $scope.user           = null;
+            $scope.Feeds          = Feeds;
+            $scope.Entries        = Entries;
+            $scope.selectedType   = 'summaries';
+            $scope.selectedTypeId = null;
             $scope.oneColumn    = false;
 
             $scope.loadFeeds = function (callback) {
@@ -362,6 +383,10 @@
                 });
             };
 
+            $scope.loadSummariesById = function (id) {
+                Entries.loadSummariesById(id);
+            };
+
             $scope.loadEntries = function (feed) {
                 Entries.loadEntries(feed);
             };
@@ -384,7 +409,7 @@
                 Restangular
                     .one(Router.get('get_user'))
                     .customPOST({is_read_feeds_hidden: $scope.user.is_read_feeds_hidden});
-            }
+            };
 
             $scope.getShownFeeds = function () {
                 if (!$scope.user || !$scope.user.is_read_feeds_hidden) {
@@ -399,7 +424,7 @@
 
                     return shownFeeds;
                 }
-            }
+            };
 
             $scope.refreshFeedsAndEntries = function () {
                 $scope.loadFeeds(function () {
@@ -418,9 +443,23 @@
                 if (splitUrl[0]) {
                     $scope.selectedType = splitUrl[0];
                 }
+            });
 
-                if (splitUrl[1]) {
-                    $scope.selectedTypeId = splitUrl[1];
+            $scope.$watch(function () {
+                return $location.path();
+            }, function (path) {
+                var splittedPath = path.replace(/^\/+|\/+$/g,'').split('/');
+
+                if (splittedPath[1] == undefined) {
+                    $scope.selectedType = 'feeds';
+                } else {
+                    if (splittedPath[0] == 'feeds') {
+                        $scope.selectedType = 'summaries';
+                        $scope.selectedTypeId = splittedPath[1];
+                    } else {
+                        $scope.selectedType = 'entry';
+                        $scope.selectedTypeId = splittedPath[1];
+                    }
                 }
             });
 
@@ -444,7 +483,11 @@
                 .then(function(user) {
                     $scope.user = user;
                     $scope.loadFeeds(function () {
-                        if (Feeds.unread.unread_count > 0) {
+                        if ($scope.selectedTypeId && $scope.selectedType == 'entry') {
+                            $scope.loadSummariesById($scope.selectedTypeId);
+                        } else if ($scope.selectedTypeId && $scope.selectedType == 'summaries') {
+                            $scope.loadSummaries(Feeds.list[$scope.selectedTypeId]);
+                        } else if (Feeds.unread.unread_count > 0) {
                             $scope.loadSummaries(Feeds.unread);
                         } else {
                             $location.path('feeds');

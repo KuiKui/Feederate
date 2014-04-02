@@ -30,7 +30,7 @@
           </button>
           {% verbatim %}
             <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-feeds" href="#feeds" ng-show="selectedType=='summaries'"></a>
-            <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-summaries" href="#summaries" ng-show="selectedType=='entry'"></a>
+            <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-summaries" href="#feeds/{{Entries.activeSummary.feed_id}}" ng-show="selectedType=='entry'"></a>
           {% endverbatim %}
         </div>
         <div class="collapse navbar-collapse">
