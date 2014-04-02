@@ -147,6 +147,9 @@
         };
 
         Entries.loadSummaries = function (feed, callback) {
+            if (!feed) {
+                return;
+            }
 
             if (!angular.equals(Feeds.active, feed)) {
                 Entries.reset();
@@ -303,6 +306,7 @@
             $scope.Entries        = Entries;
             $scope.selectedType   = 'summaries';
             $scope.selectedTypeId = null;
+            $scope.oneColumn    = false;
 
             $scope.loadFeeds = function (callback) {
                 Feeds.load(callback);
@@ -431,16 +435,6 @@
                 });
             }
 
-            $scope.$watch(function (){
-                return $location.path();
-            }, function (value){
-                var splitUrl = value.replace(/^\/+|\/+$/g,'').split('/');
-
-                if (splitUrl[0]) {
-                    $scope.selectedType = splitUrl[0];
-                }
-            });
-
             $scope.$watch(function () {
                 return $location.path();
             }, function (path) {
@@ -459,6 +453,20 @@
                 }
             });
 
+            window.onresize = function () {
+                setColumnMode();
+            };
+
+            var setColumnMode = function () {
+                if ($(window).width() >= 768) {
+                    $scope.oneColumn = false;
+                } else {
+                    $scope.oneColumn = true;
+                }
+            }
+
+            setColumnMode();
+
             Restangular
                 .one(Router.get('get_user'))
                 .get()
@@ -468,7 +476,11 @@
                         if ($scope.selectedTypeId && $scope.selectedType == 'entry') {
                             $scope.loadSummariesById($scope.selectedTypeId);
                         } else if ($scope.selectedTypeId && $scope.selectedType == 'summaries') {
-                            $scope.loadSummaries(Feeds.list[$scope.selectedTypeId]);
+                            if (isNaN($scope.selectedTypeId)) {
+                                $scope.loadSummaries(Feeds[$scope.selectedTypeId]);
+                            } else {
+                                $scope.loadSummaries(Feeds.list[$scope.selectedTypeId]);
+                            }
                         } else if (Feeds.unread.unread_count > 0) {
                             $scope.loadSummaries(Feeds.unread);
                         } else {

@@ -12,7 +12,7 @@ html {
         height: 100%;
         line-height: @normalLineHeight;
         padding: 0;
-        text-shadow: #fdfdfc 0px 1px 0px;
+        text-shadow: none;
         width: 100%;
 
         a, a:hover {
@@ -104,7 +104,11 @@ html {
 
 @media (min-width:320px) {
     body {
-        overflow: hidden;
+        overflow: scroll;
+
+        #feederate-container {
+            padding: 0;
+        }
 
         .navigation-area {
             margin-left: 15px;
@@ -112,35 +116,47 @@ html {
 
         &.feeds {
             #feeds { left: 0; }
-            #summaries { left: 100%; }
-            #entry { left: 200%; }
+            #summaries { left: 100%; display: none;}
+            #entry { left: 200%; display: none;}
         }
 
         &.summaries {
-            #feeds { left: -100%; }
+            #feeds { left: -100%; display: none;}
             #summaries { left: 0; }
-            #entry { left: 100%; }
+            #entry { left: 100%; display: none;}
         }
 
         &.entry {
-            #feeds { left: -200%; }
-            #summaries { left: -100%; }
+            #feeds { left: -200%; display: none;}
+            #summaries { left: -100%; display: none;}
             #entry { left: 0; }
+        }
+
+        #feederate {
+            position: initial;
         }
 
         #feeds,
         #summaries,
         #entry {
             z-index: 0;
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             background-color: @lightBackground;
 
             -moz-transition: all 300ms;
             -webkit-transition: all 300ms;
             transition: all 300ms;
+            position: relative;
+        }
+
+        #feeds .feeds-content,
+        #summaries .summaries-content,
+        #entry .entry-content {
+            position: relative;
+        }
+
+        #summaries .summaries-content {
+            overflow: hidden;
         }
     }
 }
@@ -153,25 +169,8 @@ html {
             margin-left: 0;
         }
 
-        &.feeds,
-        &.summaries {
-            #feeds { left: 0; }
-            #summaries { left: 50%; }
-            #entry { left: 100%; }
-
-            .navigation-area-feeds { display: none; }
-        }
-
-        &.entry {
-            #feeds { left: -100%; }
-            #summaries { left: 0; width: 30%; }
-            #entry { left: 30%; width: 70%; }
-        }
-
-        #feeds,
-        #summaries,
-        #entry {
-            width: 50%;
+        #feederate {
+            position: fixed;
         }
 
         .navbar > .container .navbar-nav > li#feedback > a {
@@ -180,6 +179,70 @@ html {
             padding-bottom : 4px;
             margin-top : 11px;
             margin-bottom : 11px;
+        }
+
+        &.feeds,
+        &.summaries {
+            #feeds { left: 0; display: block;}
+            #summaries { left: 50%; display: block;}
+            #entry { left: 100%; display: block;}
+
+            .navigation-area-feeds { display: none; }
+        }
+
+        &.entry {
+            #feeds { left: -100%; display: block;}
+            #summaries { left: 0; width: 30%; display: block;}
+            #entry { left: 30%; width: 70%; display: block;}
+        }
+
+        #feeds,
+        #summaries,
+        #entry {
+            width: 50%;
+            position: absolute;
+        }
+
+        #feeds {
+            .feeds-toolbar {
+                position: absolute;
+                height: 37px;
+            }
+
+            .feeds-content {
+                position: absolute;
+                top: 77px;
+            }
+        }
+
+        #summaries {
+            .loader {
+                position: absolute;
+            }
+
+            .summaries-content {
+                top: 40px;
+                overflow-y: scroll;
+                overflow-x: hidden;
+                position: absolute;
+            }
+        }
+
+        #entry {
+            .entry-content {
+                top: 40px;
+                position: absolute;
+                overflow-y: auto;
+                overflow-x: hidden;
+
+                .container {
+                    padding: 10px 30px 20px;
+                }
+            }
+
+            .entry-toolbar {
+                position: absolute;
+            }
         }
     }
 }

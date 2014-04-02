@@ -4,8 +4,6 @@ angular.module('infinite-scroll', [])
             link: function(scope, elem, attrs) {
                 var checkWhenEnabled, handler, scrollDistance, scrollEnabled;
                 $window = angular.element($window);
-                elem.css('overflow-y', 'scroll');
-                elem.css('overflow-x', 'hidden');
                 scrollDistance = 0;
 
                 if (attrs.infiniteScrollDistance != null) {
@@ -35,10 +33,8 @@ angular.module('infinite-scroll', [])
                     var container, elementBottom, remaining, shouldScroll, containerBottom;
 
                     container       = $(elem.children()[0]);
-                    elementBottom   = elem.offset().top + elem.height();
-                    containerBottom = container.offset().top + container.height();
-                    remaining       = containerBottom - elementBottom ;
-                    shouldScroll    = remaining <= elem.height() * scrollDistance;
+                    remaining       = elem.scrollTop() + elem.height() ;
+                    shouldScroll    = remaining + elem.height() * scrollDistance >= container.height();
 
                     if (shouldScroll && scrollEnabled) {
                         if ($rootScope.$$phase) {
@@ -51,7 +47,12 @@ angular.module('infinite-scroll', [])
                     }
                 };
 
-                elem.on('scroll', handler);
+                if (elem.prop('tagName') === 'BODY') {
+                    $(window).on('scroll', handler);
+                } else {
+                    elem.on('scroll', handler);
+                }
+
                 scope.$on('$destroy', function() {
                   return $window.off('scroll', handler);
                 });
