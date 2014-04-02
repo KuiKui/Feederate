@@ -29,7 +29,8 @@
         "zendframework/zend-feed": "2.3.0",
         "zendframework/zend-http": "2.3.0",
         "zendframework/zend-servicemanager": "2.3.0",
-        "leafo/lessphp": "~0.4"
+        "leafo/lessphp": "~0.4",
+        "celd/opml-import-export": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

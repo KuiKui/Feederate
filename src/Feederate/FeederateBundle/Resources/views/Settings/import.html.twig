@@ -10,12 +10,10 @@
 {% else %}
     <p>Import {{status.parsed}} feeds.</p>
     {% if status.errors|length %}
-        <label>Errors :</label>
-        <ul>
+        <label>Errors</label>
         {% for error in status.errors %}
-            <li>{{ error }}</li>
+        <p class="alert alert-danger">{{ error }}</p>
         {% endfor %}
-        </ul>
     {% endif %}
 {% endif %}
 {% endblock %}
