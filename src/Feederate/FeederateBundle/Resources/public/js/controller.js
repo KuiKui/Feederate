@@ -435,16 +435,6 @@
                 });
             }
 
-            $scope.$watch(function (){
-                return $location.path();
-            }, function (value){
-                var splitUrl = value.replace(/^\/+|\/+$/g,'').split('/');
-
-                if (splitUrl[0]) {
-                    $scope.selectedType = splitUrl[0];
-                }
-            });
-
             $scope.$watch(function () {
                 return $location.path();
             }, function (path) {
@@ -486,7 +476,11 @@
                         if ($scope.selectedTypeId && $scope.selectedType == 'entry') {
                             $scope.loadSummariesById($scope.selectedTypeId);
                         } else if ($scope.selectedTypeId && $scope.selectedType == 'summaries') {
-                            $scope.loadSummaries(Feeds.list[$scope.selectedTypeId]);
+                            if (isNaN($scope.selectedTypeId)) {
+                                $scope.loadSummaries(Feeds[$scope.selectedTypeId]);
+                            } else {
+                                $scope.loadSummaries(Feeds.list[$scope.selectedTypeId]);
+                            }
                         } else if (Feeds.unread.unread_count > 0) {
                             $scope.loadSummaries(Feeds.unread);
                         } else {

@@ -17,30 +17,31 @@
     <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
   </head>
 
-  <body ng-controller="BoardCtrl" ng-class="selectedType" infinite-scroll="loadSummaries(Feeds.active)" infinite-scroll-distance="1" infinite-scroll-disabled="Entries.loadIsBusy() && !oneColumn && selectedType == 'summaries'" infinite-scroll-immediate-check="false">
-
-    <div class="navbar" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          {% verbatim %}
-            <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-feeds" href="#feeds" ng-show="selectedType=='summaries'"></a>
-            <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-summaries" href="#feeds/{{Entries.activeSummary.feed_id}}" ng-show="selectedType=='entry'"></a>
-          {% endverbatim %}
+  <body ng-controller="BoardCtrl" ng-class="selectedType" infinite-scroll="loadSummaries(Feeds.active)" infinite-scroll-distance="1" infinite-scroll-disabled="Entries.loadIsBusy() || !oneColumn || selectedType != 'summaries'" infinite-scroll-immediate-check="false">
+    <div>
+      <div class="navbar" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            {% verbatim %}
+              <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-feeds" href="#feeds" ng-show="selectedType=='summaries'"></a>
+              <a class="glyphicon glyphicon-chevron-left navigation-area navigation-area-summaries" href="#feeds/{{Entries.activeSummary.feed_id}}" ng-show="selectedType=='entry'"></a>
+            {% endverbatim %}
+          </div>
+          <div class="collapse navbar-collapse">
+            {% include '::includes/navigation.html.twig' %}
+          </div><!--/.nav-collapse -->
         </div>
-        <div class="collapse navbar-collapse">
-          {% include '::includes/navigation.html.twig' %}
-        </div><!--/.nav-collapse -->
       </div>
-    </div>
 
-    <div id="feederate-container" class="container">
-        {% block body %}{% endblock %}
-    </div><!-- /.container -->
+      <div id="feederate-container" class="container">
+          {% block body %}{% endblock %}
+      </div><!-- /.container -->
+    </div>
   </body>
 </html>

@@ -33,10 +33,8 @@ angular.module('infinite-scroll', [])
                     var container, elementBottom, remaining, shouldScroll, containerBottom;
 
                     container       = $(elem.children()[0]);
-                    elementBottom   = elem.offset().top + elem.height();
-                    containerBottom = container.offset().top + container.height();
-                    remaining       = containerBottom - elementBottom ;
-                    shouldScroll    = remaining <= elem.height() * scrollDistance;
+                    remaining       = elem.scrollTop() + elem.height() ;
+                    shouldScroll    = remaining + elem.height() * scrollDistance >= container.height();
 
                     if (shouldScroll && scrollEnabled) {
                         if ($rootScope.$$phase) {

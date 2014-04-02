@@ -28,7 +28,11 @@
                 element.html($sce.getTrustedHtml(parsed(scope)) || '');
 
                 // reset scroll entry
-                element.parents('#entry .entry-content').scrollTop(0);
+                if (scope.oneColumn) {
+                    $(window).scrollTop(0);
+                } else {
+                    element.parents('#entry .entry-content').scrollTop(0);
+                }
             });
         };
     }]);
