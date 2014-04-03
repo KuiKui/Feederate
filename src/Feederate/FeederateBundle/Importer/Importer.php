@@ -191,8 +191,7 @@ class Importer
 
             $this->getFeedManager()->saveUserFeed(
                 $this->getSecurityContext()->getToken()->getUser(),
-                $feed,
-                false
+                $feed
             );
 
             $this->getEntityManager()->getConnection()->commit();
