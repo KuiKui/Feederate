@@ -282,11 +282,20 @@
         Entries.setActive = function(summary) {
             Entries.activeSummary = summary;
 
+            var sanitizeResourceLink = function ($0, $1, $2) {
+                if ($1.substring(0, 1) == '/') {
+                    $1 = $1.substring(1);
+                }
+
+                return $1 + Feeds.list[summary.feed_id].target_url.replace(/\/$/, '') + '/' + $2;
+            }
+
             // Replace relative img path
             Entries.entriesList[summary.id].content = Entries
                 .entriesList[summary.id]
                 .content
-                .replace(/(<img[^>]+src=["'])(\/[^"']+)/gi, '$1' + Feeds.list[summary.feed_id].target_url.replace(/\/$/, '') + '$2');
+                .replace(/(<img[^>]+src=["'])((\/[^\/]|\.\/|\.\.\/)[^"']+)/gi, sanitizeResourceLink)
+                .replace(/(<a[^>]+href=["'])((\/[^\/]|\.\/|\.\.\/)[^"']+)/gi, sanitizeResourceLink);
 
             Entries.activeEntry = Entries.entriesList[summary.id];
         }
