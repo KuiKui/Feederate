@@ -227,7 +227,7 @@ class FeedParser
     {
         $entry
             ->setGeneratedAt($rss->getDateCreated() ?: $rss->getDateModified())
-            ->setTitle($rss->getTitle()?: ' ')
+            ->setTitle($rss->getTitle()?: 'Untitled')
             ->setTargetUrl($rss->getLink())
             ->setDescription(strip_tags($rss->getDescription()))
             ->setContent($rss->getContent());
