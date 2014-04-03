@@ -8,7 +8,7 @@ angular.module('infinite-scroll', [])
 
                 if (attrs.infiniteScrollDistance != null) {
                     scope.$watch(attrs.infiniteScrollDistance, function(value) {
-                        return scrollDistance = parseInt(value, 10);
+                        return scrollDistance = value;
                     });
                 }
 
