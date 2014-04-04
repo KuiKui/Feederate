@@ -87,10 +87,10 @@ class AdminController extends Controller
     /**
      * Users stats action
      *
-     * @Route("/admin/users-stats")
+     * @Route("/admin/stats")
      * @Template()
      */
-    public function usersStatsAction(Request $request)
+    public function statsAction(Request $request)
     {
         $manager = $this->get('doctrine.orm.entity_manager');
 
@@ -107,6 +107,24 @@ class AdminController extends Controller
             }
         }
 
-        return ['users' => $users];
+        $feedsInfo = [
+          'feeds'   => [],
+          'unused'  => 0,
+          'entries' => 0,
+        ];
+
+        $feedsInfo['feeds'] = $manager
+            ->getRepository('FeederateFeederateBundle:Feed')
+            ->findBy(array());
+
+        foreach($feedsInfo['feeds'] as $feed) {
+            $feedsInfo['unused']  += ($feed->getUnused()) ? 1 : 0;
+            $feedsInfo['entries'] += count($feed->getEntries());
+        }
+
+        return [
+          'users' => $users,
+          'feeds' => $feedsInfo,
+        ];
     }
 }

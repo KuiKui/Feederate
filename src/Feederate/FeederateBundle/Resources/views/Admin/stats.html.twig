@@ -1,7 +1,26 @@
 {% extends '::symfony.html.twig' %}
 
 {% block body %}
-<h1>Users stats</h1>
+<h1>Feeds</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Feeds</th>
+            <th>Unused feeds</th>
+            <th>Entries</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ feeds.feeds | length }}</td>
+            <td>{{ feeds.unused }}</td>
+            <td>{{ feeds.entries }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h1>Users</h1>
 
 <table class="table table-striped">
     <thead>
