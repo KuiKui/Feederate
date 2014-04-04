@@ -66,6 +66,8 @@ class ParseCommand extends ContainerAwareCommand
             } catch (\Exception $e) {
                 $output->writeln(sprintf("<error>%s</error>", $e->getMessage()));
             }
+
+          sleep(2);
         }
     }
 }
