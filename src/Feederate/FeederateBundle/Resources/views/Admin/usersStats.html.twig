@@ -1,0 +1,27 @@
+{% extends '::symfony.html.twig' %}
+
+{% block body %}
+<h1>Users stats</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Feeds</th>
+            <th>Entries</th>
+            <th>Unread</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.email }}</td>
+          <td>{{ user.userFeeds | length }}</td>
+          <td>{{ user.entries }}</td>
+          <td>{{ user.unread }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
