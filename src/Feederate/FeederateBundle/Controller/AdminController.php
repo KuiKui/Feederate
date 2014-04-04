@@ -83,4 +83,30 @@ class AdminController extends Controller
 
         return $this->redirect($this->generateUrl('feederate_feederate_admin_invitations'));
     }
+
+    /**
+     * Users stats action
+     *
+     * @Route("/admin/users-stats")
+     * @Template()
+     */
+    public function usersStatsAction(Request $request)
+    {
+        $manager = $this->get('doctrine.orm.entity_manager');
+
+        $users = $manager
+            ->getRepository('FeederateFeederateBundle:User')
+            ->findBy(array());
+
+        foreach($users as $user) {
+            $user->entries = 0;
+            $user->unread  = 0;
+            foreach($user->getUserFeeds() as $userFeed) {
+                $user->entries += count($userFeed->getFeed()->getEntries());
+                $user->unread  += $userFeed->getUnreadCount();
+            }
+        }
+
+        return ['users' => $users];
+    }
 }
