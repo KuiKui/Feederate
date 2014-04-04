@@ -160,17 +160,21 @@ class Importer
      */
     public function import($file)
     {
-        $importer = new OpmlImporter(file_get_contents($file));
-        $feedList = $importer->getFeedList();
+        try {
+            $importer = new OpmlImporter(file_get_contents($file));
+            $feedList = $importer->getFeedList();
 
-        foreach ($feedList->getItems() as $item) {
-            if ($item->getType() == 'category') {
-                foreach($item->getFeeds() as $feed) {
-                    $this->addFeed($feed);
+            foreach ($feedList->getItems() as $item) {
+                if ($item->getType() == 'category') {
+                    foreach($item->getFeeds() as $feed) {
+                        $this->addFeed($feed);
+                    }
+                } else {
+                    $this->addFeed($item);
                 }
-            } else {
-                $this->addFeed($item);
             }
+        } catch (\Exception $e) {
+            $this->addError($e->getMessage());
         }
 
         return array(
