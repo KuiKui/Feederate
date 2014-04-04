@@ -283,8 +283,8 @@
             Entries.activeSummary = summary;
 
             var sanitizeResourceLink = function ($0, $1, $2) {
-                if ($1.substring(0, 1) == '/') {
-                    $1 = $1.substring(1);
+                if ($2.substring(0, 1) === '/') {
+                    $2 = $2.substring(1);
                 }
 
                 return $1 + Feeds.list[summary.feed_id].target_url.replace(/\/$/, '') + '/' + $2;
