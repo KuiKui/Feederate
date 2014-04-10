@@ -17,3 +17,8 @@ parameters:
     mailer_password:   ~
 
     feedback_email:    %mailer_user%
+
+    session_memcache_host: 127.0.0.1
+    session_memcache_port: 11211
+    session_memcache_prefix: sess
+    session_memcache_expire: 172800
