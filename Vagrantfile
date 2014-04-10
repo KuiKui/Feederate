@@ -11,4 +11,6 @@ Vagrant::Config.run do |config|
     config.vm.customize ["modifyvm", :id, "--memory", 1024]
     config.vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     config.vm.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+
+    config.vm.provision "shell", inline: "sudo service memcached start"
 end
