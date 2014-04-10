@@ -1,20 +1,6 @@
 imports:
     - { resource: config.yml }
 
-services:
-    session.memcache:
-        class: Memcache
-        calls:
-             - [ addServer, [ %session_memcache_host%, %session_memcache_port% ]]
-
-    session.handler.memcache:
-        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler
-        arguments: [ @session.memcache, { prefix: %session_memcache_prefix%, expiretime: %session_memcache_expire% } ]
-
-framework:
-    session:
-        handler_id: session.handler.memcache
-
 monolog:
     handlers:
         main:
