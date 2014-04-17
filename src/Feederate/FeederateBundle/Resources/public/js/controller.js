@@ -646,7 +646,7 @@
                     var container = $('.entry-content');
                     var elem      = container.children('.container');
                     if (container.height() < elem.height()) {
-                        container.scrollTop(container.scrollTop() + elem.height() * 0.1);
+                        container.scrollTop(container.scrollTop() + container.height() * 0.1);
                     }
                 }
             }, {propagate: false});
@@ -671,7 +671,7 @@
                     var container = $('.entry-content');
                     var elem      = container.children('.container');
                     if (container.height() < elem.height()) {
-                        container.scrollTop(container.scrollTop() - elem.height() * 0.1);
+                        container.scrollTop(container.scrollTop() - container.height() * 0.1);
                     }
                 }
             }, {propagate: false});
