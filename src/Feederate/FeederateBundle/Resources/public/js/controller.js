@@ -307,7 +307,7 @@
 
     angular
         .module('feederate')
-        .controller('BoardCtrl', function BoardCtrl ($scope, Router, Feeds, Entries, Restangular, $location, $anchorScroll) {
+        .controller('BoardCtrl', function BoardCtrl ($scope, Router, Feeds, Entries, Restangular, $location, $anchorScroll, $angularCacheFactory) {
 
         angular.element(document).ready(function () {
             $scope.user           = null;
@@ -436,6 +436,8 @@
             };
 
             $scope.refreshFeedsAndEntries = function () {
+                $angularCacheFactory.get('defaultCache').removeAll();
+
                 $scope.loadFeeds(function () {
                     var activeFeed = Feeds.active;
                     Entries.reset();
