@@ -391,6 +391,10 @@
             }
 
             if (!paginated) {
+                if (angular.equals(Feeds.active, feed)) {
+                    return;
+                }
+
                 Entries.reset();
                 Feeds.active = feed;
             }
