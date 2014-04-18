@@ -38,8 +38,15 @@
          *
          * @param function callback
          */
-        Feeds.load = function (callback) {
-            Restangular.all(Router.get('get_feeds')).getList()
+        Feeds.load = function (callback, cached) {
+            if (cached === undefined) {
+                cached = true;
+            }
+
+            Restangular
+                .all(Router.get('get_feeds'))
+                .withHttpConfig({cache: cached})
+                .getList()
                 .then(function (data) {
                     Feeds.list    = {};
                     Feeds.unread  = data[0];
@@ -330,7 +337,7 @@
                         // Auto scroll into active feed
                         $location.hash('feed_' + feed.id);
                         $anchorScroll();
-                    });
+                    }, false);
                 });
             };
 
@@ -340,7 +347,7 @@
                         Feeds.load(function () {
                             Entries.reset();
                             $location.path('feeds');
-                        })
+                        }, false)
                     });
                 }
             };
@@ -378,7 +385,7 @@
                                 // Auto scroll into active feed
                                 $location.hash('feed_' + feed.id);
                                 $anchorScroll();
-                            });
+                            }, false);
                         }
 
                         $location.path('feeds');
