@@ -17,7 +17,7 @@
     <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
   </head>
 
-  <body ng-controller="BoardCtrl" ng-class="selectedType" infinite-scroll="loadSummaries(Feeds.active)" infinite-scroll-distance="1.5" infinite-scroll-disabled="Entries.loadIsBusy() || !oneColumn || selectedType != 'summaries'" infinite-scroll-immediate-check="false">
+  <body ng-controller="BoardCtrl" ng-class="selectedType" infinite-scroll="loadSummaries(Feeds.active, true)" infinite-scroll-distance="1.5" infinite-scroll-disabled="Entries.loadIsBusy() || !oneColumn || selectedType != 'summaries'" infinite-scroll-immediate-check="false">
     <div>
       <div class="navbar" role="navigation">
         <div class="container">
