@@ -2,6 +2,8 @@ writables:
   - app/cache
 
 build:
+  - apt-get update -y
+  - apt-get -y install memcached php5-memcache
   - composer install --no-interaction --ansi --no-progress
   - php app/console doctrine:database:create
   - php app/console doctrine:schema:create
