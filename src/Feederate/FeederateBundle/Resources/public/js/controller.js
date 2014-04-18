@@ -39,7 +39,9 @@
          * @param function callback
          */
         Feeds.load = function (callback) {
-            Restangular.all(Router.get('get_feeds')).getList()
+            Restangular
+                .all(Router.get('get_feeds'))
+                .getList()
                 .then(function (data) {
                     Feeds.list    = {};
                     Feeds.unread  = data[0];
@@ -307,7 +309,7 @@
 
     angular
         .module('feederate')
-        .controller('BoardCtrl', function BoardCtrl ($scope, Router, Feeds, Entries, Restangular, $location, $anchorScroll) {
+        .controller('BoardCtrl', function BoardCtrl ($scope, Router, Feeds, Entries, Restangular, $location, $anchorScroll, $angularCacheFactory) {
 
         angular.element(document).ready(function () {
             $scope.user           = null;
@@ -324,6 +326,7 @@
             $scope.addFeed = function () {
                 Feeds.add($scope.newFeedUrl, function (feed) {
                     $scope.newFeedUrl = '';
+                    $angularCacheFactory.get('defaultCache').removeAll();
                     Feeds.load(function () {
                         $scope.loadSummaries(Feeds.list[feed.id]);
 
@@ -337,6 +340,7 @@
             $scope.deleteFeed = function (feed) {
                 if (confirm('Do you really want delete feed "' + feed.title + '" ?')) {
                     Feeds.delete(feed, function () {
+                        $angularCacheFactory.get('defaultCache').removeAll();
                         Feeds.load(function () {
                             Entries.reset();
                             $location.path('feeds');
@@ -372,6 +376,7 @@
                             });
                         } else {
                             // We reload feeds because it's too complex to manage unread_count
+                            $angularCacheFactory.get('defaultCache').removeAll();
                             Feeds.load(function () {
                                 $scope.loadSummaries(Feeds.starred);
 
@@ -436,6 +441,8 @@
             };
 
             $scope.refreshFeedsAndEntries = function () {
+                $angularCacheFactory.get('defaultCache').removeAll();
+
                 $scope.loadFeeds(function () {
                     var activeFeed = Feeds.active;
                     Entries.reset();
