@@ -38,14 +38,9 @@
          *
          * @param function callback
          */
-        Feeds.load = function (callback, cached) {
-            if (cached === undefined) {
-                cached = true;
-            }
-
+        Feeds.load = function (callback) {
             Restangular
                 .all(Router.get('get_feeds'))
-                .withHttpConfig({cache: cached})
                 .getList()
                 .then(function (data) {
                     Feeds.list    = {};
@@ -331,23 +326,25 @@
             $scope.addFeed = function () {
                 Feeds.add($scope.newFeedUrl, function (feed) {
                     $scope.newFeedUrl = '';
+                    $angularCacheFactory.get('defaultCache').removeAll();
                     Feeds.load(function () {
                         $scope.loadSummaries(Feeds.list[feed.id]);
 
                         // Auto scroll into active feed
                         $location.hash('feed_' + feed.id);
                         $anchorScroll();
-                    }, false);
+                    });
                 });
             };
 
             $scope.deleteFeed = function (feed) {
                 if (confirm('Do you really want delete feed "' + feed.title + '" ?')) {
                     Feeds.delete(feed, function () {
+                        $angularCacheFactory.get('defaultCache').removeAll();
                         Feeds.load(function () {
                             Entries.reset();
                             $location.path('feeds');
-                        }, false)
+                        })
                     });
                 }
             };
@@ -379,13 +376,14 @@
                             });
                         } else {
                             // We reload feeds because it's too complex to manage unread_count
+                            $angularCacheFactory.get('defaultCache').removeAll();
                             Feeds.load(function () {
                                 $scope.loadSummaries(Feeds.starred);
 
                                 // Auto scroll into active feed
                                 $location.hash('feed_' + feed.id);
                                 $anchorScroll();
-                            }, false);
+                            });
                         }
 
                         $location.path('feeds');
